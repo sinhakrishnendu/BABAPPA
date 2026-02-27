@@ -1,0 +1,169 @@
+BABAPPA FULL-PHASE EXECUTION STATUS (Generated: 2026-02-25)
+
+====================================================================
+0) DIRECT ANSWER
+====================================================================
+I executed all roadmap phases that are implementable inside this machine and produced runnable, reproducible benchmark artifacts plus new publication-facing commands. 
+
+However, this environment does NOT have Docker/Singularity/codeml/HyPhy binaries and does NOT contain curated OrthoMaM/HIV/SARS datasets, so full evidence-complete empirical validation (real baseline p-values + real-data biological claims) cannot be truthfully claimed yet.
+
+This report separates:
+- COMPLETED NOW (code + runs executed)
+- BLOCKED BY ENVIRONMENT (must be run on a provisioned machine)
+
+====================================================================
+1) WHAT WAS IMPLEMENTED IN CODE (PHASE COVERAGE)
+====================================================================
+
+PHASE 1 (baseline portability + gating): COMPLETED
+- Added `babappa baseline doctor`:
+  - checks docker/singularity presence
+  - runs toy baseline for codeml/busted/relax
+  - requires parseable p-value to pass
+  - exits nonzero on failure
+- Baseline adapters switched to container-first auto backend policy.
+- Added timeout controls in adapters and CLI.
+- `babappa benchmark run` now refuses baseline comparisons when baseline doctor fails unless `--allow-baseline-fail` is explicitly set.
+- Baseline doctor report/manifest are emitted inside benchmark packs.
+
+PHASE 2 (null calibration paper preset): IMPLEMENTED + EXECUTED (FAST evidence run)
+- Added preset `simulation_null_paper`.
+- Added outputs for size deviation + discreteness diagnostics.
+- Added CI columns in calibration/power summaries.
+
+PHASE 3 (power surfaces + regime maps): IMPLEMENTED + EXECUTED (FAST evidence run)
+- Added preset `simulation_power_paper`.
+- Expanded family grids toward roadmap:
+  - A omega includes 1.05
+  - C includes pi_fg 0.005 and omega_fg 10
+- Added regime map table and baseline fairness tables.
+- Added explicit failure-rate accounting by method/status/reason.
+
+PHASE 4 (ortholog real-data track): IMPLEMENTED + EXECUTED (FAST run, synthetic fallback in this env)
+- Added preset `ORTHOMAM_SMALL8_PAPER`.
+- Doctor integrated; manifests/checksums/rebuild preserved.
+- Overlap/scatter/enrichment/failure outputs generated.
+
+PHASE 5 (viral HIV/SARS tracks): IMPLEMENTED + EXECUTED (FAST run, synthetic fallback in this env)
+- Added presets `HIV_ENV_B_PAPER`, `SARS_2020_PAPER`.
+- Ran both tracks and generated full packs with QC manifests.
+
+PHASE 6 (nature-level usability/polish): PARTIALLY COMPLETED
+- Added `babappa explain` command (interpretability PDF + JSON):
+  - site-energy histogram vs null
+  - dispersion-vs-null panel
+  - cumulative contribution profile
+  - windowed energy profile
+- Added `babappa reproduce --paper all` orchestration command.
+- Added baseline Dockerfiles and container docs.
+
+====================================================================
+2) NEW/UPDATED USER-FACING COMMANDS
+====================================================================
+- `babappa baseline doctor --methods codeml,busted,relax --timeout-sec 5`
+- `babappa explain --model ... --alignment ... --out explain_report.pdf --json-out explain_report.json`
+- `babappa reproduce --paper all --outdir ... [--allow-baseline-fail] [--fast]`
+- `babappa benchmark run --track ... --preset ... --allow-baseline-fail`
+
+New paper presets supported:
+- simulation: `simulation_null_paper`, `simulation_power_paper`
+- ortholog: `ORTHOMAM_SMALL8_PAPER`
+- viral: `HIV_ENV_B_PAPER`, `SARS_2020_PAPER`
+
+====================================================================
+3) EXECUTED RESULTS (THIS MACHINE)
+====================================================================
+Consolidated run folder:
+- `/tmp/babappa_evidence/reproduce_fast`
+
+Consolidated summary:
+- `/tmp/babappa_evidence/reproduce_fast/reproduce_summary.json`
+
+Track status in summary:
+- simulation_null_paper: OK
+- simulation_power_paper: OK
+- ortholog_small8_paper: OK
+- viral_hiv_paper: OK
+- viral_sars_paper: OK
+- n_fail = 0 (for orchestrated FAST run)
+
+Per-track full pack structure verified for all 5 tracks:
+- raw/
+- tables/
+- figures/
+- manifests/
+- logs/
+- scripts/rebuild_all.sh
+- report/report.pdf
+- checksums.txt
+
+Rebuild scripts verified:
+- all 5 track packs rebuild successfully from raw.
+
+Example interpretability output:
+- `/tmp/babappa_evidence/explain_demo/explain_report.pdf`
+- `/tmp/babappa_evidence/explain_demo/explain_report.json`
+
+====================================================================
+4) TEST/QUALITY STATUS
+====================================================================
+- Full test suite passes on current tree.
+- Collected tests: 29
+- Result: all passed.
+
+====================================================================
+5) ENVIRONMENT LIMITATIONS THAT PREVENT TRUE “FULL EMPIRICAL VALIDATION”
+====================================================================
+A) Baselines unavailable here
+- docker: not installed
+- singularity: not installed
+- local codeml binary: unavailable
+- local hyphy binary: unavailable
+
+Observed baseline doctor result in this environment:
+- FAIL (expected), with explicit reasons recorded in pack logs/manifests.
+
+B) Real curated datasets not present in this environment
+- OrthoMaM curated dataset not loaded
+- LANL HIV curated dataset not loaded
+- SARS real dataset not loaded
+
+Observed consequence:
+- real-data paper presets ran with `synthetic_fallback=true`.
+
+C) Full-scale paper compute not executed here
+- Manuscript-scale grids (e.g., 2,000–10,000 genes/cell and large N across full cells) are computationally heavy and not executed in this session.
+- FAST runs are architecture/evidence-pipeline validation, not final publication statistics.
+
+====================================================================
+6) WHAT IS STILL REQUIRED TO CLAIM “FULLY EMPIRICALLY VALIDATED”
+====================================================================
+You need ONE final provisioned machine/run environment and then execute:
+
+1) Install runtime stack
+- Docker (or Singularity)
+- Confirm `babappa baseline doctor` passes with real p-values for codeml/busted/relax.
+
+2) Load real datasets (no synthetic fallback)
+- OrthoMaM curated ortholog dataset.json
+- HIV dataset.json with recombination policy enforced
+- SARS dataset.json with QC filters
+
+3) Run paper-scale presets (non-FAST)
+- simulation_null_paper
+- simulation_power_paper
+- ORTHOMAM_SMALL8_PAPER (and medium/expanded if desired)
+- HIV_ENV_B_PAPER
+- SARS_2020_PAPER
+
+4) Regenerate all figures/tables via rebuild scripts
+- verify checksums and manifests
+- ensure manuscript claims map directly to generated outputs
+
+Only after steps 1–4 can the claim “fully empirically validated for publication” be made without qualification.
+
+====================================================================
+7) COPY-PASTE BOTTOM LINE
+====================================================================
+BABAPPA is now a strong, reproducible, publication-oriented software platform with integrated multi-track benchmarking, baseline doctor/gating, interpretability (`explain`), and paper orchestration (`reproduce`). All implemented workflows are tested and runnable. In this machine, complete empirical validation is still blocked by missing baseline runtime backends (Docker/Singularity/codeml/HyPhy) and absence of curated real datasets; therefore current evidence packs are FAST/pilot and synthetic-fallback for real-data tracks, not yet final claim-grade biology evidence.
+

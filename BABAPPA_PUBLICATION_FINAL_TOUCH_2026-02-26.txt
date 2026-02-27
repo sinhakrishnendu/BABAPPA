@@ -1,0 +1,103 @@
+BABAPPA publication hardening status
+Date: 2026-02-26
+Workspace: /Users/krishnendu/Desktop/babappa
+
+What was completed in this pass
+1) HyPhy-only benchmark defaults and narratives (codeml removed from benchmark flow)
+- Updated benchmark orchestrator to remove codeml-specific overlap/scatter/window logic.
+- Simulation baseline default methods are now HyPhy-only (BUSTED + optional RELAX).
+- Real-track overlap/scatter plots are now method-dynamic and HyPhy-oriented.
+
+2) Publication mode implemented and enforced
+- Added --mode {pilot,publication} to:
+  - babappa benchmark run
+  - babappa benchmark realdata
+  - babappa reproduce
+  - python -m babappa.benchmark.orchestrator run
+- In publication mode, run now fails early if:
+  - --allow-baseline-fail is set
+  - --allow-qc-fail is set (realdata)
+  - plots are disabled (--no-plots / --results-only)
+  - N < 999 for real-data runs
+  - simulation preset has N-grid below 999
+  - required baselines/RELAX are disabled for presets that require them
+- Publication mode forces real-data runs to require real dataset inputs (no synthetic fallback).
+
+3) Frozen-model immutability checks added
+- Training manifest now records:
+  - model_hash
+  - saved_model_hash
+  - model_hash_match
+- Publication mode now fails if serialized frozen model hash differs from trained model hash.
+- Publication mode also fails if analyzed BABAPPA rows contain a model_hash different from the frozen model hash.
+
+4) Baseline doctor (HyPhy convenience)
+- Added CLI flag: babappa baseline doctor --hyphy
+- This runs HyPhy checks for busted,relax.
+
+5) Reproduce command publication plan hardened
+- Added publication-mode fixed run list:
+  - simulation_null_full
+  - simulation_power_full
+  - ortholog_small8_full
+  - viral_hiv_env_b_full
+  - viral_sars_2020_full
+- In publication mode, reproduce now forbids:
+  - --allow-baseline-fail
+  - --fast
+  - --no-plots
+
+6) README updated to reflect HyPhy-first publication flow
+- Baseline examples now use busted and --hyphy doctor.
+- Reproduce example updated to --mode publication.
+
+Validation executed
+A) Syntax
+- python -m compileall passed for:
+  - src/babappa/benchmark/orchestrator.py
+  - src/babappa/cli.py
+  - src/babappa/baseline.py
+
+B) Tests
+- pytest -q tests/test_cli.py tests/test_benchmark_orchestrator.py -> PASS
+- pytest -q tests/test_baseline_adapters.py -> PASS
+
+C) Live HyPhy doctor checks
+- baseline doctor --hyphy --container local --timeout 5 -> FAIL (RELAX timeout)
+- baseline doctor --hyphy --container local --timeout 120 -> PASS
+  - BUSTED p-value parsed
+  - RELAX p-value parsed
+
+Files changed
+- /Users/krishnendu/Desktop/babappa/src/babappa/benchmark/orchestrator.py
+- /Users/krishnendu/Desktop/babappa/src/babappa/cli.py
+- /Users/krishnendu/Desktop/babappa/src/babappa/baseline.py
+- /Users/krishnendu/Desktop/babappa/tests/test_cli.py
+- /Users/krishnendu/Desktop/babappa/README.md
+
+Current publication gap (what is still needed for final empirical paper packs)
+1) Full real-data benchmark runs have not yet been completed end-to-end in this pass.
+2) HIV publication run still requires curated alignment import with alignment_id.
+3) SARS publication run still depends on stable curated fetch/import execution at benchmark scale.
+4) The final five-pack publication reproduce output is therefore not yet generated in this pass.
+
+Practical next run commands
+1) HyPhy backend check (recommended timeout):
+   babappa baseline doctor --hyphy --container local --timeout 120
+2) Publication ortholog:
+   babappa benchmark realdata --mode publication --preset ortholog_small8_full --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication
+3) Publication HIV (after import):
+   babappa benchmark realdata --mode publication --preset hiv_env_b_full --data <hiv_dataset_dir_or_json> --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/hiv_env_b_publication
+4) Publication SARS:
+   babappa benchmark realdata --mode publication --preset sars_2020_full --data <sars_dataset_dir_or_json> --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/sars_2020_publication
+5) Publication one-command run:
+   babappa reproduce --mode publication --outdir /Users/krishnendu/Desktop/babappa/paper_runs --seed 1 --baseline-container local --baseline-timeout 1800 --dataset-json-ortholog /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final/dataset.json --dataset-json-viral-hiv <hiv_dataset_json> --dataset-json-viral-sars <sars_dataset_json>
+
+Quick execution note after code hardening
+- Ran practical fast ortholog attempt:
+  BABAPPA_BENCHMARK_FAST=1 babappa benchmark realdata --mode pilot --preset ortholog_small8_full --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final --N 99 --seed 1 --results-only --baseline-container local --baseline-timeout 180 --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_fast_complete
+- Result: command exited with acceptance-gate error
+  ortholog_small8_full requires >=300 analyzed genes; got 6
+- Partial tangible outputs were generated in:
+  /Users/krishnendu/Desktop/babappa/results/ortholog_small8_fast_complete
+  (raw/tables/manifests/logs/scripts present; final pack completion blocked by preset acceptance gate)

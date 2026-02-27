@@ -1,0 +1,31 @@
+BABAPPA LIVE EXECUTION STATUS
+Generated: Thu Feb 26 2026
+
+ORTHOLOG PUBLICATION RUN
+- Status: ACTIVE
+- PID: 98994
+- Elapsed snapshot: 21:24
+- Worker subprocesses active snapshot: 8
+- Outdir: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v8
+- Current file count snapshot (depth<=2): 13
+- Drop audit summary: total_candidates=324, kept=324
+- Final outputs pending: raw/babappa_results.tsv, raw/baseline_all.tsv, tables/ortholog_results.tsv, benchmark_track_manifest.json, checksums.txt, report/report.pdf
+
+SARS FETCH RUN
+- Status: ACTIVE
+- Fetch PID snapshot: 99216
+- Fetch elapsed snapshot: 03:49
+- datasets summary PID snapshot: 99217
+- datasets summary elapsed snapshot: 03:48
+- Target outdir: /Users/krishnendu/Desktop/babappa/data/sars_2020_real
+
+HYPHY BASELINE HEALTH
+- baseline doctor: PASS (BUSTED + RELAX toy p-values parsed)
+
+HIV DATA STATUS
+- Automated LANL fetch unavailable in current implementation.
+- Required next input for HIV real benchmark: LANL env subtype-B codon alignment FASTA + alignment_id for dataset import.
+
+SPEED NOTE
+- ProcessPool is blocked by sandbox semaphore policy.
+- Implemented subprocess-worker fallback, now using concurrent workers without processpool semaphores.

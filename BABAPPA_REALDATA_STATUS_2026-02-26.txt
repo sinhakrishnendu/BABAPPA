@@ -1,0 +1,68 @@
+BABAPPA REAL-DATA STATUS (HyPhy-only)
+Date: 2026-02-26
+
+DONE
+- codeml removed from real benchmark presets; real runs use HyPhy BUSTED baseline only.
+- HyPhy local binary auto-detection added (.conda_env/bin/hyphy) so doctor/run work without manual env export.
+- baseline doctor default switched to HyPhy-first behavior.
+- Ortholog import hardened for strict QC compatibility:
+  - deterministic taxa-core harmonization
+  - fixed bifurcating positive-length tree
+  - tree/alignment taxa consistency preserved
+- Ortholog real dataset generated:
+  - path: data/orthomam_v12_real_final
+  - n_genes: 324
+  - synthetic_fallback: false
+- Doctor PASS confirmed on ortholog dataset (strict checks).
+- SARS fetcher refactored toward bounded-accession workflow (summary + selected accessions + accession download) to avoid full-package downloads.
+
+CURRENT BLOCKERS
+- Ortholog full benchmark (N=999 and even N=199) is compute-heavy on this machine and takes long before writing full result tables.
+- HIV real benchmark cannot start until a curated Env alignment is imported (LANL/manual import path), because automated LANL fetch is not available in this code path.
+- NCBI Datasets summary/download responsiveness is slow in this environment.
+
+RECOMMENDED NEXT COMMANDS (HyPhy-only)
+1) Ortholog full (real dataset already prepared)
+   ./.venv/bin/python -m babappa.cli benchmark realdata \
+     --preset ortholog_small8_full \
+     --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final \
+     --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy \
+     --N 199 \
+     --seed 1 \
+     --baseline-container local \
+     --baseline-timeout 1800 \
+     --results-only
+
+2) HIV import (required before HIV benchmark)
+   ./.venv/bin/python -m babappa.cli dataset import hiv \
+     --alignment /ABS/PATH/env_subtypeB_codon.fasta \
+     --alignment-id <LANL_ALIGNMENT_ID> \
+     --outdir /Users/krishnendu/Desktop/babappa/data/hiv_env_b_real
+
+3) SARS fetch (bounded pipeline)
+   ./.venv/bin/python -m babappa.cli dataset fetch sarscov2 \
+     --source ncbi \
+     --date-range 2020-01-01:2020-12-31 \
+     --max-samples 800 \
+     --host human \
+     --complete-only \
+     --include-cds \
+     --stratify month,country \
+     --seed 1 \
+     --outdir /Users/krishnendu/Desktop/babappa/data/sars_2020_real
+
+4) SARS benchmark (after fetch/import)
+   ./.venv/bin/python -m babappa.cli benchmark realdata \
+     --preset sars_2020_full \
+     --data /Users/krishnendu/Desktop/babappa/data/sars_2020_real \
+     --outdir /Users/krishnendu/Desktop/babappa/results/sars_2020_full_hyphy \
+     --N 199 \
+     --seed 1 \
+     --baseline-container local \
+     --baseline-timeout 1800 \
+     --results-only
+
+OUTPUT PACK EXPECTATION
+Each successful real benchmark run emits:
+raw/ tables/ figures/ manifests/ logs/ scripts/rebuild_all.sh checksums.txt report/report.pdf
+(With --results-only, plotting workload is reduced.)

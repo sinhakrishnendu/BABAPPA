@@ -1,0 +1,748 @@
+BABAPPA Consolidated Reports
+Generated: 2026-02-26 07:15:01 IST
+Source root: /Users/krishnendu/Desktop/babappa
+Included files: 9
+
+===== FILE: /Users/krishnendu/Desktop/babappa/BABAPPA_REALDATA_STATUS_2026-02-26.txt =====
+BABAPPA REAL-DATA STATUS (HyPhy-only)
+Date: 2026-02-26
+
+DONE
+- codeml removed from real benchmark presets; real runs use HyPhy BUSTED baseline only.
+- HyPhy local binary auto-detection added (.conda_env/bin/hyphy) so doctor/run work without manual env export.
+- baseline doctor default switched to HyPhy-first behavior.
+- Ortholog import hardened for strict QC compatibility:
+  - deterministic taxa-core harmonization
+  - fixed bifurcating positive-length tree
+  - tree/alignment taxa consistency preserved
+- Ortholog real dataset generated:
+  - path: data/orthomam_v12_real_final
+  - n_genes: 324
+  - synthetic_fallback: false
+- Doctor PASS confirmed on ortholog dataset (strict checks).
+- SARS fetcher refactored toward bounded-accession workflow (summary + selected accessions + accession download) to avoid full-package downloads.
+
+CURRENT BLOCKERS
+- Ortholog full benchmark (N=999 and even N=199) is compute-heavy on this machine and takes long before writing full result tables.
+- HIV real benchmark cannot start until a curated Env alignment is imported (LANL/manual import path), because automated LANL fetch is not available in this code path.
+- NCBI Datasets summary/download responsiveness is slow in this environment.
+
+RECOMMENDED NEXT COMMANDS (HyPhy-only)
+1) Ortholog full (real dataset already prepared)
+   ./.venv/bin/python -m babappa.cli benchmark realdata \
+     --preset ortholog_small8_full \
+     --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final \
+     --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy \
+     --N 199 \
+     --seed 1 \
+     --baseline-container local \
+     --baseline-timeout 1800 \
+     --results-only
+
+2) HIV import (required before HIV benchmark)
+   ./.venv/bin/python -m babappa.cli dataset import hiv \
+     --alignment /ABS/PATH/env_subtypeB_codon.fasta \
+     --alignment-id <LANL_ALIGNMENT_ID> \
+     --outdir /Users/krishnendu/Desktop/babappa/data/hiv_env_b_real
+
+3) SARS fetch (bounded pipeline)
+   ./.venv/bin/python -m babappa.cli dataset fetch sarscov2 \
+     --source ncbi \
+     --date-range 2020-01-01:2020-12-31 \
+     --max-samples 800 \
+     --host human \
+     --complete-only \
+     --include-cds \
+     --stratify month,country \
+     --seed 1 \
+     --outdir /Users/krishnendu/Desktop/babappa/data/sars_2020_real
+
+4) SARS benchmark (after fetch/import)
+   ./.venv/bin/python -m babappa.cli benchmark realdata \
+     --preset sars_2020_full \
+     --data /Users/krishnendu/Desktop/babappa/data/sars_2020_real \
+     --outdir /Users/krishnendu/Desktop/babappa/results/sars_2020_full_hyphy \
+     --N 199 \
+     --seed 1 \
+     --baseline-container local \
+     --baseline-timeout 1800 \
+     --results-only
+
+OUTPUT PACK EXPECTATION
+Each successful real benchmark run emits:
+raw/ tables/ figures/ manifests/ logs/ scripts/rebuild_all.sh checksums.txt report/report.pdf
+(With --results-only, plotting workload is reduced.)
+
+===== FILE: /Users/krishnendu/Desktop/babappa/BABAPPA_full_phase_execution_status.txt =====
+BABAPPA FULL-PHASE EXECUTION STATUS (Generated: 2026-02-25)
+
+====================================================================
+0) DIRECT ANSWER
+====================================================================
+I executed all roadmap phases that are implementable inside this machine and produced runnable, reproducible benchmark artifacts plus new publication-facing commands. 
+
+However, this environment does NOT have Docker/Singularity/codeml/HyPhy binaries and does NOT contain curated OrthoMaM/HIV/SARS datasets, so full evidence-complete empirical validation (real baseline p-values + real-data biological claims) cannot be truthfully claimed yet.
+
+This report separates:
+- COMPLETED NOW (code + runs executed)
+- BLOCKED BY ENVIRONMENT (must be run on a provisioned machine)
+
+====================================================================
+1) WHAT WAS IMPLEMENTED IN CODE (PHASE COVERAGE)
+====================================================================
+
+PHASE 1 (baseline portability + gating): COMPLETED
+- Added `babappa baseline doctor`:
+  - checks docker/singularity presence
+  - runs toy baseline for codeml/busted/relax
+  - requires parseable p-value to pass
+  - exits nonzero on failure
+- Baseline adapters switched to container-first auto backend policy.
+- Added timeout controls in adapters and CLI.
+- `babappa benchmark run` now refuses baseline comparisons when baseline doctor fails unless `--allow-baseline-fail` is explicitly set.
+- Baseline doctor report/manifest are emitted inside benchmark packs.
+
+PHASE 2 (null calibration paper preset): IMPLEMENTED + EXECUTED (FAST evidence run)
+- Added preset `simulation_null_paper`.
+- Added outputs for size deviation + discreteness diagnostics.
+- Added CI columns in calibration/power summaries.
+
+PHASE 3 (power surfaces + regime maps): IMPLEMENTED + EXECUTED (FAST evidence run)
+- Added preset `simulation_power_paper`.
+- Expanded family grids toward roadmap:
+  - A omega includes 1.05
+  - C includes pi_fg 0.005 and omega_fg 10
+- Added regime map table and baseline fairness tables.
+- Added explicit failure-rate accounting by method/status/reason.
+
+PHASE 4 (ortholog real-data track): IMPLEMENTED + EXECUTED (FAST run, synthetic fallback in this env)
+- Added preset `ORTHOMAM_SMALL8_PAPER`.
+- Doctor integrated; manifests/checksums/rebuild preserved.
+- Overlap/scatter/enrichment/failure outputs generated.
+
+PHASE 5 (viral HIV/SARS tracks): IMPLEMENTED + EXECUTED (FAST run, synthetic fallback in this env)
+- Added presets `HIV_ENV_B_PAPER`, `SARS_2020_PAPER`.
+- Ran both tracks and generated full packs with QC manifests.
+
+PHASE 6 (nature-level usability/polish): PARTIALLY COMPLETED
+- Added `babappa explain` command (interpretability PDF + JSON):
+  - site-energy histogram vs null
+  - dispersion-vs-null panel
+  - cumulative contribution profile
+  - windowed energy profile
+- Added `babappa reproduce --paper all` orchestration command.
+- Added baseline Dockerfiles and container docs.
+
+====================================================================
+2) NEW/UPDATED USER-FACING COMMANDS
+====================================================================
+- `babappa baseline doctor --methods codeml,busted,relax --timeout-sec 5`
+- `babappa explain --model ... --alignment ... --out explain_report.pdf --json-out explain_report.json`
+- `babappa reproduce --paper all --outdir ... [--allow-baseline-fail] [--fast]`
+- `babappa benchmark run --track ... --preset ... --allow-baseline-fail`
+
+New paper presets supported:
+- simulation: `simulation_null_paper`, `simulation_power_paper`
+- ortholog: `ORTHOMAM_SMALL8_PAPER`
+- viral: `HIV_ENV_B_PAPER`, `SARS_2020_PAPER`
+
+====================================================================
+3) EXECUTED RESULTS (THIS MACHINE)
+====================================================================
+Consolidated run folder:
+- `/tmp/babappa_evidence/reproduce_fast`
+
+Consolidated summary:
+- `/tmp/babappa_evidence/reproduce_fast/reproduce_summary.json`
+
+Track status in summary:
+- simulation_null_paper: OK
+- simulation_power_paper: OK
+- ortholog_small8_paper: OK
+- viral_hiv_paper: OK
+- viral_sars_paper: OK
+- n_fail = 0 (for orchestrated FAST run)
+
+Per-track full pack structure verified for all 5 tracks:
+- raw/
+- tables/
+- figures/
+- manifests/
+- logs/
+- scripts/rebuild_all.sh
+- report/report.pdf
+- checksums.txt
+
+Rebuild scripts verified:
+- all 5 track packs rebuild successfully from raw.
+
+Example interpretability output:
+- `/tmp/babappa_evidence/explain_demo/explain_report.pdf`
+- `/tmp/babappa_evidence/explain_demo/explain_report.json`
+
+====================================================================
+4) TEST/QUALITY STATUS
+====================================================================
+- Full test suite passes on current tree.
+- Collected tests: 29
+- Result: all passed.
+
+====================================================================
+5) ENVIRONMENT LIMITATIONS THAT PREVENT TRUE “FULL EMPIRICAL VALIDATION”
+====================================================================
+A) Baselines unavailable here
+- docker: not installed
+- singularity: not installed
+- local codeml binary: unavailable
+- local hyphy binary: unavailable
+
+Observed baseline doctor result in this environment:
+- FAIL (expected), with explicit reasons recorded in pack logs/manifests.
+
+B) Real curated datasets not present in this environment
+- OrthoMaM curated dataset not loaded
+- LANL HIV curated dataset not loaded
+- SARS real dataset not loaded
+
+Observed consequence:
+- real-data paper presets ran with `synthetic_fallback=true`.
+
+C) Full-scale paper compute not executed here
+- Manuscript-scale grids (e.g., 2,000–10,000 genes/cell and large N across full cells) are computationally heavy and not executed in this session.
+- FAST runs are architecture/evidence-pipeline validation, not final publication statistics.
+
+====================================================================
+6) WHAT IS STILL REQUIRED TO CLAIM “FULLY EMPIRICALLY VALIDATED”
+====================================================================
+You need ONE final provisioned machine/run environment and then execute:
+
+1) Install runtime stack
+- Docker (or Singularity)
+- Confirm `babappa baseline doctor` passes with real p-values for codeml/busted/relax.
+
+2) Load real datasets (no synthetic fallback)
+- OrthoMaM curated ortholog dataset.json
+- HIV dataset.json with recombination policy enforced
+- SARS dataset.json with QC filters
+
+3) Run paper-scale presets (non-FAST)
+- simulation_null_paper
+- simulation_power_paper
+- ORTHOMAM_SMALL8_PAPER (and medium/expanded if desired)
+- HIV_ENV_B_PAPER
+- SARS_2020_PAPER
+
+4) Regenerate all figures/tables via rebuild scripts
+- verify checksums and manifests
+- ensure manuscript claims map directly to generated outputs
+
+Only after steps 1–4 can the claim “fully empirically validated for publication” be made without qualification.
+
+====================================================================
+7) COPY-PASTE BOTTOM LINE
+====================================================================
+BABAPPA is now a strong, reproducible, publication-oriented software platform with integrated multi-track benchmarking, baseline doctor/gating, interpretability (`explain`), and paper orchestration (`reproduce`). All implemented workflows are tested and runnable. In this machine, complete empirical validation is still blocked by missing baseline runtime backends (Docker/Singularity/codeml/HyPhy) and absence of curated real datasets; therefore current evidence packs are FAST/pilot and synthetic-fallback for real-data tracks, not yet final claim-grade biology evidence.
+
+
+===== FILE: /Users/krishnendu/Desktop/babappa/BABAPPA_publishable_status_report.txt =====
+BABAPPA PUBLISHABLE STATUS REPORT (Generated: 2026-02-25)
+
+====================================================================
+A) EXECUTIVE STATUS
+====================================================================
+Current status: architecture-complete and test-green for the integrated benchmark framework, but not yet full-scale publication-complete for PNAS.
+
+What is production-ready now:
+- Unified benchmark orchestrator with 3 tracks: simulation, ortholog, viral.
+- Standardized results-pack outputs with manifests/checksums/rebuild script.
+- Doctor + guardrails + frozen-energy validity path enforced.
+- CI-relevant statistical/engineering tests present and passing.
+- Real baseline adapters wired with explicit FAIL logging (no silent drops).
+
+What is NOT yet full-scale publishable:
+- Real codeml/HyPhy execution environment unavailable on this machine (backends missing), so baseline p-values are not yet computed here.
+- Large full grids (e.g., 10k null genes/cell, high-N full power maps) not yet run end-to-end in this environment.
+- Ortholog/viral runs below used synthetic fallback datasets (not final curated OrthoMaM/HIV/SARS datasets).
+- Selectome enrichment not computed yet (no mapping provided in dataset input).
+
+====================================================================
+B) COMMANDS SUCCESSFULLY EXECUTED (INTEGRATED ORCHESTRATOR)
+====================================================================
+All commands completed and produced full pack structures:
+
+1) Simulation null:
+   babappa benchmark run --track simulation --preset null_full --outdir /tmp/babappa_integrated/simulation_null_full --seed 42 --include-baselines
+
+2) Simulation power:
+   babappa benchmark run --track simulation --preset power_full --outdir /tmp/babappa_integrated/simulation_power_full --seed 42 --include-baselines --include-relax
+
+3) Ortholog:
+   babappa benchmark run --track ortholog --preset ORTHOMAM_SMALL8 --outdir /tmp/babappa_integrated/ortholog_small8_v2 --seed 42 --include-baselines
+
+4) Viral (HIV):
+   babappa benchmark run --track viral --preset HIV_ENV_B --outdir /tmp/babappa_integrated/viral_hiv_env_b_v2 --seed 42 --include-baselines --include-relax
+
+Rebuild verified for all packs:
+- scripts/rebuild_all.sh runs successfully for each pack.
+
+====================================================================
+C) PUBLISHABLE ARTIFACTS PRODUCED NOW (FILES)
+====================================================================
+Simulation null pack:
+- /tmp/babappa_integrated/simulation_null_full/figures/F1_null_calibration.pdf
+- /tmp/babappa_integrated/simulation_null_full/figures/F2_power_regime_map.pdf
+- /tmp/babappa_integrated/simulation_null_full/figures/S_dependence_calibration.pdf
+- /tmp/babappa_integrated/simulation_null_full/tables/T1_null_calibration.tsv
+- /tmp/babappa_integrated/simulation_null_full/tables/T2_power_grid.tsv
+- /tmp/babappa_integrated/simulation_null_full/tables/T6_failure_rates.tsv
+- /tmp/babappa_integrated/simulation_null_full/manifests/benchmark_track_manifest.json
+- /tmp/babappa_integrated/simulation_null_full/checksums.txt
+
+Simulation power pack:
+- /tmp/babappa_integrated/simulation_power_full/figures/F2_power_regime_map.pdf
+- /tmp/babappa_integrated/simulation_power_full/figures/power_heatmap.pdf
+- /tmp/babappa_integrated/simulation_power_full/figures/runtime_simulation.pdf
+- /tmp/babappa_integrated/simulation_power_full/tables/T2_power_grid.tsv
+- /tmp/babappa_integrated/simulation_power_full/tables/T6_failure_rates.tsv
+- /tmp/babappa_integrated/simulation_power_full/manifests/benchmark_track_manifest.json
+- /tmp/babappa_integrated/simulation_power_full/checksums.txt
+
+Ortholog pack (synthetic fallback in this run):
+- /tmp/babappa_integrated/ortholog_small8_v2/figures/F3_ortholog_overlap_upset.pdf
+- /tmp/babappa_integrated/ortholog_small8_v2/figures/F3_scatter_babappa_vs_codeml.pdf
+- /tmp/babappa_integrated/ortholog_small8_v2/figures/F3_scatter_babappa_vs_busted.pdf
+- /tmp/babappa_integrated/ortholog_small8_v2/figures/F4_selectome_enrichment.pdf
+- /tmp/babappa_integrated/ortholog_small8_v2/tables/T3_ortholog_discovery.tsv
+- /tmp/babappa_integrated/ortholog_small8_v2/tables/T4_enrichment.tsv
+- /tmp/babappa_integrated/ortholog_small8_v2/tables/T6_failure_rates.tsv
+- /tmp/babappa_integrated/ortholog_small8_v2/manifests/benchmark_track_manifest.json
+- /tmp/babappa_integrated/ortholog_small8_v2/checksums.txt
+
+Viral HIV pack (synthetic fallback in this run):
+- /tmp/babappa_integrated/viral_hiv_env_b_v2/figures/F5_hiv_stress_test.pdf
+- /tmp/babappa_integrated/viral_hiv_env_b_v2/figures/runtime_viral.pdf
+- /tmp/babappa_integrated/viral_hiv_env_b_v2/tables/T5_viral_summary.tsv
+- /tmp/babappa_integrated/viral_hiv_env_b_v2/tables/T6_failure_rates.tsv
+- /tmp/babappa_integrated/viral_hiv_env_b_v2/manifests/benchmark_track_manifest.json
+- /tmp/babappa_integrated/viral_hiv_env_b_v2/checksums.txt
+
+====================================================================
+D) KEY NUMERIC RESULTS FROM CURRENT RUNS (FAST MODE)
+====================================================================
+IMPORTANT: values below are from BABAPPA_BENCHMARK_FAST=1 pilot runs for architecture validation, not final manuscript-scale estimates.
+
+Simulation null_full:
+- null_rows=3, power_rows=0, runtime_rows=3
+- runtime_total_sec=31.7975
+- T1 empirical size (alpha 0.1/0.05/0.01/0.001): 0.0 for all levels in this tiny pilot sample (n_genes=3)
+
+Dependence sensitivity (from simulation null pack):
+- matched_mosaic_calibrator: mean_p=0.4575, frac_p<0.05=0.0
+- mismatched_calibrator: mean_p=0.05, frac_p<0.05=0.5
+Interpretation: expected sensitivity to mismatch is visible; matched calibration appears better-behaved.
+
+Simulation power_full:
+- power_rows=246, runtime_rows=228
+- runtime_total_sec=141.5390
+- BABAPPA power_alpha_0.05 in this tiny pilot:
+  - Family A distributed weak selection: 0.0
+  - Family B constraint shift: 0.0556
+  - Family C episodic surrogate: 0.0
+  - Family D misspecification stress: 0.125
+- Baseline status table records FAIL rows (not dropped):
+  - busted FAIL (hyphy backend unavailable)
+  - codeml branch/site FAIL (codeml backend unavailable)
+  - relax FAIL (hyphy backend unavailable)
+
+Ortholog ORTHOMAM_SMALL8 (v2):
+- n_genes=8, n_babappa_rows=8, n_baseline_rows=24
+- doctor_failures=0, doctor_warnings=1, runtime_total_sec=32.4844
+- synthetic_fallback=true
+- discoveries in this pilot: BABAPPA n_sig_p<0.05=0, q<0.1=0
+- Selectome enrichment: not computed (no mapping provided)
+
+Viral HIV_ENV_B (v2):
+- n_genes=10, n_babappa_rows=10, n_baseline_rows=40
+- doctor_failures=0, doctor_warnings=1, runtime_total_sec=85.3553
+- synthetic_fallback=true
+- BABAPPA n_sig_p<0.05=1, q<0.1=0
+
+====================================================================
+E) SOFTWARE/ENGINEERING ACHIEVEMENTS COMPLETED
+====================================================================
+1) CLI and architecture
+- Implemented benchmark subcommands:
+  - babappa benchmark run
+  - babappa benchmark rebuild
+- Legacy benchmark path preserved.
+
+2) Standardized results-pack contract
+- Every run writes raw/tables/figures/manifests/logs/scripts/report/checksums.
+- Rebuild script deterministic path validated.
+
+3) Statistical guardrails and validity path
+- Frozen-energy contract retained.
+- Rank-based add-one Monte Carlo p-values retained.
+- No retraining during calibration preserved.
+
+4) Doctor/QC quality
+- Doctor integrated into real-data tracks.
+- Fixed FASTA-header false-positive bug in codon alphabet validation.
+- Synthetic fallback tree generation fixed to bifurcating form so doctor PASS is possible.
+
+5) Baselines integration behavior
+- codeml, busted, relax adapters integrated in pipeline.
+- Baseline failures captured with method/status/reason; no silent gene drop.
+
+6) Plots/tables generation
+- Canonical plotting module added for F1-F6/T1-T6 style artifacts.
+
+7) Tests
+- Full pytest green on current code.
+- Collected tests: 25.
+
+====================================================================
+F) WHAT IS STILL NOT ACHIEVED FOR FULL-SCALE BIOLOGIST DEPLOYMENT
+====================================================================
+These are the blocking items before claiming full PNAS-grade deployment:
+
+1) Real baseline execution stack
+- Install and validate runnable codeml + HyPhy backends (local or pinned containers).
+- Demonstrate parsed real baseline p-values on nontrivial gene sets (not FAIL placeholders).
+
+2) Full-scale benchmark volume
+- Run null calibration at manuscript scale (target up to 10,000 genes/cell, broader L/taxa/N grids).
+- Run full power grids across A/B/C/D alternatives with sufficient replicate counts for stable intervals.
+
+3) Real curated datasets (no synthetic fallback)
+- Ortholog: run OrthoMaM presets with real curated CDS alignments and accepted tree inputs.
+- Viral: run HIV and SARS presets with real filtered datasets and documented provenance/licensing.
+
+4) External enrichment evidence
+- Provide Selectome mapping file and run enrichment statistics on real ortholog discoveries.
+
+5) Baseline fairness + failure audit
+- Track convergence/failure rates per method on real inputs and include reasons in T6.
+- Confirm branch/foreground definitions are biologically standardized and documented.
+
+6) Reproducibility hardening for publication package
+- Pin exact container tags/digests for baselines.
+- Export environment lockfiles and dependency pinning for full reruns on independent machines.
+
+7) PyPI release completion
+- Package exists in repo, but final public deployment needs:
+  - finalized version bump + release notes,
+  - twine publish workflow,
+  - post-install smoke tests from clean environment,
+  - explicit biologist-facing examples tested from pip-installed binary.
+
+8) Biologist usability at scale
+- Validate doctor + cookbook UX on real user datasets end-to-end.
+- Add practical troubleshooting examples from real failures (recombination, missing taxa, stop codons, composition bias).
+
+====================================================================
+G) MINIMUM FINAL STEPS TO REACH FULL PNAS-READY CLAIM
+====================================================================
+1) Enable real baseline backends (codeml/hyphy) and rerun simulation_power_full + real-data packs.
+2) Replace synthetic fallback with real OrthoMaM and HIV/SARS dataset.json inputs.
+3) Execute full-size null/power grids and regenerate F1-F6, T1-T6 from full raw outputs.
+4) Compute Selectome enrichment on mapped real ortholog set.
+5) Freeze release candidate and publish PyPI package with reproducibility instructions.
+
+====================================================================
+H) CURRENT BOTTOM LINE (COPY-PASTE)
+====================================================================
+BABAPPA now has a complete integrated benchmarking architecture (simulation + ortholog + viral), reproducible results-pack generation, rebuild/checksum support, and a green 25-test suite. The full workflow runs end-to-end and produces paper-style figures/tables/manifests. However, this machine currently lacks runnable codeml/HyPhy backends and the executed ortholog/viral demonstrations used synthetic fallback datasets. Therefore, the platform is engineering-ready and methods-ready, but not yet evidence-complete for full PNAS claims until real baselines and full-scale real-data benchmarks are executed.
+
+
+===== FILE: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy/logs/baseline_doctor_report.txt =====
+Docker available: False
+Singularity available: False
+Toy baseline timeout (sec): 30
+
+[PASS] busted: parsed valid p-value on toy dataset | backend_hint=local | version=hyphy-2.5.63 | image=stevenweaver/hyphy:2.5.63 | digest=NA | p=2.57712e-08 | runtime_sec=6.2962
+
+Baseline doctor summary: PASS
+
+===== FILE: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy/logs/doctor_report.txt =====
+[PASS] Alignment codon alphabet: All symbols are valid.
+[PASS] Alignment length divisibility: All gene lengths divisible by 3.
+[PASS] Internal stop codons: No internal stop codons detected.
+[FAIL] Taxa policy: Genes do not share identical taxa labels under strict policy.
+  fix: Remove inconsistent genes or run with --taxa-policy intersection.
+[PASS] Tree branch lengths: All branch lengths are positive.
+[FAIL] Tree polytomies: Found 1 polytomous internal node(s).
+  fix: Resolve tree to bifurcating form or run with --allow-polytomies.
+[FAIL] Tree/alignment taxa consistency: 10000_NT_AL.fasta.fasta: missing_from_gene=['Artibeus_jamaicensis', 'Bison_bison_bison', 'Carlito_syrichta', 'Castor_canadensis', 'Chrysochloris_asiatica'] extra_in_gene=[]; 10004_NT_AL.fasta.fasta: missing_from_gene=['Echinops_telfairi', 'Myotis_davidii', 'Myotis_myotis', 'Ornithorhynchus_anatinus', 'Panthera_pardus'] extra_in_gene=[]; 10005_NT_AL.fasta.fasta: missing_from_gene=['Cricetulus_griseus', 'Heterocephalus_glaber', 'Hylobates_moloch', 'Manis_javanica'] extra_in_gene=[]; 10006_NT_AL.fasta.fasta: missing_from_gene=['Callorhinus_ursinus', 'Eumetopias_jubatus', 'Lemur_catta', 'Lipotes_vexillifer', 'Mirounga_leonina'] extra_in_gene=[]; 100101267_NT_AL.fasta.fasta: missing_from_gene=['Ailuropoda_melanoleuca', 'Aotus_nancymaae', 'Artibeus_jamaicensis', 'Arvicanthis_niloticus', 'Bos_indicus'] extra_in_gene=[]
+  fix: Ensure tree and gene alignments contain consistent taxa labels.
+[PASS] Neutral model omega: omega=1 confirmed.
+[PASS] Neutral model specification: Neutral model JSON is valid (GY94 + kappa + codon frequencies/method).
+[PASS] Phi specification: Phi specification loadable and valid.
+[WARN] Frozen energy model: No existing model file provided; immutability check skipped.
+  fix: Pass --existing-model to verify frozen model hash contract.
+[PASS] Frozen-energy validity contract: Analysis path uses frozen energy; calibration does not retrain the energy model.
+[PASS] Reproducibility seed: Seed specified: 1
+[PASS] Output directory writable: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy
+
+Doctor summary: FAIL
+
+===== FILE: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy_fastpractical/logs/baseline_doctor_report.txt =====
+Docker available: False
+Singularity available: False
+Toy baseline timeout (sec): 30
+
+[PASS] busted: parsed valid p-value on toy dataset | backend_hint=local | version=hyphy-2.5.63 | image=stevenweaver/hyphy:2.5.63 | digest=NA | p=9.86006e-08 | runtime_sec=6.1926
+
+Baseline doctor summary: PASS
+
+===== FILE: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy_fastpractical/logs/doctor_report.txt =====
+[PASS] Alignment codon alphabet: All symbols are valid.
+[PASS] Alignment length divisibility: All gene lengths divisible by 3.
+[PASS] Internal stop codons: No internal stop codons detected.
+[PASS] Taxa policy: All genes share identical taxa labels.
+[PASS] Tree branch lengths: All branch lengths are positive.
+[PASS] Tree polytomies: Tree is bifurcating.
+[PASS] Tree/alignment taxa consistency: Tree taxa match alignments.
+[PASS] Neutral model omega: omega=1 confirmed.
+[PASS] Neutral model specification: Neutral model JSON is valid (GY94 + kappa + codon frequencies/method).
+[PASS] Phi specification: Phi specification loadable and valid.
+[WARN] Frozen energy model: No existing model file provided; immutability check skipped.
+  fix: Pass --existing-model to verify frozen model hash contract.
+[PASS] Frozen-energy validity contract: Analysis path uses frozen energy; calibration does not retrain the energy model.
+[PASS] Reproducibility seed: Seed specified: 1
+[PASS] Output directory writable: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy_fastpractical
+
+Doctor summary: PASS
+
+===== FILE: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy_v2/logs/baseline_doctor_report.txt =====
+Docker available: False
+Singularity available: False
+Toy baseline timeout (sec): 30
+
+[PASS] busted: parsed valid p-value on toy dataset | backend_hint=local | version=hyphy-2.5.63 | image=stevenweaver/hyphy:2.5.63 | digest=NA | p=1.00162e-07 | runtime_sec=3.9846
+
+Baseline doctor summary: PASS
+
+===== FILE: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy_v2/logs/doctor_report.txt =====
+[PASS] Alignment codon alphabet: All symbols are valid.
+[PASS] Alignment length divisibility: All gene lengths divisible by 3.
+[PASS] Internal stop codons: No internal stop codons detected.
+[PASS] Taxa policy: All genes share identical taxa labels.
+[PASS] Tree branch lengths: All branch lengths are positive.
+[PASS] Tree polytomies: Tree is bifurcating.
+[PASS] Tree/alignment taxa consistency: Tree taxa match alignments.
+[PASS] Neutral model omega: omega=1 confirmed.
+[PASS] Neutral model specification: Neutral model JSON is valid (GY94 + kappa + codon frequencies/method).
+[PASS] Phi specification: Phi specification loadable and valid.
+[WARN] Frozen energy model: No existing model file provided; immutability check skipped.
+  fix: Pass --existing-model to verify frozen model hash contract.
+[PASS] Frozen-energy validity contract: Analysis path uses frozen energy; calibration does not retrain the energy model.
+[PASS] Reproducibility seed: Seed specified: 1
+[PASS] Output directory writable: /Users/krishnendu/Desktop/babappa/results/ortholog_small8_full_hyphy_v2
+
+Doctor summary: PASS
+
+
+===== APPENDIX: PUBLICATION FINAL TOUCH (2026-02-26) =====
+
+BABAPPA publication hardening status
+Date: 2026-02-26
+Workspace: /Users/krishnendu/Desktop/babappa
+
+What was completed in this pass
+1) HyPhy-only benchmark defaults and narratives (codeml removed from benchmark flow)
+- Updated benchmark orchestrator to remove codeml-specific overlap/scatter/window logic.
+- Simulation baseline default methods are now HyPhy-only (BUSTED + optional RELAX).
+- Real-track overlap/scatter plots are now method-dynamic and HyPhy-oriented.
+
+2) Publication mode implemented and enforced
+- Added --mode {pilot,publication} to:
+  - babappa benchmark run
+  - babappa benchmark realdata
+  - babappa reproduce
+  - python -m babappa.benchmark.orchestrator run
+- In publication mode, run now fails early if:
+  - --allow-baseline-fail is set
+  - --allow-qc-fail is set (realdata)
+  - plots are disabled (--no-plots / --results-only)
+  - N < 999 for real-data runs
+  - simulation preset has N-grid below 999
+  - required baselines/RELAX are disabled for presets that require them
+- Publication mode forces real-data runs to require real dataset inputs (no synthetic fallback).
+
+3) Frozen-model immutability checks added
+- Training manifest now records:
+  - model_hash
+  - saved_model_hash
+  - model_hash_match
+- Publication mode now fails if serialized frozen model hash differs from trained model hash.
+- Publication mode also fails if analyzed BABAPPA rows contain a model_hash different from the frozen model hash.
+
+4) Baseline doctor (HyPhy convenience)
+- Added CLI flag: babappa baseline doctor --hyphy
+- This runs HyPhy checks for busted,relax.
+
+5) Reproduce command publication plan hardened
+- Added publication-mode fixed run list:
+  - simulation_null_full
+  - simulation_power_full
+  - ortholog_small8_full
+  - viral_hiv_env_b_full
+  - viral_sars_2020_full
+- In publication mode, reproduce now forbids:
+  - --allow-baseline-fail
+  - --fast
+  - --no-plots
+
+6) README updated to reflect HyPhy-first publication flow
+- Baseline examples now use busted and --hyphy doctor.
+- Reproduce example updated to --mode publication.
+
+Validation executed
+A) Syntax
+- python -m compileall passed for:
+  - src/babappa/benchmark/orchestrator.py
+  - src/babappa/cli.py
+  - src/babappa/baseline.py
+
+B) Tests
+- pytest -q tests/test_cli.py tests/test_benchmark_orchestrator.py -> PASS
+- pytest -q tests/test_baseline_adapters.py -> PASS
+
+C) Live HyPhy doctor checks
+- baseline doctor --hyphy --container local --timeout 5 -> FAIL (RELAX timeout)
+- baseline doctor --hyphy --container local --timeout 120 -> PASS
+  - BUSTED p-value parsed
+  - RELAX p-value parsed
+
+Files changed
+- /Users/krishnendu/Desktop/babappa/src/babappa/benchmark/orchestrator.py
+- /Users/krishnendu/Desktop/babappa/src/babappa/cli.py
+- /Users/krishnendu/Desktop/babappa/src/babappa/baseline.py
+- /Users/krishnendu/Desktop/babappa/tests/test_cli.py
+- /Users/krishnendu/Desktop/babappa/README.md
+
+Current publication gap (what is still needed for final empirical paper packs)
+1) Full real-data benchmark runs have not yet been completed end-to-end in this pass.
+2) HIV publication run still requires curated alignment import with alignment_id.
+3) SARS publication run still depends on stable curated fetch/import execution at benchmark scale.
+4) The final five-pack publication reproduce output is therefore not yet generated in this pass.
+
+Practical next run commands
+1) HyPhy backend check (recommended timeout):
+   babappa baseline doctor --hyphy --container local --timeout 120
+2) Publication ortholog:
+   babappa benchmark realdata --mode publication --preset ortholog_small8_full --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication
+3) Publication HIV (after import):
+   babappa benchmark realdata --mode publication --preset hiv_env_b_full --data <hiv_dataset_dir_or_json> --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/hiv_env_b_publication
+4) Publication SARS:
+   babappa benchmark realdata --mode publication --preset sars_2020_full --data <sars_dataset_dir_or_json> --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/sars_2020_publication
+5) Publication one-command run:
+   babappa reproduce --mode publication --outdir /Users/krishnendu/Desktop/babappa/paper_runs --seed 1 --baseline-container local --baseline-timeout 1800 --dataset-json-ortholog /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final/dataset.json --dataset-json-viral-hiv <hiv_dataset_json> --dataset-json-viral-sars <sars_dataset_json>
+
+
+===== APPENDIX UPDATE: FAST ORTHOLOG PILOT ATTEMPT =====
+
+BABAPPA publication hardening status
+Date: 2026-02-26
+Workspace: /Users/krishnendu/Desktop/babappa
+
+What was completed in this pass
+1) HyPhy-only benchmark defaults and narratives (codeml removed from benchmark flow)
+- Updated benchmark orchestrator to remove codeml-specific overlap/scatter/window logic.
+- Simulation baseline default methods are now HyPhy-only (BUSTED + optional RELAX).
+- Real-track overlap/scatter plots are now method-dynamic and HyPhy-oriented.
+
+2) Publication mode implemented and enforced
+- Added --mode {pilot,publication} to:
+  - babappa benchmark run
+  - babappa benchmark realdata
+  - babappa reproduce
+  - python -m babappa.benchmark.orchestrator run
+- In publication mode, run now fails early if:
+  - --allow-baseline-fail is set
+  - --allow-qc-fail is set (realdata)
+  - plots are disabled (--no-plots / --results-only)
+  - N < 999 for real-data runs
+  - simulation preset has N-grid below 999
+  - required baselines/RELAX are disabled for presets that require them
+- Publication mode forces real-data runs to require real dataset inputs (no synthetic fallback).
+
+3) Frozen-model immutability checks added
+- Training manifest now records:
+  - model_hash
+  - saved_model_hash
+  - model_hash_match
+- Publication mode now fails if serialized frozen model hash differs from trained model hash.
+- Publication mode also fails if analyzed BABAPPA rows contain a model_hash different from the frozen model hash.
+
+4) Baseline doctor (HyPhy convenience)
+- Added CLI flag: babappa baseline doctor --hyphy
+- This runs HyPhy checks for busted,relax.
+
+5) Reproduce command publication plan hardened
+- Added publication-mode fixed run list:
+  - simulation_null_full
+  - simulation_power_full
+  - ortholog_small8_full
+  - viral_hiv_env_b_full
+  - viral_sars_2020_full
+- In publication mode, reproduce now forbids:
+  - --allow-baseline-fail
+  - --fast
+  - --no-plots
+
+6) README updated to reflect HyPhy-first publication flow
+- Baseline examples now use busted and --hyphy doctor.
+- Reproduce example updated to --mode publication.
+
+Validation executed
+A) Syntax
+- python -m compileall passed for:
+  - src/babappa/benchmark/orchestrator.py
+  - src/babappa/cli.py
+  - src/babappa/baseline.py
+
+B) Tests
+- pytest -q tests/test_cli.py tests/test_benchmark_orchestrator.py -> PASS
+- pytest -q tests/test_baseline_adapters.py -> PASS
+
+C) Live HyPhy doctor checks
+- baseline doctor --hyphy --container local --timeout 5 -> FAIL (RELAX timeout)
+- baseline doctor --hyphy --container local --timeout 120 -> PASS
+  - BUSTED p-value parsed
+  - RELAX p-value parsed
+
+Files changed
+- /Users/krishnendu/Desktop/babappa/src/babappa/benchmark/orchestrator.py
+- /Users/krishnendu/Desktop/babappa/src/babappa/cli.py
+- /Users/krishnendu/Desktop/babappa/src/babappa/baseline.py
+- /Users/krishnendu/Desktop/babappa/tests/test_cli.py
+- /Users/krishnendu/Desktop/babappa/README.md
+
+Current publication gap (what is still needed for final empirical paper packs)
+1) Full real-data benchmark runs have not yet been completed end-to-end in this pass.
+2) HIV publication run still requires curated alignment import with alignment_id.
+3) SARS publication run still depends on stable curated fetch/import execution at benchmark scale.
+4) The final five-pack publication reproduce output is therefore not yet generated in this pass.
+
+Practical next run commands
+1) HyPhy backend check (recommended timeout):
+   babappa baseline doctor --hyphy --container local --timeout 120
+2) Publication ortholog:
+   babappa benchmark realdata --mode publication --preset ortholog_small8_full --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication
+3) Publication HIV (after import):
+   babappa benchmark realdata --mode publication --preset hiv_env_b_full --data <hiv_dataset_dir_or_json> --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/hiv_env_b_publication
+4) Publication SARS:
+   babappa benchmark realdata --mode publication --preset sars_2020_full --data <sars_dataset_dir_or_json> --N 999 --seed 1 --outdir /Users/krishnendu/Desktop/babappa/results/sars_2020_publication
+5) Publication one-command run:
+   babappa reproduce --mode publication --outdir /Users/krishnendu/Desktop/babappa/paper_runs --seed 1 --baseline-container local --baseline-timeout 1800 --dataset-json-ortholog /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final/dataset.json --dataset-json-viral-hiv <hiv_dataset_json> --dataset-json-viral-sars <sars_dataset_json>
+
+Quick execution note after code hardening
+- Ran practical fast ortholog attempt:
+  BABAPPA_BENCHMARK_FAST=1 babappa benchmark realdata --mode pilot --preset ortholog_small8_full --data /Users/krishnendu/Desktop/babappa/data/orthomam_v12_real_final --N 99 --seed 1 --results-only --baseline-container local --baseline-timeout 180 --outdir /Users/krishnendu/Desktop/babappa/results/ortholog_small8_fast_complete
+- Result: command exited with acceptance-gate error
+  ortholog_small8_full requires >=300 analyzed genes; got 6
+- Partial tangible outputs were generated in:
+  /Users/krishnendu/Desktop/babappa/results/ortholog_small8_fast_complete
+  (raw/tables/manifests/logs/scripts present; final pack completion blocked by preset acceptance gate)

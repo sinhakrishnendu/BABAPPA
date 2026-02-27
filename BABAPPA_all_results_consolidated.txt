@@ -1,0 +1,99 @@
+BABAPPA CONSOLIDATED RESULTS
+Generated: 2026-02-26 21:37:02 IST
+Workspace: /Users/krishnendu/Desktop/babappa
+
+==================================================
+A) RESULT PACK INVENTORY
+==================================================
+pack                                          missing  core_ok 
+ortholog_audit_full                           5        NO      
+ortholog_small8_fast_complete                 3        NO      
+ortholog_small8_full_hyphy                    5        NO      
+ortholog_small8_full_hyphy_fastpractical      5        NO      
+ortholog_small8_full_hyphy_v2                 5        NO      
+ortholog_small8_publication_full              5        NO      
+ortholog_small8_publication_full_v2           5        NO      
+ortholog_small8_publication_full_v3           5        NO      
+ortholog_small8_publication_full_v4           5        NO      
+ortholog_small8_publication_full_v5           5        NO      
+ortholog_small8_publication_full_v6           5        NO      
+ortholog_small8_publication_full_v7           5        NO      
+ortholog_small8_publication_full_v8           5        NO      
+ortholog_small8_publication_full_v9           0        YES     
+
+==================================================
+B) ORTHOLOG PUBLICATION v9 (PRIMARY COMPLETED PACK)
+==================================================
+n_units	300
+n_success_babappa	300
+n_success_busted	300
+babappa_q_lt_0.1	289
+busted_q_lt_0.1	25
+overlap_q_lt_0.1	25
+babappa_only_q_lt_0.1	264
+busted_only_q_lt_0.1	0
+mean_babappa_p	0.0368633
+mean_babappa_q	0.0369885
+mean_busted_p	0.366936
+mean_busted_q	0.43788
+mean_runtime_babappa_sec	164.519
+mean_runtime_busted_sec	110.384
+
+Baseline status counts (method|status -> count):
+busted|OK	300
+
+Drop-audit summary (from raw/drop_audit.tsv):
+total_candidates	324
+kept_final	324
+dropped_final	0
+skipped_final	0
+
+Dropped by FINAL_KEEP reason_code:
+
+Top 30 genes by BABAPPA q-value:
+gene_id	L_codons	n_taxa	babappa_p	babappa_q	busted_p	busted_q	babappa_status	busted_status	babappa_runtime_sec	busted_runtime_sec	notes
+10000_NT_AL.fasta	494.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	121.82016820798162	55.84252	
+10004_NT_AL.fasta	754.0	8	0.001	0.001038062283737024	0.02532231541	0.21101929508333334	OK	OK	182.15601970802527	51.078743	
+10005_NT_AL.fasta	319.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	68.57934433303308	97.585329	
+10006_NT_AL.fasta	508.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	124.52208725002129	25.14238	
+10009_NT_AL.fasta	701.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	170.83249041700037	36.569107	
+1000_NT_AL.fasta	927.0	8	0.001	0.001038062283737024	0.3402263694	0.5	OK	OK	225.03185979102273	71.928823	
+10010_NT_AL.fasta	441.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	108.93568245798815	36.563534	
+100128908_NT_AL.fasta	730.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	177.13428408303298	28.908407	
+100129271_NT_AL.fasta	602.0	8	0.001	0.001038062283737024	0.3578682716	0.5	OK	OK	154.7825764999725	56.637245	
+100130274_NT_AL.fasta	541.0	8	0.001	0.001038062283737024	0.2842199004	0.5	OK	OK	129.0331932909903	55.124998	
+100130519_NT_AL.fasta	303.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	71.2576236660243	31.286286	
+100130827_NT_AL.fasta	383.0	8	0.001	0.001038062283737024	0.4942326317	0.5	OK	OK	89.41992037504679	43.093535	
+100130988_NT_AL.fasta	447.0	8	0.001	0.001038062283737024	0.06659910893	0.407749646510204	OK	OK	108.08821379195433	56.471489	
+100131017_NT_AL.fasta	1484.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	358.2954721249989	50.213246	
+100131211_NT_AL.fasta	419.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	101.64730437495746	25.87074	
+100131244_NT_AL.fasta	413.0	8	0.001	0.001038062283737024	0.4578400945	0.5	OK	OK	101.27947808301542	47.530241	
+100131390_NT_AL.fasta	625.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	152.26239304197952	26.931314	
+100131755_NT_AL.fasta	5230.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	1220.492439542024	54.752841	
+100131897_NT_AL.fasta	550.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	133.10277945897542	31.635499	
+100137047_NT_AL.fasta	316.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	76.68081608397188	36.051369	
+100137049_NT_AL.fasta	789.0	8	0.001	0.001038062283737024	0.3652455915	0.5	OK	OK	192.24707366601797	326.413724	
+10013_NT_AL.fasta	1483.0	8	0.001	0.001038062283737024	0.08626045957	0.4621096048392857	OK	OK	361.6246928750188	129.555147	
+10014_NT_AL.fasta	1153.0	8	0.001	0.001038062283737024	0.009769366149	0.10854851276666666	OK	OK	284.8870087079704	212.751313	
+10015_NT_AL.fasta	901.0	8	0.001	0.001038062283737024	0.1247319314	0.5	OK	OK	217.10501195804682	68.932617	
+100170841_NT_AL.fasta	411.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	99.72258087497903	25.229663	
+100191040_NT_AL.fasta	383.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	93.34728762495797	25.723784	
+10019_NT_AL.fasta	625.0	8	0.001	0.001038062283737024	0.2332828904	0.5	OK	OK	155.98201091698138	70.24753	
+1001_NT_AL.fasta	834.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	203.25381083402317	51.866	
+10020_NT_AL.fasta	726.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	178.85840429202653	37.098988	
+10021_NT_AL.fasta	1284.0	8	0.001	0.001038062283737024	0.5	0.5	OK	OK	313.65184333297657	343.749914	
+
+Primary artifact paths:
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/benchmark_track_manifest.json
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/checksums.txt
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/report/report.pdf
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/raw/babappa_results.tsv
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/raw/baseline_all.tsv
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/tables/ortholog_results.tsv
+/Users/krishnendu/Desktop/babappa/results/ortholog_small8_publication_full_v9/manifests/provenance_freeze.json
+
+==================================================
+C) PROCESS STATUS SNAPSHOT
+==================================================
+
+END OF CONSOLIDATED RESULTS
