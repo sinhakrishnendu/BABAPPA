@@ -1,0 +1,6 @@
+FROM quay.io/biocontainers/paml:4.10.7--hdfd78af_0
+
+WORKDIR /work
+
+# The adapter invokes `codeml <ctl>` inside this image.
+ENTRYPOINT ["codeml"]

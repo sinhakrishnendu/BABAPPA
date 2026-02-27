@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BABAPPA Baseline Dataset",
+  "type": "object",
+  "required": ["schema_version", "tree_path", "genes"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "tree_path": { "type": "string", "minLength": 1 },
+    "genes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["gene_id", "alignment_path"],
+        "properties": {
+          "gene_id": { "type": "string", "minLength": 1 },
+          "alignment_path": { "type": "string", "minLength": 1 },
+          "alternative_type": { "type": "string" },
+          "replicate_id": { "type": ["integer", "string"] },
+          "seeds": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "method_options": { "type": "object" }
+  },
+  "additionalProperties": true
+}

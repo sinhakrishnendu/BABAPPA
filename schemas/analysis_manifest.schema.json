@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BABAPPA Analysis Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "command",
+    "tool_version",
+    "system",
+    "seed",
+    "seed_policy",
+    "m0_hash",
+    "phi_hash",
+    "model_hash",
+    "tail",
+    "N"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "command": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "system": { "type": "object" },
+    "seed": { "type": ["integer", "null"] },
+    "seed_policy": { "type": "string" },
+    "m0_hash": { "type": "string" },
+    "phi_hash": { "type": "string" },
+    "model_hash": { "type": "string" },
+    "tail": { "type": "string" },
+    "N": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": true
+}

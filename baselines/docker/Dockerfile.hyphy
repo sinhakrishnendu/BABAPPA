@@ -1,0 +1,6 @@
+FROM stevenweaver/hyphy:2.5.63
+
+WORKDIR /work
+
+# The adapter invokes `hyphy busted|relax ...` inside this image.
+ENTRYPOINT ["hyphy"]

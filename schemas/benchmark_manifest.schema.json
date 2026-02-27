@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BABAPPA Benchmark Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "command",
+    "tool_version",
+    "system",
+    "seed",
+    "seed_policy",
+    "grid",
+    "pack_dir"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "command": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "system": { "type": "object" },
+    "seed": { "type": ["integer", "null"] },
+    "seed_policy": { "type": "string" },
+    "grid": { "type": "object" },
+    "pack_dir": { "type": "string" }
+  },
+  "additionalProperties": true
+}
