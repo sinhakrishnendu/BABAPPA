@@ -1,0 +1,4 @@
+drwxr-xr-x      4 krishnendu  staff       128 May 21 02:47 /Users/krishnendu/.cache/babappalign
+drwxr-xr-x  65535 krishnendu  staff  26278496 May 30 07:33 /Users/krishnendu/.cache/babappalign/embeddings
+drwxr-xr-x      3 krishnendu  staff        96 May 21 02:47 /Users/krishnendu/.cache/babappalign/models
+-rw-r--r--      1 krishnendu  staff  49310590 May 21 02:47 /Users/krishnendu/.cache/babappalign/models/babappascore.pt
