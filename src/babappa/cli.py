@@ -252,6 +252,7 @@ from babappa.empirical import (
     write_reference_results_template,
     write_wrky_matched_null_script,
 )
+from babappa.maintenance import StorageAuditConfig, audit_storage
 from babappa.models import (
     BaselineTrainConfig,
     train_baseline_model,
@@ -605,6 +606,7 @@ AVAILABLE_COMMANDS = [
     "validate-model-comparison",
     "compare-ablations",
     "validate-ablation-comparison",
+    "audit-storage",
 ]
 
 
@@ -639,6 +641,40 @@ def status() -> None:
     console.print("Planned modules:")
     for module in PLANNED_MODULES:
         console.print(f"- {module}")
+
+
+@app.command("audit-storage")
+def audit_storage_command(
+    root: Path = typer.Option(Path("."), "--root"),
+    outdir: Path = typer.Option(Path("storage_cleanup_audit"), "--outdir"),
+    target_size_gb: float = typer.Option(10.0, "--target-size-gb", min=0.1),
+) -> None:
+    """Inventory a BABAPPA workspace and generate dry-run cleanup scripts."""
+    try:
+        summary = audit_storage(
+            StorageAuditConfig(
+                root=str(root),
+                outdir=str(outdir),
+                target_size_gb=target_size_gb,
+            )
+        )
+    except OSError as exc:
+        console.print(f"Error: could not audit storage: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Storage Audit",
+        summary,
+        [
+            "total_size_human",
+            "estimated_archive_or_remove_human",
+            "expected_after_quarantine_human",
+            "n_keep",
+            "n_archive",
+            "n_remove",
+            "n_inspect",
+            "outdir",
+        ],
+    )
 
 
 @app.command()

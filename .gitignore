@@ -79,6 +79,33 @@ branch_site_run_summary_explicit_branch_truth_*/
 *.h5ad
 *.arrow
 
+# Protected compact release artifacts and reports
+!deployable_model_conservative_branch_site_100k_mps/
+!deployable_model_conservative_branch_site_100k_mps/**
+!explicit_branch_truth_100k_mps_final_validation_report.md
+!explicit_branch_truth_100k_mps_final_validation_report.json
+!explicit_branch_truth_100k_mps_final_validation_report.tsv
+!explicit_branch_truth_100k_mps_cross_tier_summary/
+!explicit_branch_truth_100k_mps_cross_tier_summary/**
+!branch_truth_status_audit_explicit_branch_truth_100k_mps/
+!branch_truth_status_audit_explicit_branch_truth_100k_mps/**
+!deployable_model_package_plan_100k_mps/
+!deployable_model_package_plan_100k_mps/**
+!real_empirical_pilot/evidence_packs/
+!real_empirical_pilot/evidence_packs/**
+!real_empirical_pilot/summary/
+!real_empirical_pilot/summary/**
+!real_empirical_pilot/reference_results/
+!real_empirical_pilot/reference_results/**
+!real_empirical_pilot/comparison/
+!real_empirical_pilot/comparison/**
+!real_empirical_pilot/audits/
+!real_empirical_pilot/audits/**
+!real_empirical_pilot/prefilter/
+!real_empirical_pilot/prefilter/**
+!real_empirical_pilot/ood_summary/
+!real_empirical_pilot/ood_summary/**
+
 # Empirical pilot heavy/generated outputs
 real_empirical_pilot/input/raw_downloads/
 real_empirical_pilot/babappa_run*/

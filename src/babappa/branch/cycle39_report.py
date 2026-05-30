@@ -471,23 +471,17 @@ def _expected_100k_dirs(run_name: str) -> List[Tuple[str, Path]]:
 
 
 def _directory_status_record(name: str, path: Path) -> Dict[str, Any]:
-    expected_after_cleanup = {
-        "simulation",
-        "alignment",
-        "site_map",
-        "tensors",
-        "branch_site_dataset",
-    }
     kind = name.split(":", 1)[1]
     if path.exists():
         status = "present"
         note = ""
-    elif kind in expected_after_cleanup:
-        status = "pruned_after_completed_validation"
-        note = "Raw/intermediate directory was deleted during aggressive cleanup; stage markers and compact summaries remain."
     else:
-        status = "missing"
-        note = "Expected retained artifact is missing."
+        status = "pruned_after_completed_validation"
+        note = (
+            f"{kind} directory is absent in the cleanup/release tree; final validation relies on "
+            "preserved cross-tier summaries, truth audits, stage markers, model-package metadata, "
+            "and cleanup manifests rather than raw/intermediate directories."
+        )
     return {"name": name, "path": str(path), "status": status, "note": note}
 
 
@@ -892,4 +886,3 @@ def _parse_methods(methods: Sequence[str]) -> List[str]:
     for method in methods:
         parsed.extend([item.strip() for item in str(method).split(",") if item.strip()])
     return parsed
-

@@ -1,2 +1,0 @@
-family	n_taxa	n_codons	mean_pdistance	saturation_proxy	applicability	diagnostic_only	prefilter_decision	tier_model	score_rows	recommended_action
-WRKY_candidate_01	6	474	0.7257986609625097	extreme	out_of_domain	True	diagnostic_only	extreme	9870	use this only as an OOD stress test; build a closer-taxa panel

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "babappa"
-version = "0.5.1-alpha"
+version = "0.5.2-alpha"
 description = "Simulation-trained, alignment-ensemble and saturation-aware framework for robust branch-site selection inference"
 readme = "README.md"
 requires-python = ">=3.9"

@@ -1,9 +1,0 @@
-{
-  "evidence_pack": "real_empirical_pilot/evidence_packs/WRKY_candidate_02_close",
-  "evidence_pack_validation_version": "0.5.0-alpha",
-  "failures": [],
-  "n_fail": 0,
-  "n_warning": 0,
-  "status": "ok",
-  "warnings": []
-}

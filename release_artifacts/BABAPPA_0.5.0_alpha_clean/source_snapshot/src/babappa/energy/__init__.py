@@ -1,1 +1,0 @@
-"""Energy feature module scaffold."""

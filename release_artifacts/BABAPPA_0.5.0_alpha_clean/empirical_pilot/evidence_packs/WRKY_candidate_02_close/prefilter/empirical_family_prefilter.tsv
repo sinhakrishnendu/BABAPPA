@@ -1,2 +1,0 @@
-decision	n_taxa	n_codons	mean_pairwise_p_distance	max_pairwise_p_distance	saturation_proxy	gap_fraction	ambiguous_fraction	foreground_present	tree_tip_compatible	paralogy_risk_flags	recommended_action
-accept	7	490	0.101293	0.150943	moderate	0.0469889	0	True	True		eligible for guarded empirical pilot after reference planning

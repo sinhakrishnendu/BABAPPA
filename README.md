@@ -1477,3 +1477,45 @@ The branch-conditioned commands add branch-site oracle labels, branch-aware data
 Cycle 32B makes branch-site dataset construction memory-safe: `build-branch-site-dataset` streams label rows, downsamples negatives before tensor feature extraction, and supports hard caps such as `--max-output-rows`. The branch-conditioned 10K plan uses `_streamed` output directories, `--negative-downsample-ratio 5`, and `--max-output-rows 1000000` per tier by default.
 
 Final 100K should wait until branch-conditioned 10K validation passes.
+
+## Storage Cleanup and Repository Slimming
+
+BABAPPA heavy validation runs can create very large reproducible intermediates. Do
+not delete them by hand without first producing an inventory.
+
+Dry-run audit:
+
+```bash
+babappa audit-storage \
+  --root . \
+  --outdir storage_cleanup_audit \
+  --target-size-gb 10
+```
+
+The audit writes:
+
+- `storage_inventory.tsv/json`
+- `keep_list.tsv`
+- `remove_candidates.tsv`
+- `archive_candidates.tsv`
+- `cleanup_dry_run.md`
+- `du_top_100.txt`
+- user-run scripts for quarantine, archive, deletion after review, and validation
+
+The generated quarantine script moves reproducible candidates into a dated folder
+under the home directory and does not permanently delete anything:
+
+```bash
+bash storage_cleanup_audit/quarantine_large_reproducible_outputs.sh
+```
+
+After inspecting the quarantine, run the lightweight validator:
+
+```bash
+bash storage_cleanup_audit/validate_after_cleanup.sh
+```
+
+Permanent deletion is intentionally separated into
+`storage_cleanup_audit/delete_quarantine_after_review.sh` and requires
+`CONFIRM_DELETE=YES`. Keep source, tests, docs, deployable package artifacts,
+final reports, WRKY evidence packs, and user-created empirical CDS/tree inputs.

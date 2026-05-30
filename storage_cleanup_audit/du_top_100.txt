@@ -1,0 +1,102 @@
+# Approximate du -ah top 100 equivalent
+size	path	type	recommendation	reason
+183.7M	.	dir	inspect	workspace root
+165.5M	.git	dir	keep	Git repository metadata is protected
+165.4M	.git/objects	dir	keep	Git repository metadata is protected
+32.5M	.git/objects/46	dir	keep	Git repository metadata is protected
+32.4M	.git/objects/46/8424557a244117699249e5c9bd18f351235532	file	keep	Git repository metadata is protected
+25.9M	.git/objects/59	dir	keep	Git repository metadata is protected
+25.8M	.git/objects/59/50c0855179737f29ed77b33ef1952008598df3	file	keep	Git repository metadata is protected
+24.0M	.git/objects/0c	dir	keep	Git repository metadata is protected
+24.0M	.git/objects/0c/519e6f234482e23cbfd5de5211076cabe1fc47	file	keep	Git repository metadata is protected
+7.7M	.git/objects/9a	dir	keep	Git repository metadata is protected
+7.4M	.git/objects/9a/49fceee436b72f652a889d2e5a48745bf9ce40	file	keep	Git repository metadata is protected
+6.2M	.git/objects/47	dir	keep	Git repository metadata is protected
+6.2M	.git/objects/47/45de2c722d02fd895ee764b9fe6228d6734e17	file	keep	Git repository metadata is protected
+6.1M	release_artifacts	dir	inspect	not matched by storage cleanup rules
+6.1M	release_artifacts/BABAPPA_0.5.0_alpha_clean	dir	inspect	not matched by storage cleanup rules
+5.9M	.git/objects/92	dir	keep	Git repository metadata is protected
+5.9M	.git/objects/92/709ae4d2070cec45c590c7fed8601579482773	file	keep	Git repository metadata is protected
+5.1M	src	dir	keep	protected source, report, package, or evidence artifact
+5.0M	src/babappa	dir	keep	protected source, report, package, or evidence artifact
+3.3M	.git/objects/40	dir	keep	Git repository metadata is protected
+3.2M	.git/objects/40/2a8c1a0d77d9af7aab32c8285e4e124c880d1e	file	keep	Git repository metadata is protected
+3.1M	.git/objects/78	dir	keep	Git repository metadata is protected
+3.0M	.git/objects/78/ed7159daebdbe6e5e6da59440c28c810ec562e	file	keep	Git repository metadata is protected
+2.8M	.git/objects/81	dir	keep	Git repository metadata is protected
+2.8M	.git/objects/81/8e52dab0f8f8fbc133de66fa15486704b65421	file	keep	Git repository metadata is protected
+2.5M	.git/objects/8d	dir	keep	Git repository metadata is protected
+2.5M	release_artifacts/BABAPPA_0.5.0_alpha_clean/source_snapshot	dir	inspect	not matched by storage cleanup rules
+2.3M	.git/objects/5d	dir	keep	Git repository metadata is protected
+2.0M	release_artifacts/BABAPPA_0.5.0_alpha_clean/source_snapshot/src	dir	inspect	not matched by storage cleanup rules
+2.0M	release_artifacts/BABAPPA_0.5.0_alpha_clean/source_snapshot/src/babappa	dir	inspect	not matched by storage cleanup rules
+2.0M	.git/objects/5d/ed7e3a28c969ac9237426c813ec6f4eec2542a	file	keep	Git repository metadata is protected
+2.0M	.git/objects/54	dir	keep	Git repository metadata is protected
+1.9M	.git/objects/8f	dir	keep	Git repository metadata is protected
+1.9M	.git/objects/63	dir	keep	Git repository metadata is protected
+1.9M	.git/objects/29	dir	keep	Git repository metadata is protected
+1.9M	.git/objects/54/3466669eb90cc9f32f161f57142eda9862ee0a	file	keep	Git repository metadata is protected
+1.9M	.git/objects/63/a268c399f5a0a2036e7baf6dce50560bfe1ba5	file	keep	Git repository metadata is protected
+1.9M	.git/objects/29/e14329eea66e18bb1c15cc1d936396d33bd7de	file	keep	Git repository metadata is protected
+1.9M	.git/objects/dc	dir	keep	Git repository metadata is protected
+1.9M	release_artifacts/BABAPPA_0.5.0_alpha_clean/reports	dir	inspect	not matched by storage cleanup rules
+1.8M	cleanup_reports	dir	inspect	not matched by storage cleanup rules
+1.8M	release_artifacts/BABAPPA_0.5.0_alpha_clean/reports/cleanup	dir	inspect	not matched by storage cleanup rules
+1.8M	.git/objects/50	dir	keep	Git repository metadata is protected
+1.8M	.git/objects/50/fbe46f17f1f11594d20212ed2dc09304847804	file	keep	Git repository metadata is protected
+1.8M	.git/objects/8d/8f37965be1a3795a819f08f5cd587d4a701ebe	file	keep	Git repository metadata is protected
+1.7M	.git/objects/35	dir	keep	Git repository metadata is protected
+1.7M	.git/objects/8f/11247c02772e86f1d208c31a69dacc39bfe4c3	file	keep	Git repository metadata is protected
+1.7M	cleanup_reports/heavy_file_inventory.tsv	file	inspect	lightweight file not covered by protected rules
+1.7M	release_artifacts/BABAPPA_0.5.0_alpha_clean/reports/cleanup/heavy_file_inventory.tsv	file	inspect	lightweight file not covered by protected rules
+1.7M	.git/objects/dc/70f8a9f378f64979e199e078fad9e282728d1b	file	keep	Git repository metadata is protected
+1.6M	.git/objects/35/ac172ecbc7135bd9bba85167c3bc81a2f06183	file	keep	Git repository metadata is protected
+1.6M	.git/objects/c9	dir	keep	Git repository metadata is protected
+1.6M	tests	dir	keep	protected source, report, package, or evidence artifact
+1.6M	.git/objects/21	dir	keep	Git repository metadata is protected
+1.6M	.git/objects/21/ac95dacacca51b9c47027ba5e3bfd62c08745d	file	keep	Git repository metadata is protected
+1.5M	.git/objects/04	dir	keep	Git repository metadata is protected
+1.5M	real_empirical_pilot	dir	inspect	not matched by storage cleanup rules
+1.4M	.git/objects/90	dir	keep	Git repository metadata is protected
+1.4M	.git/objects/8c	dir	keep	Git repository metadata is protected
+1.4M	.git/objects/39	dir	keep	Git repository metadata is protected
+1.4M	.git/objects/90/1c19de7b08dcfdbe8dc09035e5515bb9f9a276	file	keep	Git repository metadata is protected
+1.4M	.git/objects/8c/28a95ea177358ded67ccff5669adea9e4ccd83	file	keep	Git repository metadata is protected
+1.3M	.git/objects/f4	dir	keep	Git repository metadata is protected
+1.3M	.git/objects/39/8d65ffb94fee4ffc99abdf2050b39ddad30860	file	keep	Git repository metadata is protected
+1.3M	.git/objects/91	dir	keep	Git repository metadata is protected
+1.2M	.git/objects/04/0923484aba11653760f9c271291b84f2c834b0	file	keep	Git repository metadata is protected
+1.2M	tests/__pycache__	dir	keep	protected source, report, package, or evidence artifact
+1.2M	.git/objects/f4/7cef332aca28dd1aea279aa0b34c50a4824201	file	keep	Git repository metadata is protected
+1.2M	.git/objects/91/dfd0c24ae4c0ed41970e5f82329b4d77e421c0	file	keep	Git repository metadata is protected
+1.2M	.git/objects/8b	dir	keep	Git repository metadata is protected
+1.2M	.git/objects/8b/62b052193718141875884a4ec2a539f588e11c	file	keep	Git repository metadata is protected
+1.2M	release_artifacts/BABAPPA_0.5.0_alpha_clean/empirical_pilot	dir	inspect	not matched by storage cleanup rules
+1.2M	real_empirical_pilot/evidence_packs	dir	inspect	not matched by storage cleanup rules
+1.2M	real_empirical_pilot/evidence_packs/WRKY_candidate_02_close	dir	keep	protected source, report, package, or evidence artifact
+1.2M	release_artifacts/BABAPPA_0.5.0_alpha_clean/empirical_pilot/evidence_packs	dir	inspect	not matched by storage cleanup rules
+1.2M	release_artifacts/BABAPPA_0.5.0_alpha_clean/empirical_pilot/evidence_packs/WRKY_candidate_02_close	dir	inspect	not matched by storage cleanup rules
+1.1M	.git/objects/06	dir	keep	Git repository metadata is protected
+1.1M	.git/objects/77	dir	keep	Git repository metadata is protected
+1.1M	real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa	dir	keep	protected source, report, package, or evidence artifact
+1.1M	release_artifacts/BABAPPA_0.5.0_alpha_clean/empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa	dir	inspect	not matched by storage cleanup rules
+1.1M	real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa/empirical_scores	dir	keep	protected source, report, package, or evidence artifact
+1.1M	release_artifacts/BABAPPA_0.5.0_alpha_clean/empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa/empirical_scores	dir	inspect	not matched by storage cleanup rules
+1.1M	real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa/empirical_scores/empirical_branch_site_scores.tsv	file	keep	protected source, report, package, or evidence artifact
+1.1M	release_artifacts/BABAPPA_0.5.0_alpha_clean/empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa/empirical_scores/empirical_branch_site_scores.tsv	file	inspect	lightweight file not covered by protected rules
+1.1M	.git/objects/06/02aab22d68130a23fbf738f5855b8d959fe785	file	keep	Git repository metadata is protected
+1.1M	.git/objects/77/a82e6aab868d517296158d4ac0b8861c2c74ae	file	keep	Git repository metadata is protected
+1.0M	.git/objects/9e	dir	keep	Git repository metadata is protected
+1.0M	src/babappa/branch	dir	keep	protected source, report, package, or evidence artifact
+983.3K	BABAPPA_0.5.0-alpha_release_zenodo_20260530.tar.xz	file	inspect	not matched by storage cleanup rules
+980.8K	.git/objects/9e/93ee1bd1a8217676e2bde6e90173aebe328aa4	file	keep	Git repository metadata is protected
+849.4K	.git/objects/1f	dir	keep	Git repository metadata is protected
+805.9K	.git/objects/f9	dir	keep	Git repository metadata is protected
+801.2K	.git/objects/1f/c55c353d887c8e769591977a4582b832e94f86	file	keep	Git repository metadata is protected
+785.2K	.git/objects/d4	dir	keep	Git repository metadata is protected
+781.6K	.git/objects/c9/10738f200e73cd7ab92245e9d3eaba62b85448	file	keep	Git repository metadata is protected
+764.2K	.git/objects/f9/3848d40ac5ec9cf57b278bbe107a86645fea47	file	keep	Git repository metadata is protected
+754.4K	.git/objects/d4/243bbbff1b482d60b5432c3958a3a680b7da84	file	keep	Git repository metadata is protected
+745.6K	.git/objects/8d/e0c31c0fe912c8a0c69379d4c5f8b21e717819	file	keep	Git repository metadata is protected
+719.1K	.git/objects/ad	dir	keep	Git repository metadata is protected
+718.5K	.git/objects/0b	dir	keep	Git repository metadata is protected
