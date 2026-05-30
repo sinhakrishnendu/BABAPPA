@@ -1,0 +1,2 @@
+Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on
+/dev/disk3s5   1.8Ti   108Gi   1.7Ti     6%    1.1M   18G    0%   /System/Volumes/Data
