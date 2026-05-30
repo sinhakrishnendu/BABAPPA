@@ -1,0 +1,9 @@
+{
+  "executed": false,
+  "manifest": "real_empirical_pilot/manifest/real_empirical_pilot_panel.tsv",
+  "n_trees_to_build": 0,
+  "script": "real_empirical_pilot/tree_building_plan/build_missing_trees.sh",
+  "status": "planned",
+  "tree_building_plan_version": "0.4.8-alpha",
+  "workspace": "real_empirical_pilot"
+}

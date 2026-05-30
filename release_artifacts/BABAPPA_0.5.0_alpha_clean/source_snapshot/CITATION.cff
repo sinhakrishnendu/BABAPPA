@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use BABAPPA, please cite this research-alpha software release and the accompanying manuscript."
+title: "BABAPPA: simulation-trained alignment-ensemble branch-site inference support"
+version: "0.5.1-alpha"
+date-released: "2026-05-30"
+authors:
+  - family-names: "Sinha"
+    given-names: "Krishnendu"
+repository-code: "https://github.com/USER_OR_ORG/BABAPPA"
+abstract: "BABAPPA is a research-alpha, simulation-trained, conservative branch-site inference support framework with explicit simulator truth validation, Apple Silicon/MPS support, deployable model packaging, empirical input QC, OOD gating, and guarded empirical pilot tooling. Empirical discovery claims remain pending external reference comparison and simulation-matched calibration."
+license: "MIT"

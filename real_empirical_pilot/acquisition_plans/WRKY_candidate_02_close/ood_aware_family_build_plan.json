@@ -1,0 +1,10 @@
+{
+  "executed": false,
+  "family_id": "WRKY_candidate_02_close",
+  "import_gate": "accept_or_accept_with_caution_only",
+  "max_mean_pdistance": 0.35,
+  "min_codons": 100,
+  "min_taxa": 6,
+  "ood_aware_family_build_plan_version": "0.4.9-alpha",
+  "status": "planned"
+}

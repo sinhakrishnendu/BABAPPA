@@ -1,0 +1,62 @@
+  0B	./input
+4.0K	./CITATION.cff
+4.0K	./LICENSE
+4.0K	./aligner_status_external_1k.json
+4.0K	./aligner_status_external_1k_full.json
+4.0K	./external_aligner_status.json
+4.0K	./pyproject.toml
+4.0K	./resume_external_high.sh
+4.0K	./run_babappa_scale_test_1000.sh
+8.0K	./aligner_status_c37d.json
+8.0K	./aligner_status_c37d_module.json
+8.0K	./codex_explicit_1k_post_controls_decision_report.md
+8.0K	./explicit_branch_truth_100k_mps_final_validation_report.md
+8.0K	./explicit_branch_truth_100k_mps_final_validation_report.tsv
+ 12K	./CHATGPT_HANDOFF_FAST_EXTERNAL_10K_20260511.md
+ 12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_extreme
+ 12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_high
+ 12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_low
+ 12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_moderate
+ 12K	./leakage_audit_saturation_1000
+ 16K	./CHATGPT_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md
+ 16K	./branch_truth_status_audit_explicit_branch_truth_100k_mps
+ 16K	./calibration_smoke_c9
+ 16K	./explicit_branch_truth_100k_mps_truth_status_audit
+ 16K	./external_completed_tier_report_plan
+ 20K	./PROJECT_AUDIT_HANDOFF_20260503.md
+ 20K	./calibration_smoke_c14
+ 20K	./calibration_smoke_c8
+ 20K	./explicit_branch_truth_prototype_plan
+ 24K	./deployable_model_package_plan_100k_mps
+ 24K	./examples
+ 24K	./external_benchmark_panel_plan
+ 24K	./model_compare_1000
+ 24K	./model_compare_c14
+ 24K	./model_compare_v1_v2_1000
+ 28K	./external_extreme_recovery_plan
+ 32K	./label_signal_saturation_1000
+ 32K	./large_run_plan_100k
+ 32K	./large_run_plan_10k
+ 40K	./external_aligner_validation_plan_1k
+ 40K	./external_aligner_validation_plan_1k_full
+ 44K	./archives
+ 44K	./external_aligner_validation_plan_fast_1k
+ 52K	./docs
+ 56K	./README.md
+ 64K	./external_aligner_1k_cross_tier_summary
+ 68K	./classical_reference_workflow_plan_smoke
+ 96K	./explicit_branch_truth_1k_plan
+100K	./explicit_branch_truth_1k_cross_tier_summary
+116K	./reports
+124K	./explicit_branch_truth_100k_mps_final_validation_report.json
+140K	./explicit_branch_truth_100k_mps_cross_tier_summary
+292K	./calibration_scale_test_1000
+392K	./deployable_model_conservative_branch_site_100k_mps
+628K	./Manuscript
+2.2M	./cleanup_reports
+2.4M	./real_empirical_pilot
+4.3M	./tests
+9.0M	./src
+ 12M	./stability_benchmark_saturation_1000
+ 18M	./release_artifacts
+224M	.

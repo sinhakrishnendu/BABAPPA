@@ -1,0 +1,42 @@
+path	decision	reason
+.DS_Store	delete	system file
+CHATGPT_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md	delete	old handoff note not needed in release source tree
+CHATGPT_HANDOFF_FAST_EXTERNAL_10K_20260511.md	delete	old handoff note not needed in release source tree
+PROJECT_AUDIT_HANDOFF_20260503.md	delete	old handoff note not needed in release source tree
+aligner_status_c37d.json	delete	old generated status report superseded by release reports
+aligner_status_c37d_module.json	delete	old generated status report superseded by release reports
+aligner_status_external_1k.json	delete	old generated status report superseded by release reports
+aligner_status_external_1k_full.json	delete	old generated status report superseded by release reports
+external_aligner_status.json	delete	old generated status report superseded by release reports
+codex_explicit_1k_post_controls_decision_report.md	delete	old generated decision note superseded by manuscript/reports
+resume_external_high.sh	delete	old run helper script not needed for release source tree
+run_babappa_scale_test_1000.sh	delete	old run helper script not needed for release source tree
+archives	delete	old archive staging folder
+branch_truth_status_audit_explicit_branch_truth_100k_mps_extreme	delete	per-tier audit superseded by retained cross-tier audit
+branch_truth_status_audit_explicit_branch_truth_100k_mps_high	delete	per-tier audit superseded by retained cross-tier audit
+branch_truth_status_audit_explicit_branch_truth_100k_mps_low	delete	per-tier audit superseded by retained cross-tier audit
+branch_truth_status_audit_explicit_branch_truth_100k_mps_moderate	delete	per-tier audit superseded by retained cross-tier audit
+calibration_scale_test_1000	delete	old generated calibration run
+calibration_smoke_c14	delete	old generated smoke output
+calibration_smoke_c8	delete	old generated smoke output
+calibration_smoke_c9	delete	old generated smoke output
+classical_reference_workflow_plan_smoke	delete	old generated smoke plan
+explicit_branch_truth_1k_cross_tier_summary	delete	old 1K development summary superseded by 100K reports
+explicit_branch_truth_1k_plan	delete	old 1K generated plan
+explicit_branch_truth_prototype_plan	delete	old prototype generated plan
+external_aligner_1k_cross_tier_summary	delete	old 1K external-aligner development summary
+external_aligner_validation_plan_1k	delete	old generated validation plan
+external_aligner_validation_plan_1k_full	delete	old generated validation plan
+external_aligner_validation_plan_fast_1k	delete	old generated validation plan
+external_benchmark_panel_plan	delete	old generated benchmark plan superseded by docs/examples
+external_completed_tier_report_plan	delete	old generated report plan
+external_extreme_recovery_plan	delete	old generated recovery plan
+input	delete	empty/generated input staging folder
+label_signal_saturation_1000	delete	old generated diagnostic output
+large_run_plan_100k	delete	old generated plan superseded by manuscript/release reports
+large_run_plan_10k	delete	old generated plan superseded by manuscript/release reports
+leakage_audit_saturation_1000	delete	old generated diagnostic output
+model_compare_1000	delete	old generated model comparison output
+model_compare_c14	delete	old generated model comparison output
+model_compare_v1_v2_1000	delete	old generated model comparison output
+stability_benchmark_saturation_1000	delete	old generated stability benchmark output

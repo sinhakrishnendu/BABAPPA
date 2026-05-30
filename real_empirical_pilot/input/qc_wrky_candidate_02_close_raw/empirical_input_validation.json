@@ -1,0 +1,40 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "real_empirical_pilot/input/cds/WRKY_candidate_02_close.cds.fasta",
+  "empirical_input_validation_version": "0.4.9-alpha",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "Arabidopsis_halleri",
+    "Arabidopsis_lyrata",
+    "Arabidopsis_thaliana",
+    "Arabis_alpina",
+    "Brassica_oleracea",
+    "Brassica_rapa_RO18",
+    "Eutrema_salsugineum"
+  ],
+  "foreground": "Arabidopsis_thaliana",
+  "foreground_taxon": "Arabidopsis_thaliana",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-28T07:19:29.348103+00:00",
+  "mean_pairwise_p_distance": 0.6635377598802685,
+  "n_codons": 490,
+  "n_taxa": 7,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "real_empirical_pilot/input/trees/WRKY_candidate_02_close.treefile",
+  "tree_shape_summary": "n_tips=7;n_internal_commas=6",
+  "tree_tips": [
+    "Arabidopsis_halleri",
+    "Arabidopsis_lyrata",
+    "Arabidopsis_thaliana",
+    "Arabis_alpina",
+    "Brassica_oleracea",
+    "Brassica_rapa_RO18",
+    "Eutrema_salsugineum"
+  ],
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input",
+    "high_pairwise_p_distance:0.663538"
+  ]
+}

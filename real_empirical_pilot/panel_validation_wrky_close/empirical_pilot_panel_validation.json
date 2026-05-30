@@ -1,0 +1,38 @@
+{
+  "category_counts": {
+    "likely_positive": 1
+  },
+  "empirical_pilot_panel_validation_version": "0.4.9-alpha",
+  "failures": [],
+  "generated_at": "2026-05-28T07:20:32.696690+00:00",
+  "n_rows": 1,
+  "panel_manifest": "real_empirical_pilot/manifest/wrky_close_panel.tsv",
+  "required_columns": [
+    "panel_id",
+    "gene_family",
+    "species_group",
+    "cds_fasta",
+    "tree_file",
+    "foreground",
+    "expected_category",
+    "reference_status",
+    "notes"
+  ],
+  "row_summaries": [
+    {
+      "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/msas/WRKY_candidate_02_close.codon.aln.fasta",
+      "expected_category": "likely_positive",
+      "failures": "",
+      "foreground": "Arabidopsis_thaliana",
+      "gene_family": "WRKY33_AT2G38470_close_Brassicaceae",
+      "input_status": "pass",
+      "panel_id": "WRKY_candidate_02_close",
+      "reference_status": "planned",
+      "row_status": "ok",
+      "tree_file": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/WRKY_candidate_02_close.treefile",
+      "warnings": ""
+    }
+  ],
+  "status": "ok",
+  "warnings": []
+}

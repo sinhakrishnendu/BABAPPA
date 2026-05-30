@@ -1,0 +1,4 @@
+family_id	method	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	mafft	3416	0.17718860507011414	0.02447187768918301	2327	False
+empirical	babappalign	3703	0.17699183523654938	0.0242530683584643	2454	False
+empirical	muscle	3332	0.1771356612443924	0.024167544877391915	2173	False

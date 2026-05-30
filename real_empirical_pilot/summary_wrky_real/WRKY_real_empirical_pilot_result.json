@@ -1,0 +1,26 @@
+{
+  "applicability": "out_of_domain",
+  "called_positive_rows": 0,
+  "decision": "software_succeeded_diagnostic_only",
+  "device": "mps",
+  "diagnostic_only": true,
+  "foreground": "Arabidopsis_thaliana",
+  "interpretation": "not_an_empirical_positive_selection_claim",
+  "max_gene_support": 0,
+  "pairwise_p_distance": 0.725799,
+  "panel_id": "WRKY_candidate_01",
+  "pilot_status": "ok",
+  "reason": "very_high_p_distance",
+  "reference_comparison": "pending",
+  "score_rows": 9870,
+  "software_succeeded": true,
+  "taxa": [
+    "Arabidopsis_thaliana",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor",
+    "Brachypodium_distachyon"
+  ],
+  "tier_model": "extreme"
+}

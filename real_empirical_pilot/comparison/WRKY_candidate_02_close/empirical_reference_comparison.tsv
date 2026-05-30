@@ -1,0 +1,4 @@
+panel_id	tool	test_name	babappa_applicability_status	babappa_result_class	babappa_max_gene_support	babappa_diagnostic_only	reference_result_class	reference_p_value	reference_q_value	concordance_class	notes
+WRKY_candidate_02_close	codeml	branch_site_model_A_vs_null	in_domain	positive	0.177189	False	negative	1	NA	BABAPPA_only	parsed_reference_output
+WRKY_candidate_02_close	hyphy	aBSREL	in_domain	positive	0.177189	False	negative	1	NA	BABAPPA_only	parsed_reference_output
+WRKY_candidate_02_close	hyphy	MEME	in_domain	positive	0.177189	False	negative	0.0641705	NA	BABAPPA_only	parsed_reference_output

@@ -1,0 +1,256 @@
+\begin{thebibliography}{10}
+
+\bibitem{aadland2020_asr}
+Kelsey Aadland and Bryan Kolaczkowski.
+\newblock Alignment-integrated reconstruction of ancestral sequences improves
+  accuracy.
+\newblock {\em Genome Biology and Evolution}, 12(9):1549--1565, 2020.
+
+\bibitem{alvarez2023_pamlguide}
+Sandra {\'A}lvarez-Carretero and Ziheng Yang.
+\newblock Beginner's guide on the use of {PAML} to detect positive selection.
+\newblock {\em Molecular Biology and Evolution}, 40(4):msad041, 2023.
+
+\bibitem{anisimova2003_recombination}
+Maria Anisimova, Rasmus Nielsen, and Ziheng Yang.
+\newblock Effect of recombination on the accuracy of the likelihood method for
+  detecting positive selection at amino acid sites.
+\newblock {\em Genetics}, 164(3):1229--1236, 2003.
+
+\bibitem{benjamini1995}
+Yoav Benjamini and Yosef Hochberg.
+\newblock Controlling the false discovery rate: a practical and powerful
+  approach to multiple testing.
+\newblock {\em Journal of the Royal Statistical Society: Series B},
+  57(1):289--300, 1995.
+
+\bibitem{chi2020_clusters}
+P.~Bryn Chi and David~A. Liberles.
+\newblock Detecting signatures of positive selection against a backdrop of
+  multiple nonadaptive processes.
+\newblock {\em Molecular Biology and Evolution}, 37(11):3353--3367, 2020.
+
+\bibitem{chisholm2024_energy}
+Lauren~O. Chisholm, Kona~N. Orlandi, Sophia~R. Phillips, Michael~J. Shavlik,
+  and Michael~J. Harms.
+\newblock Ancestral reconstruction and the evolution of protein energy
+  landscapes.
+\newblock {\em Annual Review of Biophysics}, 53:127--146, 2024.
+
+\bibitem{davydov2019_ratevariation}
+Ilia~I. Davydov, Nicolas Salamin, and Marc Robinson-Rechavi.
+\newblock Large-scale comparative analysis of codon models accounting for
+  protein and nucleotide selection.
+\newblock {\em Molecular Biology and Evolution}, 36(6):1316--1332, 2019.
+
+\bibitem{deleonardis2025_ardca}
+Matteo De~Leonardis, Andrea Pagnani, and Pierre Barrat-Charlaix.
+\newblock Reconstruction of ancestral protein sequences using autoregressive
+  generative models.
+\newblock {\em Molecular Biology and Evolution}, 42(4):msaf070, 2025.
+
+\bibitem{duchene2022_saturation}
+David~A. Duchene, Lindell Bromham, and Sebastien Duchene.
+\newblock Excluding loci with substitution saturation improves phylogenomic
+  inference.
+\newblock {\em Systematic Biology}, 71(3):676--689, 2022.
+
+\bibitem{dunn2019_mnm}
+Katherine~A. Dunn, Toby Kenney, Hong Gu, and Joseph~P. Bielawski.
+\newblock Improved inference of site-specific positive selection under a
+  generalized parametric codon model when there are multinucleotide mutations
+  and multiple nonsynonymous rates.
+\newblock {\em BMC Evolutionary Biology}, 19(1):22, 2019.
+
+\bibitem{edgar2004_muscle}
+Robert~C. Edgar.
+\newblock {MUSCLE}: multiple sequence alignment with high accuracy and high
+  throughput.
+\newblock {\em Nucleic Acids Research}, 32(5):1792--1797, 2004.
+
+\bibitem{fletcher2009_indelible}
+William Fletcher and Ziheng Yang.
+\newblock {INDELible}: a flexible simulator of biological sequence evolution.
+\newblock {\em Molecular Biology and Evolution}, 26(8):1879--1888, 2009.
+
+\bibitem{gharib2013_branchsite}
+Walid~H. Gharib and Marc Robinson-Rechavi.
+\newblock The branch-site test of positive selection is surprisingly robust but
+  lacks power under synonymous substitution saturation and variation in {GC}.
+\newblock {\em Molecular Biology and Evolution}, 30(7):1675--1686, 2013.
+
+\bibitem{goldman1994}
+Nick Goldman and Ziheng Yang.
+\newblock A codon-based model of nucleotide substitution for protein-coding dna
+  sequences.
+\newblock {\em Molecular Biology and Evolution}, 11(5):725--736, 1994.
+
+\bibitem{jordan2012_alignment}
+Gregory Jordan and Nick Goldman.
+\newblock The effects of alignment error and alignment filtering on the
+  sitewise detection of positive selection.
+\newblock {\em Molecular Biology and Evolution}, 29(4):1125--1139, 2012.
+
+\bibitem{katoh2013_mafft}
+Kazutaka Katoh and Daron~M. Standley.
+\newblock {MAFFT} multiple sequence alignment software version 7: improvements
+  in performance and usability.
+\newblock {\em Molecular Biology and Evolution}, 30(4):772--780, 2013.
+
+\bibitem{pond2011_bsrel}
+Sergei~L. Kosakovsky~Pond, Ben Murrell, Mathieu Fourment, Simon D.~W. Frost,
+  Wayne Delport, and Konrad Scheffler.
+\newblock A random effects branch-site model for detecting episodic
+  diversifying selection.
+\newblock {\em Molecular Biology and Evolution}, 28(11):3033--3043, 2011.
+
+\bibitem{pond2020_hyphy}
+Sergei~L. Kosakovsky~Pond, Art F.~Y. Poon, Ryan Velazquez, Steven Weaver,
+  Nathan~L. Hepler, Ben Murrell, Stephen~D. Shank, Brittany~R. Magalis, Dave
+  Bouvier, Anton Nekrutenko, Sadie Wisotsky, Stephanie~J. Spielman, Simon D.~W.
+  Frost, and Spencer~V. Muse.
+\newblock {HyPhy} 2.5---a customizable platform for evolutionary hypothesis
+  testing using phylogenies.
+\newblock {\em Molecular Biology and Evolution}, 37(1):295--299, 2020.
+
+\bibitem{pond2006_automated}
+Sergei~L. Kosakovsky~Pond, David Posada, Michael~B. Gravenor, Carl~H. Woelk,
+  and Simon D.~W. Frost.
+\newblock Automated phylogenetic detection of recombination using a genetic
+  algorithm.
+\newblock {\em Molecular Biology and Evolution}, 23(10):1891--1901, 2006.
+
+\bibitem{pond2006_gard}
+Sergei~L. Kosakovsky~Pond, David Posada, Michael~B. Gravenor, Carl~H. Woelk,
+  and Simon D.~W. Frost.
+\newblock {GARD}: a genetic algorithm for recombination detection.
+\newblock {\em Bioinformatics}, 22(24):3096--3098, 2006.
+
+\bibitem{loytynoja2012_pagan}
+Ari L{\"o}ytynoja.
+\newblock Accurate extension of multiple sequence alignments using a
+  phylogeny-aware graph algorithm.
+\newblock {\em Bioinformatics}, 28(13):1684--1691, 2012.
+
+\bibitem{loytynoja2014_prank}
+Ari L{\"o}ytynoja.
+\newblock Phylogeny-aware alignment with {PRANK}.
+\newblock {\em Methods in Molecular Biology}, 1079:155--170, 2014.
+
+\bibitem{lucaci2023_mhs}
+Anthony~G. Lucaci, Sadie~R. Wisotsky, Stephen~D. Shank, Spencer~V. Muse, and
+  Sergei~L. Kosakovsky~Pond.
+\newblock Evolutionary shortcuts via multi-nucleotide substitutions and their
+  impact on natural selection analyses.
+\newblock {\em Molecular Biology and Evolution}, 40(7):msad150, 2023.
+
+\bibitem{minh2020_iqtree2}
+Bui~Quang Minh, Heiko~A. Schmidt, Olga Chernomor, Dominik Schrempf, Michael~D.
+  Woodhams, Arndt von Haeseler, and Robert Lanfear.
+\newblock {IQ-TREE} 2: new models and efficient methods for phylogenetic
+  inference in the genomic era.
+\newblock {\em Molecular Biology and Evolution}, 37(5):1530--1534, 2020.
+
+\bibitem{muniztrejo2025_robustasr}
+Ricardo Mu{\~n}iz-Trejo, Yeonwoo Park, and Joseph~W. Thornton.
+\newblock Robustness of ancestral sequence reconstruction to among-site and
+  among-lineage evolutionary heterogeneity.
+\newblock {\em Molecular Biology and Evolution}, 42(4):msaf084, 2025.
+
+\bibitem{murrell2015_busted}
+Ben Murrell, Steven Weaver, Martin~D. Smith, Joel~O. Wertheim, Sasha Murrell,
+  Amy Aylward, Kadri Eren, Thomas Pollner, Daniel~P. Martin, David~M. Smith,
+  Konrad Scheffler, and Sergei~L. Kosakovsky~Pond.
+\newblock Gene-wide identification of episodic selection.
+\newblock {\em Molecular Biology and Evolution}, 32(5):1365--1371, 2015.
+
+\bibitem{murrell2012_meme}
+Ben Murrell, Joel~O. Wertheim, Sasha Moola, Tim Weighill, Konrad Scheffler, and
+  Sergei~L. Kosakovsky~Pond.
+\newblock Detecting individual sites subject to episodic diversifying
+  selection.
+\newblock {\em PLoS Genetics}, 8(7):e1002764, 2012.
+
+\bibitem{muse1994}
+Spencer~V. Muse and Brandon~S. Gaut.
+\newblock A likelihood approach for comparing synonymous and nonsynonymous
+  nucleotide substitution rates, with application to the chloroplast genome.
+\newblock {\em Molecular Biology and Evolution}, 11(5):715--724, 1994.
+
+\bibitem{notredame2000_tcoffee}
+Cedric Notredame, Desmond~G. Higgins, and Jaap Heringa.
+\newblock {T-Coffee}: a novel method for fast and accurate multiple sequence
+  alignment.
+\newblock {\em Journal of Molecular Biology}, 302(1):205--217, 2000.
+
+\bibitem{redelings2014_erasing}
+Benjamin~D. Redelings.
+\newblock Erasing errors due to alignment ambiguity when estimating positive
+  selection.
+\newblock {\em Molecular Biology and Evolution}, 31(8):1979--1993, 2014.
+
+\bibitem{redelings2021_baliphy3}
+Benjamin~D. Redelings.
+\newblock {BAli-Phy} version 3: model-based co-estimation of alignment and
+  phylogeny.
+\newblock {\em Bioinformatics}, 37(17):3032--3034, 2021.
+
+\bibitem{scheffler2006_recombination}
+Konrad Scheffler, Darren~P. Martin, and Cathal Seoighe.
+\newblock Robust inference of positive selection from recombining coding
+  sequences.
+\newblock {\em Bioinformatics}, 22(20):2493--2499, 2006.
+
+\bibitem{selberg2025_bustede}
+Adam~G. Selberg, Sadie Wisotsky, Sergei~L. Kosakovsky~Pond, and Spencer~V.
+  Muse.
+\newblock Minus the error: testing for positive selection in the presence of
+  residual alignment errors.
+\newblock {\em Molecular Biology and Evolution}, 2025.
+\newblock Published online / early access; final bibliographic details to be
+  updated if needed.
+
+\bibitem{smith2015_absrel}
+Martin~D. Smith, Joel~O. Wertheim, Steven Weaver, Ben Murrell, Konrad
+  Scheffler, and Sergei~L. Kosakovsky~Pond.
+\newblock Less is more: an adaptive branch-site random effects model for
+  efficient detection of episodic diversifying selection.
+\newblock {\em Molecular Biology and Evolution}, 32(5):1342--1353, 2015.
+
+\bibitem{venkat2018_mnm}
+Aarti Venkat, Matthew~W. Hahn, and Joseph~W. Thornton.
+\newblock Multinucleotide mutations cause false inferences of lineage-specific
+  positive selection.
+\newblock {\em Nature Ecology \& Evolution}, 2:1280--1288, 2018.
+
+\bibitem{west2025_omegaai}
+Charlotte West and colleagues.
+\newblock Detecting interspecific positive selection using convolutional neural
+  networks.
+\newblock {\em Molecular Biology and Evolution}, 42(7):msaf154, 2025.
+
+\bibitem{wisotsky2020_srv}
+Sadie~R. Wisotsky, Sergei~L. Kosakovsky~Pond, Stephen~D. Shank, and Spencer~V.
+  Muse.
+\newblock Synonymous site-to-site substitution rate variation dramatically
+  inflates false positive rates of selection analyses: ignore at your own
+  peril.
+\newblock {\em Molecular Biology and Evolution}, 37(8):2430--2439, 2020.
+
+\bibitem{xia2003_iss}
+Xuhua Xia, Zheng Xie, Marco Salemi, Ling Chen, and Yong Wang.
+\newblock An index of substitution saturation and its application.
+\newblock {\em Molecular Phylogenetics and Evolution}, 26(1):1--7, 2003.
+
+\bibitem{yang2007}
+Ziheng Yang.
+\newblock {PAML} 4: phylogenetic analysis by maximum likelihood.
+\newblock {\em Molecular Biology and Evolution}, 24(8):1586--1591, 2007.
+
+\bibitem{zhang2005}
+Jianzhi Zhang, Rasmus Nielsen, and Ziheng Yang.
+\newblock Evaluation of an improved branch-site likelihood method for detecting
+  positive selection at the molecular level.
+\newblock {\em Molecular Biology and Evolution}, 22(12):2472--2479, 2005.
+
+\end{thebibliography}

@@ -1,0 +1,5 @@
+tier	calibration_dir	temperature	selected_threshold	target_fdr	calibration_split_size	calibration_split_positive_count	raw_brier	calibrated_brier	raw_ece	calibrated_ece	warnings
+low	branch_site_calibration_explicit_branch_truth_100k_mps_low_streamed	1.0	0.01	0.1	50000	19510	0.004420020333411242	0.0044200203334136	0.003860378738708431	0.0038604019811626926	
+moderate	branch_site_calibration_explicit_branch_truth_100k_mps_moderate_streamed	1.0	0.022	0.1	50000	19510	0.00793770392128897	0.007937703921291464	0.003588172825678332	0.003588197406502609	
+high	branch_site_calibration_explicit_branch_truth_100k_mps_high_streamed	1.05	0.062	0.1	50000	19510	0.016764366987771902	0.016807891170064385	0.004269194149988517	0.0035586739869603607	
+extreme	branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed	0.9500000000000001	0.214	0.1	50000	19587	0.027174171075392092	0.02707056456091339	0.016840492644730774	0.016671694714582172	

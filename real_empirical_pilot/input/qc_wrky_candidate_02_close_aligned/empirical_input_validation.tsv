@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+pass	Arabidopsis_thaliana	7	529	0.0	0.0469889278963003	0.10129275440699466	moderate		

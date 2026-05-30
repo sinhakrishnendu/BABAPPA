@@ -1,0 +1,176 @@
+{
+  "allow_streamed": true,
+  "audit_status_counts": {
+    "explicit_truth_ok": 4
+  },
+  "branch_truth_status_audit_version": "0.4.2-alpha",
+  "explicit_truth_available": true,
+  "explicit_truth_tiers": [
+    "low",
+    "moderate",
+    "high",
+    "extreme"
+  ],
+  "generated_files": {
+    "json": "explicit_branch_truth_100k_mps_truth_status_audit/branch_truth_status_audit.json",
+    "markdown": "explicit_branch_truth_100k_mps_truth_status_audit/branch_truth_status_audit.md",
+    "tsv": "explicit_branch_truth_100k_mps_truth_status_audit/branch_truth_status_audit.tsv"
+  },
+  "interpretation": "All audited tiers report explicit branch-site truth availability with status explicit_truth_ok.",
+  "output_suffix": "_streamed",
+  "proxy_label_tiers": [],
+  "recommended_next_step": "Explicit simulator branch-site truth is available for all audited tiers. Proceed to explicit branch-truth validation at larger scale only after checking foreground-context ablation and aggregation controls.",
+  "run_name": "explicit_branch_truth_100k_mps",
+  "tier_records": [
+    {
+      "audit_status": "explicit_truth_ok",
+      "branch_id_source": "branch_site_dataset_index.branch_counts",
+      "branch_ids_represented": [
+        "taxon_001",
+        "taxon_002",
+        "taxon_003",
+        "taxon_004",
+        "taxon_005",
+        "taxon_006",
+        "taxon_007",
+        "taxon_008"
+      ],
+      "branch_label_source_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "explicit_branch_site_truth_available": true,
+      "foreground_taxa_represented": [],
+      "label_dir": "branch_site_oracle_explicit_branch_truth_100k_mps_low",
+      "label_status": "explicit_simulator_branch_truth",
+      "labels_tsv": "branch_site_oracle_explicit_branch_truth_100k_mps_low/branch_site_oracle_labels.tsv",
+      "n_branch_site_rows": 240000000,
+      "n_positive_branch_sites": 752220,
+      "not_available": false,
+      "positive_branch_site_fraction": 0.00313425,
+      "proxy_from_foreground_taxon": false,
+      "status_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "summary_json": "branch_site_oracle_explicit_branch_truth_100k_mps_low/branch_site_oracle_summary.json",
+      "tier": "low",
+      "warnings": [],
+      "y_branch_site_derivation": "direct_simulator_branch_site_truth"
+    },
+    {
+      "audit_status": "explicit_truth_ok",
+      "branch_id_source": "branch_site_dataset_index.branch_counts",
+      "branch_ids_represented": [
+        "taxon_001",
+        "taxon_002",
+        "taxon_003",
+        "taxon_004",
+        "taxon_005",
+        "taxon_006",
+        "taxon_007",
+        "taxon_008"
+      ],
+      "branch_label_source_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "explicit_branch_site_truth_available": true,
+      "foreground_taxa_represented": [],
+      "label_dir": "branch_site_oracle_explicit_branch_truth_100k_mps_moderate",
+      "label_status": "explicit_simulator_branch_truth",
+      "labels_tsv": "branch_site_oracle_explicit_branch_truth_100k_mps_moderate/branch_site_oracle_labels.tsv",
+      "n_branch_site_rows": 240000000,
+      "n_positive_branch_sites": 752220,
+      "not_available": false,
+      "positive_branch_site_fraction": 0.00313425,
+      "proxy_from_foreground_taxon": false,
+      "status_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "summary_json": "branch_site_oracle_explicit_branch_truth_100k_mps_moderate/branch_site_oracle_summary.json",
+      "tier": "moderate",
+      "warnings": [],
+      "y_branch_site_derivation": "direct_simulator_branch_site_truth"
+    },
+    {
+      "audit_status": "explicit_truth_ok",
+      "branch_id_source": "branch_site_dataset_index.branch_counts",
+      "branch_ids_represented": [
+        "taxon_001",
+        "taxon_002",
+        "taxon_003",
+        "taxon_004",
+        "taxon_005",
+        "taxon_006",
+        "taxon_007",
+        "taxon_008"
+      ],
+      "branch_label_source_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "explicit_branch_site_truth_available": true,
+      "foreground_taxa_represented": [],
+      "label_dir": "branch_site_oracle_explicit_branch_truth_100k_mps_high",
+      "label_status": "explicit_simulator_branch_truth",
+      "labels_tsv": "branch_site_oracle_explicit_branch_truth_100k_mps_high/branch_site_oracle_labels.tsv",
+      "n_branch_site_rows": 240000000,
+      "n_positive_branch_sites": 752220,
+      "not_available": false,
+      "positive_branch_site_fraction": 0.00313425,
+      "proxy_from_foreground_taxon": false,
+      "status_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "summary_json": "branch_site_oracle_explicit_branch_truth_100k_mps_high/branch_site_oracle_summary.json",
+      "tier": "high",
+      "warnings": [],
+      "y_branch_site_derivation": "direct_simulator_branch_site_truth"
+    },
+    {
+      "audit_status": "explicit_truth_ok",
+      "branch_id_source": "branch_site_dataset_index.branch_counts",
+      "branch_ids_represented": [
+        "taxon_001",
+        "taxon_002",
+        "taxon_003",
+        "taxon_004",
+        "taxon_005",
+        "taxon_006",
+        "taxon_007",
+        "taxon_008"
+      ],
+      "branch_label_source_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "explicit_branch_site_truth_available": true,
+      "foreground_taxa_represented": [],
+      "label_dir": "branch_site_oracle_explicit_branch_truth_100k_mps_extreme",
+      "label_status": "explicit_simulator_branch_truth",
+      "labels_tsv": "branch_site_oracle_explicit_branch_truth_100k_mps_extreme/branch_site_oracle_labels.tsv",
+      "n_branch_site_rows": 240000024,
+      "n_positive_branch_sites": 752221,
+      "not_available": false,
+      "positive_branch_site_fraction": 0.0031342538532412815,
+      "proxy_from_foreground_taxon": false,
+      "status_counts": {
+        "explicit_simulator_branch_truth": 100000
+      },
+      "summary_json": "branch_site_oracle_explicit_branch_truth_100k_mps_extreme/branch_site_oracle_summary.json",
+      "tier": "extreme",
+      "warnings": [],
+      "y_branch_site_derivation": "direct_simulator_branch_site_truth"
+    }
+  ],
+  "tiers_included": [
+    "low",
+    "moderate",
+    "high",
+    "extreme"
+  ],
+  "tiers_requested": [
+    "low",
+    "moderate",
+    "high",
+    "extreme"
+  ],
+  "title": "BABAPPA branch truth-status audit",
+  "warnings": []
+}

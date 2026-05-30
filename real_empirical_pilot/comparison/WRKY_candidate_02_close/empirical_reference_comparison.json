@@ -1,0 +1,56 @@
+{
+  "babappa_panel_run": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware",
+  "claim_boundary": "Reference tools are external comparison and failure-mode probes. BABAPPA is not tuned to mimic codeml/HyPhy.",
+  "concordance_counts": {
+    "BABAPPA_only": 3
+  },
+  "empirical_reference_comparison_version": "0.5.1-alpha",
+  "failures": [],
+  "panel_claim_boundary": "BABAPPA model is simulation-trained. No simulator truth was used for empirical inference. Scores are diagnostic until simulation-matched calibration and external benchmark interpretation are complete. Out-of-domain cases are not positive-selection calls. Reference-tool disagreement must be interpreted biologically, not automatically treated as BABAPPA failure.",
+  "reference_results": "real_empirical_pilot/reference_results/WRKY_candidate_02_close/reference_results.tsv",
+  "rows": [
+    {
+      "babappa_applicability_status": "in_domain",
+      "babappa_diagnostic_only": "False",
+      "babappa_max_gene_support": "0.177189",
+      "babappa_result_class": "positive",
+      "concordance_class": "BABAPPA_only",
+      "notes": "parsed_reference_output",
+      "panel_id": "WRKY_candidate_02_close",
+      "reference_p_value": "1",
+      "reference_q_value": "NA",
+      "reference_result_class": "negative",
+      "test_name": "branch_site_model_A_vs_null",
+      "tool": "codeml"
+    },
+    {
+      "babappa_applicability_status": "in_domain",
+      "babappa_diagnostic_only": "False",
+      "babappa_max_gene_support": "0.177189",
+      "babappa_result_class": "positive",
+      "concordance_class": "BABAPPA_only",
+      "notes": "parsed_reference_output",
+      "panel_id": "WRKY_candidate_02_close",
+      "reference_p_value": "1",
+      "reference_q_value": "NA",
+      "reference_result_class": "negative",
+      "test_name": "aBSREL",
+      "tool": "hyphy"
+    },
+    {
+      "babappa_applicability_status": "in_domain",
+      "babappa_diagnostic_only": "False",
+      "babappa_max_gene_support": "0.177189",
+      "babappa_result_class": "positive",
+      "concordance_class": "BABAPPA_only",
+      "notes": "parsed_reference_output",
+      "panel_id": "WRKY_candidate_02_close",
+      "reference_p_value": "0.0641705",
+      "reference_q_value": "NA",
+      "reference_result_class": "negative",
+      "test_name": "MEME",
+      "tool": "hyphy"
+    }
+  ],
+  "status": "ok"
+}

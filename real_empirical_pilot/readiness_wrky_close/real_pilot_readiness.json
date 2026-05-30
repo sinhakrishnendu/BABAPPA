@@ -1,0 +1,35 @@
+{
+  "claim_boundary": "Readiness gate only; do not run BABAPPA pilot until ready_to_run is true.",
+  "files_missing": 0,
+  "files_present": 1,
+  "foreground_invalid": 0,
+  "generated_at": "2026-05-28T07:22:19.751413+00:00",
+  "input_qc_counts": {
+    "pass": 1
+  },
+  "manifest": "real_empirical_pilot/manifest/wrky_close_panel.tsv",
+  "ready_to_run": true,
+  "real_pilot_readiness_version": "0.4.9-alpha",
+  "recommended_next_action": "Run the real BABAPPA empirical pilot with run-empirical-pilot-panel.",
+  "rows": [
+    {
+      "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/msas/WRKY_candidate_02_close.codon.aln.fasta",
+      "expected_category": "likely_positive",
+      "failures": "",
+      "files_present": true,
+      "foreground": "Arabidopsis_thaliana",
+      "foreground_valid": true,
+      "gene_family": "WRKY33_AT2G38470_close_Brassicaceae",
+      "input_qc_status": "pass",
+      "panel_id": "WRKY_candidate_02_close",
+      "ready": true,
+      "tree_compatible": true,
+      "tree_file": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/WRKY_candidate_02_close.treefile",
+      "warnings": ""
+    }
+  ],
+  "status": "ready",
+  "total_families": 1,
+  "tree_incompatible": 0,
+  "workspace": "real_empirical_pilot"
+}

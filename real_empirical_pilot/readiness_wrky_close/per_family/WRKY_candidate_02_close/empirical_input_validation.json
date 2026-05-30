@@ -1,0 +1,37 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/msas/WRKY_candidate_02_close.codon.aln.fasta",
+  "empirical_input_validation_version": "0.4.9-alpha",
+  "empirical_validation_status": "pass",
+  "failures": [],
+  "fasta_ids": [
+    "Arabidopsis_halleri",
+    "Arabidopsis_lyrata",
+    "Arabidopsis_thaliana",
+    "Arabis_alpina",
+    "Brassica_oleracea",
+    "Brassica_rapa_RO18",
+    "Eutrema_salsugineum"
+  ],
+  "foreground": "Arabidopsis_thaliana",
+  "foreground_taxon": "Arabidopsis_thaliana",
+  "gap_fraction": 0.0469889278963003,
+  "generated_at": "2026-05-28T07:22:19.750827+00:00",
+  "mean_pairwise_p_distance": 0.10129275440699466,
+  "n_codons": 529,
+  "n_taxa": 7,
+  "saturation_proxy": "moderate",
+  "status": "pass",
+  "tree": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/WRKY_candidate_02_close.treefile",
+  "tree_shape_summary": "n_tips=7;n_internal_commas=6",
+  "tree_tips": [
+    "Arabidopsis_halleri",
+    "Arabidopsis_lyrata",
+    "Arabidopsis_thaliana",
+    "Arabis_alpina",
+    "Brassica_oleracea",
+    "Brassica_rapa_RO18",
+    "Eutrema_salsugineum"
+  ],
+  "warnings": []
+}

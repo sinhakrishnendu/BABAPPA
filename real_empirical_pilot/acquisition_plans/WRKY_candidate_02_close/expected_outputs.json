@@ -1,0 +1,7 @@
+{
+  "best_hits": "best_hits.tsv",
+  "curated_cds": "WRKY_candidate_02_close.cds.fasta",
+  "prefilter": "empirical_family_prefilter.json",
+  "raw_downloads": "proteome/CDS FASTA files",
+  "tree": "WRKY_candidate_02_close.treefile"
+}

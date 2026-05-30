@@ -1,0 +1,38 @@
+{
+  "decision_counts": {
+    "accept": 1,
+    "diagnostic_only": 1
+  },
+  "empirical_ood_summary_version": "0.4.9-alpha",
+  "n_families": 2,
+  "rows": [
+    {
+      "applicability": "out_of_domain",
+      "diagnostic_only": true,
+      "family": "WRKY_candidate_01",
+      "mean_pdistance": 0.7257986609625097,
+      "n_codons": 474,
+      "n_taxa": 6,
+      "prefilter_decision": "diagnostic_only",
+      "recommended_action": "use this only as an OOD stress test; build a closer-taxa panel",
+      "saturation_proxy": "extreme",
+      "score_rows": 9870,
+      "tier_model": "extreme"
+    },
+    {
+      "applicability": "in_domain",
+      "diagnostic_only": false,
+      "family": "WRKY_candidate_02_close",
+      "mean_pdistance": 0.10129275440699466,
+      "n_codons": 490,
+      "n_taxa": 7,
+      "prefilter_decision": "accept",
+      "recommended_action": "eligible for guarded empirical pilot after reference planning",
+      "saturation_proxy": "moderate",
+      "score_rows": 10584,
+      "tier_model": "moderate"
+    }
+  ],
+  "status": "ok",
+  "workspace": "real_empirical_pilot"
+}

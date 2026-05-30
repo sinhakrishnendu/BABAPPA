@@ -1,0 +1,42 @@
+{
+  "cds_fasta": "real_empirical_pilot/input/cds/WRKY_candidate_01.cds.fasta",
+  "fasta_taxa": [
+    "Arabidopsis_thaliana",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor",
+    "Brachypodium_distachyon"
+  ],
+  "foreground": null,
+  "foreground_candidates_version": "0.4.8-alpha",
+  "foreground_valid": null,
+  "matching_tips": [
+    "Arabidopsis_thaliana",
+    "Brachypodium_distachyon",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor"
+  ],
+  "missing_in_fasta": [],
+  "missing_in_tree": [],
+  "suggested_foreground_labels": [
+    "Arabidopsis_thaliana",
+    "Brachypodium_distachyon",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor"
+  ],
+  "tree_file": "real_empirical_pilot/input/trees/WRKY_candidate_01.treefile",
+  "tree_tips": [
+    "Arabidopsis_thaliana",
+    "Brachypodium_distachyon",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor"
+  ],
+  "warnings": []
+}

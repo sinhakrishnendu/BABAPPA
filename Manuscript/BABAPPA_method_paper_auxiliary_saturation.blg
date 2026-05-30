@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: BABAPPA_method_paper_auxiliary_saturation.aux
+The style file: plain.bst
+Database file #1: references_auxiliary_saturation.bib
+You've used 40 entries,
+            2118 wiz_defined-function locations,
+            720 strings with 11962 characters,
+and the built_in function-call counts, 15411 in all, are:
+= -- 1518
+> -- 829
+< -- 0
++ -- 332
+- -- 286
+* -- 1323
+:= -- 2610
+add.period$ -- 121
+call.type$ -- 40
+change.case$ -- 263
+chr.to.int$ -- 0
+cite$ -- 40
+duplicate$ -- 439
+empty$ -- 1104
+format.name$ -- 286
+if$ -- 3061
+int.to.chr$ -- 0
+int.to.str$ -- 40
+missing$ -- 40
+newline$ -- 204
+num.names$ -- 80
+pop$ -- 184
+preamble$ -- 1
+purify$ -- 223
+quote$ -- 0
+skip$ -- 290
+stack$ -- 0
+substring$ -- 1261
+swap$ -- 40
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 160
+warning$ -- 0
+while$ -- 151
+width$ -- 42
+write$ -- 443

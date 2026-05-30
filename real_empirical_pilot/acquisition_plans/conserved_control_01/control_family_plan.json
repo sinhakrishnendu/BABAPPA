@@ -1,0 +1,21 @@
+{
+  "close_taxa_control_family_plan_version": "0.5.1-alpha",
+  "control_id": "conserved_control_01",
+  "executed": false,
+  "max_mean_pdistance": 0.25,
+  "min_codons": 100,
+  "min_taxa": 6,
+  "query_gene_or_locus": "ACTIN",
+  "query_species": "Arabidopsis_thaliana",
+  "scripts": {
+    "build_alignment_tree.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/build_alignment_tree.sh",
+    "download_homologs.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/download_homologs.sh",
+    "import_if_accepted.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/import_if_accepted.sh",
+    "prefilter_family.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/prefilter_family.sh",
+    "recover_cds.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/recover_cds.sh",
+    "run_babappa_control.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/run_babappa_control.sh",
+    "run_reference_control.sh": "real_empirical_pilot/acquisition_plans/conserved_control_01/run_reference_control.sh"
+  },
+  "status": "planned",
+  "target_taxa_file": "real_empirical_pilot/target_taxa_recommendations/recommended_target_taxa.tsv"
+}

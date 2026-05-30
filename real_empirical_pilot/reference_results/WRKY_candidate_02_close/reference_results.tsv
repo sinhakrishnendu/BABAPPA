@@ -1,0 +1,4 @@
+panel_id	tool	test_name	p_value	q_value	selected_branch	selected_sites	result_class	notes
+WRKY_candidate_02_close	codeml	branch_site_model_A_vs_null	1	NA	Arabidopsis_thaliana	NA	negative	parsed_reference_output
+WRKY_candidate_02_close	hyphy	aBSREL	1	NA	Arabidopsis_thaliana	NA	negative	parsed_reference_output
+WRKY_candidate_02_close	hyphy	MEME	0.0641705	NA	Arabidopsis_thaliana	NA	negative	parsed_reference_output

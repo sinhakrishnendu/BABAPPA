@@ -1,0 +1,11 @@
+* USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+* panel_id: housekeeping_negative_01
+* foreground branch/taxon: replace_with_foreground_taxon
+seqfile = alignment.phy
+treefile = foreground_marked.tree
+outfile = model_A.out
+runmode = 0
+model = 2
+NSsites = 2
+fix_omega = 0
+omega = estimated

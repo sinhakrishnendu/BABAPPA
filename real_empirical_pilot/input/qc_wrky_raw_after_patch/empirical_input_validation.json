@@ -1,0 +1,38 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "real_empirical_pilot/input/cds/WRKY_candidate_01.cds.fasta",
+  "empirical_input_validation_version": "0.4.8-alpha",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "Arabidopsis_thaliana",
+    "Brachypodium_distachyon",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor"
+  ],
+  "foreground": "Arabidopsis_thaliana",
+  "foreground_taxon": "Arabidopsis_thaliana",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-28T05:10:06.601918+00:00",
+  "mean_pairwise_p_distance": 0.7257986609625097,
+  "n_codons": 474,
+  "n_taxa": 6,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "real_empirical_pilot/input/trees/WRKY_candidate_01.treefile",
+  "tree_shape_summary": "n_tips=6;n_internal_commas=5",
+  "tree_tips": [
+    "Arabidopsis_thaliana",
+    "Brachypodium_distachyon",
+    "Brassica_rapa",
+    "Glycine_max",
+    "Oryza_sativa",
+    "Sorghum_bicolor"
+  ],
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input",
+    "high_pairwise_p_distance:0.725799"
+  ]
+}

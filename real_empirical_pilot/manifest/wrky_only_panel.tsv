@@ -1,0 +1,2 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+WRKY_candidate_01	WRKY_candidate_01	plants	../input/cds/WRKY_candidate_01.cds.fasta	../input/trees/WRKY_candidate_01.treefile	Arabidopsis_thaliana	unknown	planned	Ensembl Plants BLASTP-derived WRKY33-like ortholog candidate set; 6 taxa recovered; diagnostic pilot only

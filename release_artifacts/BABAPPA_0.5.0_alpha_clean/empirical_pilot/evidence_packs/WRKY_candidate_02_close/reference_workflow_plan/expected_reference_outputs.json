@@ -1,0 +1,21 @@
+{
+  "executed": false,
+  "expected_outputs": {
+    "codeml": [
+      "model_A.out",
+      "null.out",
+      "lrt_summary.tsv",
+      "bh_corrected_results.tsv"
+    ],
+    "hyphy": [
+      "meme.json",
+      "absrel.json",
+      "hyphy_summary.tsv"
+    ]
+  },
+  "status": "planned",
+  "tools": [
+    "codeml",
+    "hyphy"
+  ]
+}

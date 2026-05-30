@@ -1,0 +1,4 @@
+panel_id	tool	test_name	p_value	q_value	selected_branch	selected_sites	result_class	notes
+WRKY_candidate_02_close	codeml	branch_site_model_A_vs_null	NA	NA	Arabidopsis_thaliana	NA	pending	USER_TO_FILL_AFTER_CODEML
+WRKY_candidate_02_close	hyphy	aBSREL	NA	NA	Arabidopsis_thaliana	NA	pending	USER_TO_FILL_AFTER_HYPHY
+WRKY_candidate_02_close	hyphy	MEME	NA	NA	Arabidopsis_thaliana	NA	pending	USER_TO_FILL_AFTER_HYPHY

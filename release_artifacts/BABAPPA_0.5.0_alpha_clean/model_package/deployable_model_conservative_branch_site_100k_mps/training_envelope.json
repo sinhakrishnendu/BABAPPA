@@ -1,0 +1,74 @@
+{
+  "run_identity": {
+    "babappalign_device": "mps",
+    "babappalign_workers": "4",
+    "device": "mps",
+    "disk": {
+      "free_gib": 487.4,
+      "total_gib": 1858.1,
+      "used_gib": 1370.8
+    },
+    "families_per_tier": 25000,
+    "feature_policy": "conservative_branch_site",
+    "machine": "arm64",
+    "methods": [
+      "identity",
+      "mafft",
+      "babappalign",
+      "muscle"
+    ],
+    "mps_batch_size": "64",
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "run_name": "explicit_branch_truth_100k_mps",
+    "tiers": [
+      "low",
+      "moderate",
+      "high",
+      "extreme"
+    ],
+    "total_families": 100000,
+    "total_runtime": "not_computed_from_logs",
+    "truth_mode": "explicit"
+  },
+  "schema_version": "0.4.4-alpha",
+  "scientific_boundary": "simulation-supervised research-alpha; not final empirical branch-site inference",
+  "stage_markers": {
+    "by_tier": {
+      "extreme": 26,
+      "high": 26,
+      "low": 26,
+      "moderate": 26
+    },
+    "complete": 104,
+    "missing": false,
+    "partial": 0,
+    "partial_markers": [],
+    "plan_dir": "explicit_branch_truth_100k_mps_plan_blazing"
+  },
+  "tier_model_metadata": {
+    "extreme": {
+      "device_used": "mps",
+      "dropout": 0.1,
+      "hidden_dim": 64,
+      "n_features": 22
+    },
+    "high": {
+      "device_used": "mps",
+      "dropout": 0.1,
+      "hidden_dim": 64,
+      "n_features": 22
+    },
+    "low": {
+      "device_used": "mps",
+      "dropout": 0.1,
+      "hidden_dim": 64,
+      "n_features": 22
+    },
+    "moderate": {
+      "device_used": "mps",
+      "dropout": 0.1,
+      "hidden_dim": 64,
+      "n_features": 22
+    }
+  }
+}

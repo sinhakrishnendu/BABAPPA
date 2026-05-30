@@ -1,0 +1,2 @@
+panel_id	gene_family	expected_category	cds_fasta	tree_file	files_present	input_qc_status	foreground	foreground_valid	tree_compatible	ready	failures	warnings
+WRKY_candidate_01	WRKY_candidate_01	unknown	/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/WRKY_candidate_01.cds.fasta	/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/WRKY_candidate_01.treefile	True	warning	Arabidopsis_thaliana	True	True	True		unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.725799

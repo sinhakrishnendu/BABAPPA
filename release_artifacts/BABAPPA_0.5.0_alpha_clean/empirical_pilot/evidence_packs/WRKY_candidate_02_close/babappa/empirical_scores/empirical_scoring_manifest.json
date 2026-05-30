@@ -1,0 +1,19 @@
+{
+  "applicability_status": "in_domain",
+  "calibration": {
+    "selected_threshold": 0.022,
+    "target_fdr": 0.1,
+    "temperature": 1.0
+  },
+  "device": "mps",
+  "diagnostic_only": false,
+  "empirical_scoring_version": "0.4.9-alpha",
+  "n_rows": 10451,
+  "outputs": {
+    "branch_scores": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/empirical_scores/empirical_branch_scores.tsv",
+    "branch_site_scores": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/empirical_scores/empirical_branch_site_scores.tsv",
+    "gene_support": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/empirical_scores/empirical_gene_support.tsv"
+  },
+  "status": "ok",
+  "tier_model": "moderate"
+}

@@ -1,0 +1,7 @@
+taxon_label	ensembl_dir_or_source_hint	category	notes
+Arabidopsis_thaliana	Ensembl Plants	query	Arabidopsis anchor
+Brassica_rapa	Ensembl Plants	moderate	Brassicaceae
+Glycine_max	Ensembl Plants	moderate	legume
+Medicago_truncatula	Ensembl Plants	moderate	legume
+Vitis_vinifera	Ensembl Plants	moderate	rosid
+Solanum_lycopersicum	Ensembl Plants	moderate	asterid

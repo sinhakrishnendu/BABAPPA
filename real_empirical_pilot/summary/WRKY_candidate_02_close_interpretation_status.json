@@ -1,0 +1,41 @@
+{
+  "babappa_diagnostic_result": {
+    "alignment_status": "warning",
+    "applicability_status": "in_domain",
+    "babappa_result_class": "positive",
+    "diagnostic_only": "False",
+    "expected_category": "likely_positive",
+    "failures": "",
+    "family_dir": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close",
+    "family_status": "warning",
+    "feature_audit_status": "ok",
+    "feature_status": "ok",
+    "gene_family": "WRKY33_AT2G38470_close_Brassicaceae",
+    "input_status": "warning",
+    "max_gene_support": "0.177189",
+    "n_called_positive": "6954",
+    "panel_id": "WRKY_candidate_02_close",
+    "reference_status": "planned",
+    "report_status": "ok",
+    "scoring_status": "ok",
+    "simulation_matched_calibration_status": "planned",
+    "warnings": "unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.663538;method_failed:identity:unaligned_lengths_not_equal"
+  },
+  "calibration_summary": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/simulation_matched_calibration_summary",
+  "claim_boundary": "Diagnostic empirical evidence only. Not manuscript-ready and not a final positive-selection discovery claim until simulation-matched calibration and codeml/HyPhy-style reference comparison are interpreted.",
+  "decision": "diagnostic_positive_pending_reference_and_calibration",
+  "evidence_pack": "real_empirical_pilot/evidence_packs/WRKY_candidate_02_close",
+  "family_id": "WRKY_candidate_02_close",
+  "interpretation_status_version": "0.5.0-alpha",
+  "manuscript_ready": false,
+  "next_user_run_commands": [
+    "cd real_empirical_pilot/reference_runs/WRKY_candidate_02_close/codeml && bash run_codeml_modelA.sh && bash run_codeml_null.sh && bash parse_codeml_lrt.sh",
+    "cd real_empirical_pilot/reference_runs/WRKY_candidate_02_close/hyphy && bash run_absrel.sh && bash run_meme.sh",
+    "bash real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/simulation_matched_calibration_plan/run_wrky_close_matched_nulls.sh",
+    "babappa compare-empirical-reference-results --babappa-panel-run real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware --reference-results real_empirical_pilot/reference_results/WRKY_candidate_02_close_reference_results_template.tsv --outdir real_empirical_pilot/comparison/WRKY_candidate_02_close"
+  ],
+  "reference_results": "real_empirical_pilot/reference_results/WRKY_candidate_02_close_reference_results_template.tsv",
+  "what_calibration_adds": "Simulation-matched null calibration estimates family-specific score behavior before interpretation.",
+  "what_codeml_tests": "Branch-site model A versus null on the marked foreground branch.",
+  "what_hyphy_tests": "aBSREL tests branch-level episodic selection; MEME tests site-level episodic selection."
+}

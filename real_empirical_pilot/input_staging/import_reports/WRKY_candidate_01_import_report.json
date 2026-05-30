@@ -1,0 +1,24 @@
+{
+  "cds_fasta": "real_empirical_pilot/input/cds/WRKY_candidate_01.cds.fasta",
+  "generated_at": "2026-05-28T05:02:19.152687+00:00",
+  "manifest": "real_empirical_pilot/manifest/real_empirical_pilot_panel.tsv",
+  "panel_id": "WRKY_candidate_01",
+  "real_pilot_family_import_version": "0.4.8-alpha",
+  "status": "fail",
+  "tree_file": "real_empirical_pilot/input/trees/WRKY_candidate_01.treefile",
+  "validation": {
+    "failures": [
+      "unequal_sequence_lengths"
+    ],
+    "json": "real_empirical_pilot/input_staging/import_reports/WRKY_candidate_01/validation/empirical_input_validation.json",
+    "markdown": "real_empirical_pilot/input_staging/import_reports/WRKY_candidate_01/validation/empirical_input_validation.md",
+    "n_codons": 474,
+    "n_taxa": 6,
+    "outdir": "real_empirical_pilot/input_staging/import_reports/WRKY_candidate_01/validation",
+    "status": "fail",
+    "tsv": "real_empirical_pilot/input_staging/import_reports/WRKY_candidate_01/validation/empirical_input_validation.tsv",
+    "warnings": [
+      "high_pairwise_p_distance:0.725799"
+    ]
+  }
+}

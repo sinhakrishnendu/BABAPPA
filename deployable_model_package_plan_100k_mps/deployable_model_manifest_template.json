@@ -1,0 +1,79 @@
+{
+  "blocked": false,
+  "feature_policy": "conservative_branch_site",
+  "methods": [
+    "identity",
+    "mafft",
+    "babappalign",
+    "muscle"
+  ],
+  "missing_artifacts": [],
+  "run_name": "explicit_branch_truth_100k_mps",
+  "scientific_boundary": "This plan packages a conservative simulation-trained research-alpha model. It does not authorize final empirical branch-site inference claims.",
+  "summary_dir": "explicit_branch_truth_100k_mps_cross_tier_summary",
+  "tier_models": {
+    "extreme": {
+      "batch_size_note": "trained through 100K MPS plan with batch size 64",
+      "calibration": "branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_calibration.json",
+      "calibration_metrics": "branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_calibrated_metrics.json",
+      "checkpoint": "branch_site_neural_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_neural_checkpoint.pt",
+      "device": "mps",
+      "feature_policy": "conservative_branch_site",
+      "metrics": "branch_site_neural_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_neural_metrics.json",
+      "model_dir": "branch_site_neural_explicit_branch_truth_100k_mps_extreme_streamed",
+      "model_meta": "branch_site_neural_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_neural_model_meta.json",
+      "predictions": "branch_site_neural_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_neural_predictions.tsv",
+      "test_auroc": 0.9899547561981602,
+      "test_f1": 0.9569584308363789,
+      "test_mcc": 0.9307384624409877
+    },
+    "high": {
+      "batch_size_note": "trained through 100K MPS plan with batch size 64",
+      "calibration": "branch_site_calibration_explicit_branch_truth_100k_mps_high_streamed/branch_site_calibration.json",
+      "calibration_metrics": "branch_site_calibration_explicit_branch_truth_100k_mps_high_streamed/branch_site_calibrated_metrics.json",
+      "checkpoint": "branch_site_neural_explicit_branch_truth_100k_mps_high_streamed/branch_site_neural_checkpoint.pt",
+      "device": "mps",
+      "feature_policy": "conservative_branch_site",
+      "metrics": "branch_site_neural_explicit_branch_truth_100k_mps_high_streamed/branch_site_neural_metrics.json",
+      "model_dir": "branch_site_neural_explicit_branch_truth_100k_mps_high_streamed",
+      "model_meta": "branch_site_neural_explicit_branch_truth_100k_mps_high_streamed/branch_site_neural_model_meta.json",
+      "predictions": "branch_site_neural_explicit_branch_truth_100k_mps_high_streamed/branch_site_neural_predictions.tsv",
+      "test_auroc": 0.9945266592054254,
+      "test_f1": 0.9754617554692074,
+      "test_mcc": 0.9606925567004494
+    },
+    "low": {
+      "batch_size_note": "trained through 100K MPS plan with batch size 64",
+      "calibration": "branch_site_calibration_explicit_branch_truth_100k_mps_low_streamed/branch_site_calibration.json",
+      "calibration_metrics": "branch_site_calibration_explicit_branch_truth_100k_mps_low_streamed/branch_site_calibrated_metrics.json",
+      "checkpoint": "branch_site_neural_explicit_branch_truth_100k_mps_low_streamed/branch_site_neural_checkpoint.pt",
+      "device": "mps",
+      "feature_policy": "conservative_branch_site",
+      "metrics": "branch_site_neural_explicit_branch_truth_100k_mps_low_streamed/branch_site_neural_metrics.json",
+      "model_dir": "branch_site_neural_explicit_branch_truth_100k_mps_low_streamed",
+      "model_meta": "branch_site_neural_explicit_branch_truth_100k_mps_low_streamed/branch_site_neural_model_meta.json",
+      "predictions": "branch_site_neural_explicit_branch_truth_100k_mps_low_streamed/branch_site_neural_predictions.tsv",
+      "test_auroc": 0.9986054468271459,
+      "test_f1": 0.9914824740626741,
+      "test_mcc": 0.9863465070439931
+    },
+    "moderate": {
+      "batch_size_note": "trained through 100K MPS plan with batch size 64",
+      "calibration": "branch_site_calibration_explicit_branch_truth_100k_mps_moderate_streamed/branch_site_calibration.json",
+      "calibration_metrics": "branch_site_calibration_explicit_branch_truth_100k_mps_moderate_streamed/branch_site_calibrated_metrics.json",
+      "checkpoint": "branch_site_neural_explicit_branch_truth_100k_mps_moderate_streamed/branch_site_neural_checkpoint.pt",
+      "device": "mps",
+      "feature_policy": "conservative_branch_site",
+      "metrics": "branch_site_neural_explicit_branch_truth_100k_mps_moderate_streamed/branch_site_neural_metrics.json",
+      "model_dir": "branch_site_neural_explicit_branch_truth_100k_mps_moderate_streamed",
+      "model_meta": "branch_site_neural_explicit_branch_truth_100k_mps_moderate_streamed/branch_site_neural_model_meta.json",
+      "predictions": "branch_site_neural_explicit_branch_truth_100k_mps_moderate_streamed/branch_site_neural_predictions.tsv",
+      "test_auroc": 0.9969617408148814,
+      "test_f1": 0.9860971079862032,
+      "test_mcc": 0.9777036288456012
+    }
+  },
+  "truth_audit_dir": "branch_truth_status_audit_explicit_branch_truth_100k_mps",
+  "truth_mode": "explicit",
+  "version": "0.4.3-alpha"
+}

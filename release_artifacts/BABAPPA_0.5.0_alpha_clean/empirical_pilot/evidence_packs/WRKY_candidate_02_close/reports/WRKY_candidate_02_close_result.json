@@ -1,0 +1,70 @@
+{
+  "status": "ok",
+  "software_succeeded": true,
+  "biological_claim_status": "diagnostic_only_until_simulation_matched_calibration_and_reference_workflows",
+  "family_id": "WRKY_candidate_02_close",
+  "query": "Arabidopsis_thaliana AT2G38470 / WRKY33-like close Brassicaceae family",
+  "n_sequences_downloaded": 7,
+  "target_labels": [
+    "Arabidopsis_thaliana",
+    "Arabidopsis_lyrata",
+    "Arabidopsis_halleri",
+    "Arabis_alpina",
+    "Eutrema_salsugineum",
+    "Brassica_oleracea",
+    "Brassica_rapa_RO18"
+  ],
+  "download_source": "Ensembl REST homology/id and sequence/id endpoints",
+  "cds_fasta": "real_empirical_pilot/input/cds/WRKY_candidate_02_close.cds.fasta",
+  "protein_alignment": "real_empirical_pilot/input/msas/WRKY_candidate_02_close.protein.aln.fasta",
+  "codon_alignment_for_prefilter": "real_empirical_pilot/input/msas/WRKY_candidate_02_close.codon.aln.fasta",
+  "tree_file": "real_empirical_pilot/input/trees/WRKY_candidate_02_close.treefile",
+  "prefilter_decision": "accept",
+  "prefilter_mean_pdistance": 0.10129275440699466,
+  "prefilter_max_pdistance": 0.1509433962264151,
+  "readiness_ready_to_run": true,
+  "applicability_status": "in_domain",
+  "p_distance_used": 0.09719812784367628,
+  "p_distance_source": "alignment_ensemble_mean",
+  "raw_input_positional_pdistance": 0.6635377598802685,
+  "recommended_tier": "moderate",
+  "scoring_status": "ok",
+  "device": "mps",
+  "tier_model": "moderate",
+  "diagnostic_only": false,
+  "n_score_rows": 10451,
+  "gene_support_rows": [
+    {
+      "family_id": "empirical",
+      "method": "mafft",
+      "n_branch_site_rows": "3416",
+      "max_prob_positive": "0.17718860507011414",
+      "mean_prob_positive": "0.02447187768918301",
+      "n_called_positive": "2327",
+      "diagnostic_only": "False"
+    },
+    {
+      "family_id": "empirical",
+      "method": "babappalign",
+      "n_branch_site_rows": "3703",
+      "max_prob_positive": "0.17699183523654938",
+      "mean_prob_positive": "0.0242530683584643",
+      "n_called_positive": "2454",
+      "diagnostic_only": "False"
+    },
+    {
+      "family_id": "empirical",
+      "method": "muscle",
+      "n_branch_site_rows": "3332",
+      "max_prob_positive": "0.1771356612443924",
+      "mean_prob_positive": "0.024167544877391915",
+      "n_called_positive": "2173",
+      "diagnostic_only": "False"
+    }
+  ],
+  "panel_run_status": "ok",
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.663538;method_failed:identity:unaligned_lengths_not_equal"
+  ],
+  "interpretation": "BABAPPA produced in-domain simulation-trained diagnostic branch-site support for this close WRKY family, but this is not a final positive-selection claim until simulation-matched calibration and codeml/HyPhy-style reference comparison are completed."
+}

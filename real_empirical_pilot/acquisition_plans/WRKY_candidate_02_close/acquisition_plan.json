@@ -1,0 +1,12 @@
+{
+  "empirical_family_acquisition_plan_version": "0.4.9-alpha",
+  "executed": false,
+  "family_id": "WRKY_candidate_02_close",
+  "n_target_taxa": 6,
+  "query_gene_or_locus": "AT2G38470",
+  "query_species": "Arabidopsis_thaliana",
+  "source": "ensembl_plants",
+  "status": "planned",
+  "strategy": "blastp_best_hit",
+  "target_taxa_file": "real_empirical_pilot/target_taxa_recommendations/recommended_target_taxa.tsv"
+}

@@ -1,0 +1,255 @@
+{
+  "claim_boundary": "Input staging only; no empirical discovery claim.",
+  "generated_at": "2026-05-28T00:50:17.761258+00:00",
+  "manifest": "real_empirical_pilot/manifest/real_empirical_pilot_panel.tsv",
+  "missing_inputs": [
+    {
+      "gene_family": "WRKY_transcription_factor_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/wrky_candidate_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "wrky_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/cds/wrky_candidate_01.cds.fasta"
+    },
+    {
+      "gene_family": "WRKY_transcription_factor_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/wrky_candidate_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "wrky_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/trees/wrky_candidate_01.treefile"
+    },
+    {
+      "gene_family": "CONSTANS_like_transcription_factor_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/constans_like_candidate_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "constans_like_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/cds/constans_like_candidate_01.cds.fasta"
+    },
+    {
+      "gene_family": "CONSTANS_like_transcription_factor_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/constans_like_candidate_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "constans_like_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/trees/constans_like_candidate_01.treefile"
+    },
+    {
+      "gene_family": "immune_or_host_interaction_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/immune_candidate_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "immune_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/cds/immune_candidate_01.cds.fasta"
+    },
+    {
+      "gene_family": "immune_or_host_interaction_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/immune_candidate_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "immune_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/trees/immune_candidate_01.treefile"
+    },
+    {
+      "gene_family": "housekeeping_conserved_gene_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/housekeeping_negative_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "housekeeping_negative_01",
+      "suggested_path": "real_empirical_pilot/input/cds/housekeeping_negative_01.cds.fasta"
+    },
+    {
+      "gene_family": "housekeeping_conserved_gene_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/housekeeping_negative_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "housekeeping_negative_01",
+      "suggested_path": "real_empirical_pilot/input/trees/housekeeping_negative_01.treefile"
+    },
+    {
+      "gene_family": "housekeeping_conserved_gene_02",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/housekeeping_negative_02.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "housekeeping_negative_02",
+      "suggested_path": "real_empirical_pilot/input/cds/housekeeping_negative_02.cds.fasta"
+    },
+    {
+      "gene_family": "housekeeping_conserved_gene_02",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/housekeeping_negative_02.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "housekeeping_negative_02",
+      "suggested_path": "real_empirical_pilot/input/trees/housekeeping_negative_02.treefile"
+    },
+    {
+      "gene_family": "GST_detoxification_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/gst_detox_candidate_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "gst_detox_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/cds/gst_detox_candidate_01.cds.fasta"
+    },
+    {
+      "gene_family": "GST_detoxification_candidate_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/gst_detox_candidate_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "gst_detox_candidate_01",
+      "suggested_path": "real_empirical_pilot/input/trees/gst_detox_candidate_01.treefile"
+    },
+    {
+      "gene_family": "alignment_sensitive_family_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/alignment_sensitive_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "alignment_sensitive_01",
+      "suggested_path": "real_empirical_pilot/input/cds/alignment_sensitive_01.cds.fasta"
+    },
+    {
+      "gene_family": "alignment_sensitive_family_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/alignment_sensitive_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "alignment_sensitive_01",
+      "suggested_path": "real_empirical_pilot/input/trees/alignment_sensitive_01.treefile"
+    },
+    {
+      "gene_family": "alignment_sensitive_family_02",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/alignment_sensitive_02.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "alignment_sensitive_02",
+      "suggested_path": "real_empirical_pilot/input/cds/alignment_sensitive_02.cds.fasta"
+    },
+    {
+      "gene_family": "alignment_sensitive_family_02",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/alignment_sensitive_02.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "alignment_sensitive_02",
+      "suggested_path": "real_empirical_pilot/input/trees/alignment_sensitive_02.treefile"
+    },
+    {
+      "gene_family": "high_divergence_family_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/saturated_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "saturated_01",
+      "suggested_path": "real_empirical_pilot/input/cds/saturated_01.cds.fasta"
+    },
+    {
+      "gene_family": "high_divergence_family_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/saturated_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "saturated_01",
+      "suggested_path": "real_empirical_pilot/input/trees/saturated_01.treefile"
+    },
+    {
+      "gene_family": "high_divergence_family_02",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/saturated_02.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "saturated_02",
+      "suggested_path": "real_empirical_pilot/input/cds/saturated_02.cds.fasta"
+    },
+    {
+      "gene_family": "high_divergence_family_02",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/saturated_02.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "saturated_02",
+      "suggested_path": "real_empirical_pilot/input/trees/saturated_02.treefile"
+    },
+    {
+      "gene_family": "short_low_information_family_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/short_low_information_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "short_low_information_01",
+      "suggested_path": "real_empirical_pilot/input/cds/short_low_information_01.cds.fasta"
+    },
+    {
+      "gene_family": "short_low_information_family_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/short_low_information_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "short_low_information_01",
+      "suggested_path": "real_empirical_pilot/input/trees/short_low_information_01.treefile"
+    },
+    {
+      "gene_family": "possible_paralogy_duplication_risk_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/paralogy_risk_01.cds.fasta",
+      "missing_kind": "cds_fasta",
+      "panel_id": "paralogy_risk_01",
+      "suggested_path": "real_empirical_pilot/input/cds/paralogy_risk_01.cds.fasta"
+    },
+    {
+      "gene_family": "possible_paralogy_duplication_risk_01",
+      "manifest_path": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/paralogy_risk_01.treefile",
+      "missing_kind": "tree_file",
+      "panel_id": "paralogy_risk_01",
+      "suggested_path": "real_empirical_pilot/input/trees/paralogy_risk_01.treefile"
+    }
+  ],
+  "n_families": 12,
+  "n_missing_inputs": 24,
+  "ready_to_run": false,
+  "real_pilot_input_staging_version": "0.4.8-alpha",
+  "status": "missing_inputs",
+  "suggested_paths": [
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/wrky_candidate_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/wrky_candidate_01.metadata.tsv",
+      "panel_id": "wrky_candidate_01",
+      "tree_file": "real_empirical_pilot/input/trees/wrky_candidate_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/constans_like_candidate_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/constans_like_candidate_01.metadata.tsv",
+      "panel_id": "constans_like_candidate_01",
+      "tree_file": "real_empirical_pilot/input/trees/constans_like_candidate_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/immune_candidate_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/immune_candidate_01.metadata.tsv",
+      "panel_id": "immune_candidate_01",
+      "tree_file": "real_empirical_pilot/input/trees/immune_candidate_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/housekeeping_negative_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/housekeeping_negative_01.metadata.tsv",
+      "panel_id": "housekeeping_negative_01",
+      "tree_file": "real_empirical_pilot/input/trees/housekeeping_negative_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/housekeeping_negative_02.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/housekeeping_negative_02.metadata.tsv",
+      "panel_id": "housekeeping_negative_02",
+      "tree_file": "real_empirical_pilot/input/trees/housekeeping_negative_02.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/gst_detox_candidate_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/gst_detox_candidate_01.metadata.tsv",
+      "panel_id": "gst_detox_candidate_01",
+      "tree_file": "real_empirical_pilot/input/trees/gst_detox_candidate_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/alignment_sensitive_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/alignment_sensitive_01.metadata.tsv",
+      "panel_id": "alignment_sensitive_01",
+      "tree_file": "real_empirical_pilot/input/trees/alignment_sensitive_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/alignment_sensitive_02.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/alignment_sensitive_02.metadata.tsv",
+      "panel_id": "alignment_sensitive_02",
+      "tree_file": "real_empirical_pilot/input/trees/alignment_sensitive_02.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/saturated_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/saturated_01.metadata.tsv",
+      "panel_id": "saturated_01",
+      "tree_file": "real_empirical_pilot/input/trees/saturated_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/saturated_02.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/saturated_02.metadata.tsv",
+      "panel_id": "saturated_02",
+      "tree_file": "real_empirical_pilot/input/trees/saturated_02.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/short_low_information_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/short_low_information_01.metadata.tsv",
+      "panel_id": "short_low_information_01",
+      "tree_file": "real_empirical_pilot/input/trees/short_low_information_01.treefile"
+    },
+    {
+      "cds_fasta": "real_empirical_pilot/input/cds/paralogy_risk_01.cds.fasta",
+      "metadata": "real_empirical_pilot/input/metadata/paralogy_risk_01.metadata.tsv",
+      "panel_id": "paralogy_risk_01",
+      "tree_file": "real_empirical_pilot/input/trees/paralogy_risk_01.treefile"
+    }
+  ],
+  "workspace": "real_empirical_pilot"
+}

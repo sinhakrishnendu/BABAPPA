@@ -1,0 +1,7 @@
+taxon_label	ensembl_dir_or_source_hint	category	notes
+Drosophila_melanogaster	Ensembl Metazoa	query_or_close	future animal pilot anchor
+Drosophila_simulans	Ensembl Metazoa	close	close Drosophila
+Drosophila_sechellia	Ensembl Metazoa	close	close Drosophila
+Drosophila_yakuba	Ensembl Metazoa	moderate	moderate Drosophila
+Drosophila_erecta	Ensembl Metazoa	moderate	moderate Drosophila
+Drosophila_ananassae	Ensembl Metazoa	caution	prefilter before interpretation

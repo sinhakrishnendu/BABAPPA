@@ -1,0 +1,7 @@
+{
+  "n_taxa": 6,
+  "pilot_type": "plant_close",
+  "recommendation": "Use a Brassicaceae-heavy panel; avoid mixing monocots and legumes in the first WRKY pilot.",
+  "status": "ok",
+  "target_taxa_recommendation_version": "0.4.9-alpha"
+}

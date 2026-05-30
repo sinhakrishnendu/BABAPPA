@@ -1,0 +1,5 @@
+panel_id	tool	test_name	p_value	q_value	selected_branch	selected_sites	result_class	notes
+positive_like	codeml	branch_site_model_A	0.01	0.04	taxon1	2,4	positive	Mock reference result for schema/concordance testing only.
+negative_like	hyphy	aBSREL	0.80	0.90	taxon1		negative	Mock reference result for schema/concordance testing only.
+alignment_sensitive_like	codeml	branch_site_model_A	0.20	0.30	taxon1		inconclusive	Mock reference result for alignment sensitivity case.
+short_low_information_like	hyphy	MEME	0.95	0.95	taxon1		negative	Mock reference result for short low-information case.

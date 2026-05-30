@@ -1,0 +1,2 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+WRKY_candidate_02_close	WRKY33_AT2G38470_close_Brassicaceae	close_Brassicaceae_Ensembl_REST	../input/cds/WRKY_candidate_02_close.cds.fasta	../input/trees/WRKY_candidate_02_close.treefile	Arabidopsis_thaliana	likely_positive	planned	Real Ensembl REST close-taxa WRKY33/AT2G38470 pilot; raw CDS for alignment ensemble; OOD prefilter passed on BABAPPAlign codon alignment.

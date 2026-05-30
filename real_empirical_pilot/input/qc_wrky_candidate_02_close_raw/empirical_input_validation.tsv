@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+warning	Arabidopsis_thaliana	7	490	0.0	0.0	0.6635377598802685	extreme		unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.663538

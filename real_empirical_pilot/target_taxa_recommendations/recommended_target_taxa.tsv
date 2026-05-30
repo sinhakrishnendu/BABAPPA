@@ -1,0 +1,7 @@
+taxon_label	ensembl_dir_or_source_hint	category	notes
+Arabidopsis_thaliana	Ensembl Plants Arabidopsis_thaliana	query_or_close	query species / close Brassicaceae anchor
+Arabidopsis_lyrata	Ensembl Plants Arabidopsis_lyrata	close	close Arabidopsis relative
+Capsella_rubella	Ensembl Plants Capsella_rubella	close	Brassicaceae close panel
+Brassica_rapa	Ensembl Plants Brassica_rapa	close_moderate	Brassicaceae crop relative
+Brassica_oleracea	Ensembl Plants Brassica_oleracea	close_moderate	Brassicaceae crop relative
+Eutrema_salsugineum	Ensembl Plants Eutrema_salsugineum	close_moderate	Brassicaceae stress-tolerant relative

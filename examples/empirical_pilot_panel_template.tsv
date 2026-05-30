@@ -1,0 +1,6 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+immune_positive_001	replace_with_gene_family	replace_with_species_group	data/immune_positive_001.cds.fasta	data/immune_positive_001.treefile	replace_with_foreground	known_positive	planned	Curated known-positive candidate; document literature source before use.
+housekeeping_negative_001	replace_with_gene_family	replace_with_species_group	data/housekeeping_negative_001.cds.fasta	data/housekeeping_negative_001.treefile	replace_with_foreground	likely_negative	planned	Likely negative control; document why positive selection is not expected.
+alignment_sensitive_001	replace_with_gene_family	replace_with_species_group	data/alignment_sensitive_001.cds.fasta	data/alignment_sensitive_001.treefile	replace_with_foreground	alignment_sensitive	planned	Alignment-difficult family for failure-mode probing.
+saturated_001	replace_with_gene_family	replace_with_species_group	data/saturated_001.cds.fasta	data/saturated_001.treefile	replace_with_foreground	saturated	planned	High-divergence candidate; expect OOD/applicability scrutiny.
+paralogy_risk_001	replace_with_gene_family	replace_with_species_group	data/paralogy_risk_001.cds.fasta	data/paralogy_risk_001.treefile	replace_with_foreground	paralogy_risk	planned	Paralogy-risk family; use only with careful orthology QC.
