@@ -1,0 +1,40 @@
+{
+  "category_counts": {
+    "paralogy_risk": 1
+  },
+  "empirical_pilot_panel_validation_version": "0.5.2-alpha",
+  "failures": [],
+  "generated_at": "2026-05-31T08:01:32.814231+00:00",
+  "n_rows": 1,
+  "panel_manifest": "real_empirical_pilot/manifest/hsp70_candidate_panel.tsv",
+  "required_columns": [
+    "panel_id",
+    "gene_family",
+    "species_group",
+    "cds_fasta",
+    "tree_file",
+    "foreground",
+    "expected_category",
+    "reference_status",
+    "notes"
+  ],
+  "row_summaries": [
+    {
+      "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/HSP70_candidate_01.cds.fasta",
+      "expected_category": "paralogy_risk",
+      "failures": "",
+      "foreground": "Cucsa.010680|Cucsa.010680.1",
+      "gene_family": "HSP70_like",
+      "input_status": "warning",
+      "panel_id": "HSP70_candidate_01",
+      "reference_status": "planned",
+      "row_status": "warning",
+      "tree_file": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/HSP70_candidate_01.treefile",
+      "warnings": "empirical_input_warning:HSP70_candidate_01;unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.686362"
+    }
+  ],
+  "status": "warning",
+  "warnings": [
+    "empirical_input_warning:HSP70_candidate_01"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/GAPDH_grass_conserved_02_raw.cds.fasta",
+  "empirical_input_validation_version": "0.5.2-alpha",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "ELECO.r07.2AG0102970_ELECO.r07.2AG0102970.1",
+    "HORVU.MOREX.r3.6HG0571560_HORVU.MOREX.r3.6HG0571560.1",
+    "LOC_Os02g07490_LOC_Os02g07490.1",
+    "Oropetium_20150105_02675_Oropetium_20150105_02675A",
+    "Phala.08G200500_Phala.08G200500.1",
+    "Thint.S06G201700_Thint.S06G201700.1"
+  ],
+  "foreground": "LOC_Os02g07490_LOC_Os02g07490.1",
+  "foreground_taxon": "LOC_Os02g07490_LOC_Os02g07490.1",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T05:40:33.655001+00:00",
+  "mean_pairwise_p_distance": 0.7013444397737352,
+  "n_codons": 289,
+  "n_taxa": 6,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/GAPDH_grass_conserved_02_raw.treefile",
+  "tree_shape_summary": "n_tips=6;n_internal_commas=5",
+  "tree_tips": [
+    "ELECO.r07.2AG0102970_ELECO.r07.2AG0102970.1",
+    "HORVU.MOREX.r3.6HG0571560_HORVU.MOREX.r3.6HG0571560.1",
+    "LOC_Os02g07490_LOC_Os02g07490.1",
+    "Oropetium_20150105_02675_Oropetium_20150105_02675A",
+    "Phala.08G200500_Phala.08G200500.1",
+    "Thint.S06G201700_Thint.S06G201700.1"
+  ],
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input",
+    "high_pairwise_p_distance:0.701344"
+  ]
+}

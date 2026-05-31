@@ -1,0 +1,58 @@
+{
+  "alignment_dir": "direct_predict_smoke/user_msa",
+  "deployable_model_package": "deployable_model_conservative_branch_site_100k_mps",
+  "empirical_feature_version": "0.5.2-alpha",
+  "feature_policy": "conservative_branch_site",
+  "feature_schema_check": {
+    "expected_feature_columns": [
+      "site_index_zero",
+      "aligned_site_index_zero",
+      "original_site_index_zero",
+      "site_relative_position",
+      "n_taxa",
+      "n_codons",
+      "codon_id_mean",
+      "codon_id_std",
+      "codon_id_min",
+      "codon_id_max",
+      "codon_id_range",
+      "codon_id_unique_count",
+      "gap_fraction",
+      "non_gap_fraction",
+      "taxon_codon_variability",
+      "foreground_codon_id",
+      "foreground_gap",
+      "branch_codon_id",
+      "branch_gap",
+      "background_mean_codon_id",
+      "foreground_background_codon_delta",
+      "branch_background_codon_delta"
+    ],
+    "feature_schema_match": "pass",
+    "forbidden_columns": [],
+    "foregrounds_scored": [
+      "taxon1",
+      "taxon2",
+      "taxon3"
+    ],
+    "missing_features": [],
+    "n_rows": 15,
+    "status": "pass"
+  },
+  "foreground": "all",
+  "foregrounds_scored": [
+    "taxon1",
+    "taxon2",
+    "taxon3"
+  ],
+  "generated_files": {
+    "features": "direct_predict_smoke/features/empirical_branch_site_features.tsv",
+    "report": "direct_predict_smoke/features/empirical_feature_report.md",
+    "schema_check": "direct_predict_smoke/features/empirical_feature_schema_check.json"
+  },
+  "n_rows": 15,
+  "realignment_performed": false,
+  "status": "pass",
+  "truth_derived_inputs_excluded": true,
+  "user_msa_is_authoritative": true
+}

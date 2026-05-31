@@ -156,6 +156,7 @@ from babappa.empirical import (
     CloseTaxaControlFamilyPlanConfig,
     CodemlReferenceParseConfig,
     CodemlReferencePrepConfig,
+    DirectBranchSitePredictionConfig,
     ClassicalReferenceWorkflowPlanConfig,
     EmpiricalEvidencePackConfig,
     EmpiricalEvidencePackValidationConfig,
@@ -233,6 +234,7 @@ from babappa.empirical import (
     prepare_codeml_reference,
     prepare_hyphy_reference,
     prefilter_empirical_family,
+    predict_branch_sites,
     recommend_target_taxa,
     run_empirical_pilot_panel,
     run_empirical_alignment_ensemble,
@@ -361,7 +363,9 @@ from babappa.training import (
 )
 
 app = typer.Typer(
-    help="BABAPPA: Branch-site Alignment-Bias-Aware Probabilistic Positive-selection Analyzer."
+    help="BABAPPA: Branch-site Alignment-Bias-Aware Probabilistic Positive-selection Analyzer.",
+    invoke_without_command=True,
+    no_args_is_help=False,
 )
 console = Console()
 
@@ -616,8 +620,9 @@ def _version_callback(value: bool) -> None:
         raise typer.Exit()
 
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def callback(
+    ctx: typer.Context,
     version: Optional[bool] = typer.Option(
         None,
         "--version",
@@ -627,6 +632,58 @@ def callback(
     )
 ) -> None:
     """BABAPPA command group."""
+    if ctx.invoked_subcommand is None:
+        _run_interactive_direct_prediction()
+        raise typer.Exit()
+
+
+def _run_interactive_direct_prediction() -> None:
+    console.print("[bold]BABAPPA direct branch-site predictor[/bold]")
+    console.print("Provide an aligned codon MSA and a matching Newick treefile.")
+    msa = Path(typer.prompt("MSA FASTA path")).expanduser()
+    tree = Path(typer.prompt("Treefile path")).expanduser()
+    mode = typer.prompt("Foreground mode [leaves/all/specific]", default="leaves").strip()
+    foreground = _resolve_interactive_foreground(mode)
+    outdir = Path(f"babappa_prediction_{msa.stem.replace('.', '_')}")
+    try:
+        summary = predict_branch_sites(
+            DirectBranchSitePredictionConfig(
+                msa=str(msa),
+                tree=str(tree),
+                foreground=foreground,
+                outdir=str(outdir),
+                model_package="deployable_model_conservative_branch_site_100k_mps",
+                device="auto",
+            )
+        )
+    except (OSError, RuntimeError, ValueError) as exc:
+        console.print(f"Error: could not predict branch-sites: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Direct Branch-Site Prediction",
+        summary,
+        [
+            "status",
+            "outdir",
+            "foreground",
+            "n_foregrounds",
+            "n_taxa",
+            "n_codons",
+            "applicability",
+            "device",
+            "branch_site_predictions",
+            "report",
+        ],
+    )
+
+
+def _resolve_interactive_foreground(mode: str) -> str:
+    lowered = mode.strip().lower()
+    if lowered in {"", "leaf", "leaves", "all"}:
+        return "all"
+    if lowered in {"specific", "anyspecific", "any-specific", "any", "tip", "tips"}:
+        return typer.prompt("Foreground tree tip(s), comma-separated").strip()
+    return mode.strip()
 
 
 @app.command()
@@ -6590,6 +6647,56 @@ def summarize_simulation_matched_calibration_plan_command(
     )
 
 
+@app.command("predict-branch-sites")
+def predict_branch_sites_command(
+    msa: Path = typer.Option(..., "--msa", help="User-supplied aligned codon MSA FASTA."),
+    tree: Path = typer.Option(..., "--tree", help="Newick tree whose tip labels match the MSA IDs."),
+    foreground: str = typer.Option("all", "--foreground", help="'all' or comma-separated tree-tip labels to score."),
+    outdir: Path = typer.Option("babappa_prediction", "--outdir"),
+    model_package: Path = typer.Option("deployable_model_conservative_branch_site_100k_mps", "--model-package"),
+    device: str = typer.Option("auto", "--device"),
+    allow_stop_codons: bool = typer.Option(False, "--allow-stop-codons"),
+    min_taxa: int = typer.Option(3, "--min-taxa"),
+    min_codons: int = typer.Option(3, "--min-codons"),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+) -> None:
+    """Predict branch-site episodic selection directly from a user MSA and tree."""
+    try:
+        summary = predict_branch_sites(
+            DirectBranchSitePredictionConfig(
+                msa=str(msa),
+                tree=str(tree),
+                foreground=foreground,
+                outdir=str(outdir),
+                model_package=str(model_package),
+                device=device,
+                allow_stop_codons=allow_stop_codons,
+                min_taxa=min_taxa,
+                min_codons=min_codons,
+                dry_run=dry_run,
+            )
+        )
+    except (OSError, RuntimeError, ValueError) as exc:
+        console.print(f"Error: could not predict branch-sites: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Direct Branch-Site Prediction",
+        summary,
+        [
+            "status",
+            "outdir",
+            "foreground",
+            "n_foregrounds",
+            "n_taxa",
+            "n_codons",
+            "applicability",
+            "device",
+            "branch_site_predictions",
+            "report",
+        ],
+    )
+
+
 @app.command("validate-empirical-input")
 def validate_empirical_input_command(
     cds_fasta: Path = typer.Option(..., "--cds-fasta"),
@@ -7727,25 +7834,51 @@ def build_reference_results_table_command(
 
 @app.command("run-simulation-matched-null-calibration")
 def run_simulation_matched_null_calibration_command(
-    plan_dir: Path = typer.Option(..., "--plan-dir"),
-    deployable_model_package: Path = typer.Option(..., "--deployable-model-package"),
+    evidence_pack: Optional[Path] = typer.Option(None, "--evidence-pack"),
+    plan_dir: Optional[Path] = typer.Option(None, "--plan-dir"),
+    model_package: Path = typer.Option(
+        Path("deployable_model_conservative_branch_site_100k_mps"),
+        "--model-package",
+        "--deployable-model-package",
+    ),
     outdir: Path = typer.Option(..., "--outdir"),
-    n_replicates: int = typer.Option(100, "--n-replicates"),
+    n_null: int = typer.Option(100, "--n-null", "--n-replicates"),
+    seed: int = typer.Option(20260530, "--seed"),
     device: str = typer.Option("auto", "--device"),
-    seed: int = typer.Option(42, "--seed"),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+    n_alt: int = typer.Option(0, "--n-alt"),
+    tier: str = typer.Option("", "--tier"),
+    family_id: str = typer.Option("", "--family-id"),
+    max_workers: int = typer.Option(1, "--max-workers"),
+    resume: bool = typer.Option(False, "--resume"),
+    force: bool = typer.Option(False, "--force"),
     fast_null_mode: bool = typer.Option(False, "--fast-null-mode"),
 ) -> None:
-    """Run the safe staged one-family simulation-matched null calibration pilot."""
+    """Plan or run conservative one-family simulation-matched null calibration."""
+    if evidence_pack is None and plan_dir is None:
+        console.print("Error: provide --evidence-pack or --plan-dir", style="red")
+        raise typer.Exit(code=1)
+    resolved_plan_dir = plan_dir
+    if resolved_plan_dir is None and evidence_pack is not None:
+        resolved_plan_dir = evidence_pack / "simulation_matched_calibration_plan"
     try:
         summary = run_simulation_matched_null_calibration(
             SimulationMatchedNullCalibrationConfig(
-                plan_dir=str(plan_dir),
-                deployable_model_package=str(deployable_model_package),
+                plan_dir=str(resolved_plan_dir or ""),
+                deployable_model_package=str(model_package),
                 outdir=str(outdir),
-                n_replicates=n_replicates,
+                n_replicates=n_null,
                 device=device,
                 seed=seed,
                 fast_null_mode=fast_null_mode,
+                evidence_pack=str(evidence_pack or ""),
+                dry_run=dry_run,
+                n_alt=n_alt,
+                tier=tier,
+                family_id=family_id,
+                max_workers=max_workers,
+                resume=resume,
+                force=force,
             )
         )
     except (OSError, ValueError) as exc:

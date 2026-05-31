@@ -1,0 +1,44 @@
+{
+  "ambiguous_fraction": 0.0,
+  "cds_fasta": "real_empirical_pilot/input/cds/COL5_candidate_01.cds.fasta",
+  "decision": "reject_too_short",
+  "empirical_family_prefilter_version": "0.5.2-alpha",
+  "foreground": "Cucsa.092180|Cucsa.092180.1",
+  "foreground_present": true,
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T06:20:57.362426+00:00",
+  "internal_stop_codons": [],
+  "length_ratio": 3.9072164948453607,
+  "long_branch_outliers": [
+    "Cucsa.092180|Cucsa.092180.1",
+    "Medtr3g034680|Medtr3g034680.1"
+  ],
+  "max_mean_pdistance": 0.35,
+  "max_pairwise_p_distance": 0.7628865979381443,
+  "mean_pairwise_p_distance": 0.6594562565327912,
+  "min_codons_required": 100,
+  "min_taxa_required": 6,
+  "missing_in_fasta": [],
+  "missing_in_tree": [],
+  "n_codons": 97,
+  "n_taxa": 7,
+  "paralogy_risk_flags": [
+    "extreme_length_ratio:3.907",
+    "long_branch_outliers:Cucsa.092180|Cucsa.092180.1,Medtr3g034680|Medtr3g034680.1",
+    "unusually_divergent_pair:0.762887"
+  ],
+  "recommended_action": "choose a longer coding region or another family",
+  "saturation_proxy": "extreme",
+  "status": "ok",
+  "terminal_stop_codons": [
+    "Cucsa.092180|Cucsa.092180.1:TAA",
+    "Glyma.17G066600|Glyma.17G066600.1:TAG",
+    "Medtr3g034680|Medtr3g034680.1:TAA",
+    "GlysoPI483463.17G061300|GlysoPI483463.17G061300.1:TAG",
+    "Lj4g0015701|Lj4g0015701.1:TAG",
+    "ChfasH1.2G258800|ChfasH1.2G258800.1:TAA",
+    "Psat04G0038300|Psat04G0038300-T1:TAG"
+  ],
+  "tree_file": "real_empirical_pilot/input/trees/COL5_candidate_01.treefile",
+  "tree_tip_compatible": true
+}

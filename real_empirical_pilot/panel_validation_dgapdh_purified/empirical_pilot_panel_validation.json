@@ -1,0 +1,40 @@
+{
+  "category_counts": {
+    "likely_negative": 1
+  },
+  "empirical_pilot_panel_validation_version": "0.5.2-alpha",
+  "failures": [],
+  "generated_at": "2026-05-31T10:00:07.264128+00:00",
+  "n_rows": 1,
+  "panel_manifest": "real_empirical_pilot/manifest/dgapdh_purified_panel.tsv",
+  "required_columns": [
+    "panel_id",
+    "gene_family",
+    "species_group",
+    "cds_fasta",
+    "tree_file",
+    "foreground",
+    "expected_category",
+    "reference_status",
+    "notes"
+  ],
+  "row_summaries": [
+    {
+      "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/DGAPDH_candidate_02_purified.cds.fasta",
+      "expected_category": "likely_negative",
+      "failures": "",
+      "foreground": "SMAR006602-PA",
+      "gene_family": "DGAPDH_like",
+      "input_status": "warning",
+      "panel_id": "DGAPDH_candidate_02_purified",
+      "reference_status": "planned",
+      "row_status": "warning",
+      "tree_file": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/DGAPDH_candidate_02_purified.treefile",
+      "warnings": "empirical_input_warning:DGAPDH_candidate_02_purified;unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.683663"
+    }
+  ],
+  "status": "warning",
+  "warnings": [
+    "empirical_input_warning:DGAPDH_candidate_02_purified"
+  ]
+}

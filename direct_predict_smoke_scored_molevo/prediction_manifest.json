@@ -1,0 +1,53 @@
+{
+  "applicability_reasons": [
+    "low_taxa:3",
+    "short_alignment:5"
+  ],
+  "applicability_status": "borderline",
+  "direct_prediction_version": "0.5.2-alpha",
+  "foreground_requested": "all",
+  "foregrounds_scored": [
+    "taxon1",
+    "taxon2",
+    "taxon3"
+  ],
+  "generated_at": "2026-05-31T11:38:19.594597+00:00",
+  "model_package": "deployable_model_conservative_branch_site_100k_mps",
+  "msa": "tests/data/empirical_smoke/tiny_empirical.cds.fasta",
+  "n_codons": 5,
+  "n_prediction_rows": 15,
+  "n_taxa": 3,
+  "no_simulator_truth_used": true,
+  "outputs": {
+    "branch_predictions": "direct_predict_smoke_scored_molevo/branch_predictions.tsv",
+    "branch_site_predictions": "direct_predict_smoke_scored_molevo/branch_site_predictions.tsv",
+    "gene_summary": "direct_predict_smoke_scored_molevo/gene_summary.tsv",
+    "prediction_report": "direct_predict_smoke_scored_molevo/prediction_report.md",
+    "qc_report": "direct_predict_smoke_scored_molevo/qc_report.md"
+  },
+  "realignment_performed": false,
+  "scoring": {
+    "device": "cpu",
+    "diagnostic_only": false,
+    "n_rows": 15,
+    "outdir": "direct_predict_smoke_scored_molevo/scores",
+    "status": "ok",
+    "tier_model": "moderate"
+  },
+  "status": "ok",
+  "summary": {
+    "applicability_status": "borderline",
+    "diagnostic_only": "False",
+    "family_id": "empirical",
+    "max_gene_support": "0.0",
+    "n_branch_site_rows": "15",
+    "n_branches_scored": "3",
+    "n_called_positive": "0",
+    "result_class": "diagnostic_negative",
+    "tier_model": "moderate"
+  },
+  "tree": "tests/data/empirical_smoke/tiny_empirical.treefile",
+  "truth_derived_inputs_excluded": true,
+  "user_msa_is_authoritative": true,
+  "validation_status": "pass"
+}

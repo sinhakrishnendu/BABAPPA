@@ -1,0 +1,16 @@
+family_id	method	branch_id	foreground_taxon	aligned_site_index_zero	original_site_index_zero	prob_positive	called_positive	tier_model	calibrated_threshold	diagnostic_only
+empirical	user_msa	taxon1	taxon1	0	0	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon2	taxon2	0	0	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon3	taxon3	0	0	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon1	taxon1	1	1	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon2	taxon2	1	1	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon3	taxon3	1	1	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon1	taxon1	2	2	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon2	taxon2	2	2	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon3	taxon3	2	2	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon1	taxon1	3	3	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon2	taxon2	3	3	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon3	taxon3	3	3	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon1	taxon1	4	4	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon2	taxon2	4	4	0.0	0	moderate	0.022	False
+empirical	user_msa	taxon3	taxon3	4	4	0.0	0	moderate	0.022	False

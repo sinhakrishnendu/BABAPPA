@@ -1,0 +1,2 @@
+decision	n_taxa	n_codons	mean_pairwise_p_distance	max_pairwise_p_distance	saturation_proxy	gap_fraction	ambiguous_fraction	foreground_present	tree_tip_compatible	paralogy_risk_flags	recommended_action
+reject_too_short	7	97	0.659456	0.762887	extreme	0	0	True	True	extreme_length_ratio:3.907;long_branch_outliers:Cucsa.092180|Cucsa.092180.1,Medtr3g034680|Medtr3g034680.1;unusually_divergent_pair:0.762887	choose a longer coding region or another family

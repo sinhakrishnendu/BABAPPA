@@ -1,0 +1,16 @@
+family_id	method	branch_id	foreground_taxon	aligned_site_index_zero	original_site_index_zero	mapping_status	site_index_zero	aligned_site_index_zero	original_site_index_zero	site_relative_position	n_taxa	n_codons	codon_id_mean	codon_id_std	codon_id_min	codon_id_max	codon_id_range	codon_id_unique_count	gap_fraction	non_gap_fraction	taxon_codon_variability	foreground_codon_id	foreground_gap	branch_codon_id	branch_gap	background_mean_codon_id	foreground_background_codon_delta	branch_background_codon_delta
+empirical	user_msa	taxon1	taxon1	0	0	unique	0	0	0	0.0	3	5	78.0	0.0	78.0	78.0	0.0	1	0.0	1.0	0.0	78	0	78	0	78.0	0.0	0.0
+empirical	user_msa	taxon2	taxon2	0	0	unique	0	0	0	0.0	3	5	78.0	0.0	78.0	78.0	0.0	1	0.0	1.0	0.0	78	0	78	0	78.0	0.0	0.0
+empirical	user_msa	taxon3	taxon3	0	0	unique	0	0	0	0.0	3	5	78.0	0.0	78.0	78.0	0.0	1	0.0	1.0	0.0	78	0	78	0	78.0	0.0	0.0
+empirical	user_msa	taxon1	taxon1	1	1	unique	1	1	1	0.25	3	5	103.0	0.0	103.0	103.0	0.0	1	0.0	1.0	0.0	103	0	103	0	103.0	0.0	0.0
+empirical	user_msa	taxon2	taxon2	1	1	unique	1	1	1	0.25	3	5	103.0	0.0	103.0	103.0	0.0	1	0.0	1.0	0.0	103	0	103	0	103.0	0.0	0.0
+empirical	user_msa	taxon3	taxon3	1	1	unique	1	1	1	0.25	3	5	103.0	0.0	103.0	103.0	0.0	1	0.0	1.0	0.0	103	0	103	0	103.0	0.0	0.0
+empirical	user_msa	taxon1	taxon1	2	2	unique	2	2	2	0.5	3	5	102.33333333333333	0.9428090415820634	101.0	103.0	2.0	2	0.0	1.0	0.9428090415820634	103	0	103	0	102.0	1.0	1.0
+empirical	user_msa	taxon2	taxon2	2	2	unique	2	2	2	0.5	3	5	102.33333333333333	0.9428090415820634	101.0	103.0	2.0	2	0.0	1.0	0.9428090415820634	101	0	101	0	103.0	-2.0	-2.0
+empirical	user_msa	taxon3	taxon3	2	2	unique	2	2	2	0.5	3	5	102.33333333333333	0.9428090415820634	101.0	103.0	2.0	2	0.0	1.0	0.9428090415820634	103	0	103	0	102.0	1.0	1.0
+empirical	user_msa	taxon1	taxon1	3	3	unique	3	3	3	0.75	3	5	102.33333333333333	0.9428090415820634	101.0	103.0	2.0	2	0.0	1.0	0.9428090415820634	103	0	103	0	102.0	1.0	1.0
+empirical	user_msa	taxon2	taxon2	3	3	unique	3	3	3	0.75	3	5	102.33333333333333	0.9428090415820634	101.0	103.0	2.0	2	0.0	1.0	0.9428090415820634	103	0	103	0	102.0	1.0	1.0
+empirical	user_msa	taxon3	taxon3	3	3	unique	3	3	3	0.75	3	5	102.33333333333333	0.9428090415820634	101.0	103.0	2.0	2	0.0	1.0	0.9428090415820634	101	0	101	0	103.0	-2.0	-2.0
+empirical	user_msa	taxon1	taxon1	4	4	unique	4	4	4	1.0	3	5	112.0	0.0	112.0	112.0	0.0	1	0.0	1.0	0.0	112	0	112	0	112.0	0.0	0.0
+empirical	user_msa	taxon2	taxon2	4	4	unique	4	4	4	1.0	3	5	112.0	0.0	112.0	112.0	0.0	1	0.0	1.0	0.0	112	0	112	0	112.0	0.0	0.0
+empirical	user_msa	taxon3	taxon3	4	4	unique	4	4	4	1.0	3	5	112.0	0.0	112.0	112.0	0.0	1	0.0	1.0	0.0	112	0	112	0	112.0	0.0	0.0

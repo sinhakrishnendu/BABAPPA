@@ -1,8 +1,8 @@
 # Deployable Model Package
 
-BABAPPA `0.4.8-alpha` can package the retained conservative explicit branch-truth 100K MPS model artifacts into a research-alpha deployable bundle and use it in the guarded empirical bridge and small diagnostic empirical pilot-panel workflow.
+BABAPPA `0.5.2-alpha` includes a validated research-alpha deployable bundle built from the retained conservative explicit branch-truth 100K MPS model artifacts. The package is intended for guarded empirical diagnostics with applicability/OOD gates, not final empirical positive-selection discovery.
 
-The Cycle 39 100K result was a conditional pass: retained summaries, explicit truth audit, model artifacts, calibration, aggregation, controls, and stage markers support the completed run, but raw/intermediate artifacts were intentionally pruned after validation. That makes the package suitable for controlled simulation-trained deployment scaffolding, not final empirical branch-site inference.
+The 100K result was a conditional pass: retained summaries, explicit truth audit, model artifacts, calibration, aggregation, controls, and stage markers support the completed run, but raw/intermediate artifacts were intentionally pruned after validation. That makes the package suitable for controlled simulation-trained deployment scaffolding, not final empirical branch-site inference.
 
 ## Package Command
 

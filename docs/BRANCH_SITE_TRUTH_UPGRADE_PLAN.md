@@ -57,4 +57,4 @@ Remaining limitations:
 
 ## 100K gate
 
-Final 100K should remain deferred until explicit branch-site truth validation passes.
+The conservative explicit branch-truth 100K Apple Silicon/MPS validation has completed with a conditional pass. Retained summaries, explicit truth audit, model artifacts, calibration, aggregation, controls, and stage markers support completion, but raw/intermediate artifacts were intentionally pruned after validation. The result supports the simulation-trained research-alpha package; it does not establish final empirical positive-selection inference.

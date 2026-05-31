@@ -1,0 +1,2 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+DGAPDH_candidate_01	DGAPDH_like	metazoan_panel	../input/cds/DGAPDH_candidate_01.cds.fasta	../input/trees/DGAPDH_candidate_01.treefile	SMAR006602-PA	likely_negative	planned	User-supplied raw dGAPDH-like CDS and tree. CDS/tree IDs match, CDS lengths are codon-valid, and no gaps/ambiguous bases were detected; run empirical prefilter and method-policy checks before interpreting as a conserved negative control.

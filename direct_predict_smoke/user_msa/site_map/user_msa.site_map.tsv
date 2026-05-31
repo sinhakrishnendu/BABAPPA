@@ -1,0 +1,6 @@
+family_id	method	aligned_site_index_zero	aligned_site_index_one	original_site_index_zero	original_site_index_one	mapping_status	n_taxa_mapped	n_taxa_gap	n_taxa_conflict	mapping_confidence
+empirical	user_msa	0	1	0	1	unique	3	0	0	1.0
+empirical	user_msa	1	2	1	2	unique	3	0	0	1.0
+empirical	user_msa	2	3	2	3	unique	3	0	0	1.0
+empirical	user_msa	3	4	3	4	unique	3	0	0	1.0
+empirical	user_msa	4	5	4	5	unique	3	0	0	1.0

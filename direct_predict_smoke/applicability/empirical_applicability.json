@@ -1,0 +1,25 @@
+{
+  "applicability_status": "borderline",
+  "diagnostic_only_if_scored": false,
+  "empirical_applicability_version": "0.5.2-alpha",
+  "feature_distribution_range_check": "not_available_in_package_v1",
+  "feature_rows": 15,
+  "reasons": [
+    "low_taxa:3",
+    "short_alignment:5"
+  ],
+  "recommended_tier": "moderate",
+  "status": "borderline",
+  "training_envelope_available": true,
+  "validation": {
+    "alignment_mean_pairwise_p_distance": 0.08888888888888889,
+    "ambiguous_base_fraction": 0.0,
+    "gap_fraction": 0.0,
+    "mean_pairwise_p_distance": 0.08888888888888889,
+    "n_codons": 5,
+    "n_taxa": 3,
+    "p_distance_source": "input_cds_positional",
+    "p_distance_used": 0.08888888888888889,
+    "saturation_proxy": "moderate"
+  }
+}

@@ -1,0 +1,4 @@
+family_id	method	branch_id	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	user_msa	taxon1	5	0.0	0.0	0	False
+empirical	user_msa	taxon2	5	0.0	0.0	0	False
+empirical	user_msa	taxon3	5	0.0	0.0	0	False

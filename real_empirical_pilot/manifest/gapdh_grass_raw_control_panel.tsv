@@ -1,0 +1,2 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+GAPDH_grass_conserved_02_raw	GAPDH_grass	grasses	../input/cds/GAPDH_grass_conserved_02_raw.cds.fasta	../input/trees/GAPDH_grass_conserved_02_raw.treefile	LOC_Os02g07490_LOC_Os02g07490.1	saturated	planned	Raw CDS and newly built tree supplied by user. Duplicate Phala isoforms have been removed and CDS/tree IDs match, but the raw prefilter estimates high divergence, so treat this as a saturated diagnostic control unless aligned applicability later shows it is in-domain.

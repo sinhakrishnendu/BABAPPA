@@ -1,0 +1,2 @@
+family_id	n_branches_scored	n_branch_site_rows	n_called_positive	max_gene_support	applicability_status	tier_model	diagnostic_only	result_class
+empirical	3	15	0	0.0	borderline	moderate	False	diagnostic_negative

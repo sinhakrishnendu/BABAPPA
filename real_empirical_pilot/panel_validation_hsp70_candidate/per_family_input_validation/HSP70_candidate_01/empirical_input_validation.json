@@ -1,0 +1,42 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/HSP70_candidate_01.cds.fasta",
+  "empirical_input_validation_version": "0.5.2-alpha",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "ChfasH1.6G167600|ChfasH1.6G167600.1",
+    "ChfasH1.6G167600|ChfasH1.6G167600.2",
+    "Cucsa.010680|Cucsa.010680.1",
+    "Glyma.13G224100|Glyma.13G224100.1",
+    "GlysoPI483463.08G277300|GlysoPI483463.08G277300.1",
+    "Lj6g0017279|Lj6g0017279.1",
+    "Medtr4g130540|Medtr4g130540.1",
+    "Psat06G0270900|Psat06G0270900-T1"
+  ],
+  "foreground": "Cucsa.010680|Cucsa.010680.1",
+  "foreground_taxon": "Cucsa.010680|Cucsa.010680.1",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T08:01:32.813735+00:00",
+  "mean_pairwise_p_distance": 0.6863622898841617,
+  "n_codons": 337,
+  "n_taxa": 8,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/HSP70_candidate_01.treefile",
+  "tree_shape_summary": "n_tips=8;n_internal_commas=7",
+  "tree_tips": [
+    "ChfasH1.6G167600|ChfasH1.6G167600.1",
+    "ChfasH1.6G167600|ChfasH1.6G167600.2",
+    "Cucsa.010680|Cucsa.010680.1",
+    "Glyma.13G224100|Glyma.13G224100.1",
+    "GlysoPI483463.08G277300|GlysoPI483463.08G277300.1",
+    "Lj6g0017279|Lj6g0017279.1",
+    "Medtr4g130540|Medtr4g130540.1",
+    "Psat06G0270900|Psat06G0270900-T1"
+  ],
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input",
+    "high_pairwise_p_distance:0.686362"
+  ]
+}

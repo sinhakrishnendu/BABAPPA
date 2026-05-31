@@ -1,0 +1,2 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+HSP70_candidate_01	HSP70_like	plant_panel	../input/cds/HSP70_candidate_01.cds.fasta	../input/trees/HSP70_candidate_01.treefile	Cucsa.010680|Cucsa.010680.1	paralogy_risk	planned	User-supplied raw HSP70-like CDS and tree. CDS/tree IDs match and CDS lengths are codon-valid, but two ChfasH1.6G167600 isoforms and large length/branch differences are present; treat as paralogy/alignment-sensitive diagnostic until prefilter and method-policy reports confirm interpretability.

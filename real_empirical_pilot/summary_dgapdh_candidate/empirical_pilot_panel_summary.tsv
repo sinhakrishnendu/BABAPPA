@@ -1,0 +1,2 @@
+status	n_families	input_qc_counts	applicability_counts	scoring_counts	diagnostic_only_cases	simulation_matched_calibration	reference_concordance_counts	recommended_next_empirical_panel_size	no_empirical_discovery_claim
+ok	1	"{""warning"": 1}"	"{""out_of_domain"": 1}"	"{""ok"": 1}"	1	planned_not_run	{}	5_to_10_families	True

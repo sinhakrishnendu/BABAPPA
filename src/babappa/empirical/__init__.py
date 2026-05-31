@@ -7,6 +7,7 @@ from babappa.empirical.calibration import (
     plan_simulation_matched_calibration,
 )
 from babappa.empirical.bridge import (
+    DirectBranchSitePredictionConfig,
     EmpiricalAlignmentEnsembleConfig,
     EmpiricalApplicabilityConfig,
     EmpiricalBranchSiteReportConfig,
@@ -19,6 +20,7 @@ from babappa.empirical.bridge import (
     extract_empirical_branch_site_features,
     make_empirical_branch_site_report,
     plan_external_benchmark_panel,
+    predict_branch_sites,
     run_empirical_alignment_ensemble,
     run_empirical_applicability,
     score_empirical_branch_sites,
@@ -119,6 +121,7 @@ __all__ = [
     "SimulationMatchedCalibrationPlanConfig",
     "plan_empirical_scoring",
     "plan_simulation_matched_calibration",
+    "DirectBranchSitePredictionConfig",
     "EmpiricalAlignmentEnsembleConfig",
     "EmpiricalApplicabilityConfig",
     "EmpiricalBranchSiteReportConfig",
@@ -131,6 +134,7 @@ __all__ = [
     "extract_empirical_branch_site_features",
     "make_empirical_branch_site_report",
     "plan_external_benchmark_panel",
+    "predict_branch_sites",
     "run_empirical_alignment_ensemble",
     "run_empirical_applicability",
     "score_empirical_branch_sites",

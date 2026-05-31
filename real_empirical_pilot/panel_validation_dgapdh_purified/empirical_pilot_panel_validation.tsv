@@ -1,0 +1,2 @@
+panel_id	gene_family	expected_category	reference_status	cds_fasta	tree_file	foreground	row_status	input_status	failures	warnings
+DGAPDH_candidate_02_purified	DGAPDH_like	likely_negative	planned	/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/DGAPDH_candidate_02_purified.cds.fasta	/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/DGAPDH_candidate_02_purified.treefile	SMAR006602-PA	warning	warning		empirical_input_warning:DGAPDH_candidate_02_purified;unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.683663

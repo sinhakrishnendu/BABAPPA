@@ -1,0 +1,16 @@
+branch_id	codon_site	aligned_codon_site	prob_positive	called_positive	confidence	tier_model	calibrated_threshold	diagnostic_only	method
+taxon1	1	1	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon2	1	1	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon3	1	1	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon1	2	2	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon2	2	2	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon3	2	2	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon1	3	3	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon2	3	3	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon3	3	3	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon1	4	4	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon2	4	4	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon3	4	4	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon1	5	5	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon2	5	5	0.0	0	below_threshold	moderate	0.022	False	user_msa
+taxon3	5	5	0.0	0	below_threshold	moderate	0.022	False	user_msa

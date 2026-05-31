@@ -1,0 +1,23 @@
+{
+  "applicability_counts": {
+    "in_domain": 1
+  },
+  "claim_boundary": "BABAPPA model is simulation-trained. No simulator truth was used for empirical inference. Scores are diagnostic until simulation-matched calibration and external benchmark interpretation are complete. Out-of-domain cases are not positive-selection calls. Reference-tool disagreement must be interpreted biologically, not automatically treated as BABAPPA failure.",
+  "diagnostic_only_cases": 0,
+  "empirical_pilot_panel_summary_version": "0.5.2-alpha",
+  "input_qc_counts": {
+    "warning": 1
+  },
+  "n_families": 1,
+  "no_empirical_discovery_claim": true,
+  "panel_run": "real_empirical_pilot/babappa_run_gapdh_grass_raw_control_fresh",
+  "recommended_next_empirical_panel_size": "5_to_10_families",
+  "reference_comparison": null,
+  "reference_concordance_counts": {},
+  "run_manifest_status": "ok",
+  "scoring_counts": {
+    "ok": 1
+  },
+  "simulation_matched_calibration": "planned_not_run",
+  "status": "ok"
+}

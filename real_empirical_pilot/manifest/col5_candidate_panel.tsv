@@ -1,0 +1,2 @@
+panel_id	gene_family	species_group	cds_fasta	tree_file	foreground	expected_category	reference_status	notes
+COL5_candidate_01	COL5_like	plant_panel	../input/cds/COL5_candidate_01.cds.fasta	../input/trees/COL5_candidate_01.treefile	Cucsa.092180|Cucsa.092180.1	alignment_sensitive	planned	User-supplied raw COL5-like CDS and tree. CDS/tree IDs match and CDS lengths are codon-valid; one sequence is much shorter, so treat as alignment-sensitive diagnostic until prefilter and method-policy reports confirm interpretability.

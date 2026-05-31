@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import time
+from importlib import resources
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -133,6 +134,22 @@ class EmpiricalBranchSiteReportConfig:
     scoring_dir: str
     simulation_matched_calibration_plan: str
     deployable_model_package: str
+
+
+@dataclass(frozen=True)
+class DirectBranchSitePredictionConfig:
+    """Configuration for direct user MSA/tree branch-site prediction."""
+
+    msa: str
+    tree: str
+    outdir: str
+    foreground: str = "all"
+    model_package: str = "deployable_model_conservative_branch_site_100k_mps"
+    device: str = "auto"
+    allow_stop_codons: bool = False
+    min_taxa: int = 3
+    min_codons: int = 3
+    dry_run: bool = False
 
 
 @dataclass(frozen=True)
@@ -582,7 +599,7 @@ def score_empirical_branch_sites(config: EmpiricalBranchSiteScoringConfig) -> Di
         _write_json(outdir / "empirical_scoring_manifest.json", payload)
         (outdir / "empirical_scoring_report.md").write_text(_render_scoring_failure_md(payload), encoding="utf-8")
         raise RuntimeError(payload["message"] + " " + payload["reason"])
-    package_dir = Path(config.deployable_model_package)
+    package_dir = _resolve_deployable_package_path(config.deployable_model_package)
     manifest = _read_json(package_dir / "model_manifest.json")
     feature_schema = _read_json(package_dir / "feature_schema.json")
     applicability = _read_json(Path(config.applicability_dir) / "empirical_applicability.json")
@@ -722,6 +739,127 @@ def make_empirical_branch_site_report(config: EmpiricalBranchSiteReportConfig) -
         "json": str(outdir / "empirical_branch_site_report.json"),
         "markdown": str(outdir / "empirical_branch_site_report.md"),
         "no_simulator_truth_used": True,
+    }
+
+
+def predict_branch_sites(config: DirectBranchSitePredictionConfig) -> Dict[str, Any]:
+    """Score a user-supplied codon MSA/tree without realigning it.
+
+    This is the simple end-user path: the supplied MSA is treated as the
+    authoritative alignment, site maps are identity maps on that MSA, and the
+    deployable branch-site model scores requested foreground branches.
+    """
+
+    outdir = Path(config.outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+    msa_path = Path(config.msa)
+    tree_path = Path(config.tree)
+    records, duplicate_ids = _read_fasta_with_duplicates(msa_path)
+    if not records:
+        raise ValueError(f"MSA FASTA has no records: {msa_path}")
+    if duplicate_ids:
+        raise ValueError("MSA FASTA contains duplicate IDs: " + ",".join(sorted(duplicate_ids)))
+    tree_text = tree_path.read_text(encoding="utf-8") if tree_path.exists() else ""
+    if not tree_text:
+        raise ValueError(f"tree file is missing or empty: {tree_path}")
+    tree_tips = _parse_newick_tips(tree_text)
+    _validate_direct_msa(records, tree_tips, config.min_taxa, config.min_codons)
+    foregrounds = _resolve_direct_foregrounds(config.foreground, records, tree_tips)
+    validation_foreground = foregrounds[0]
+    package_dir = _resolve_deployable_package_path(config.model_package)
+
+    input_dir = outdir / "input_validation"
+    validation_summary = validate_empirical_input(
+        EmpiricalInputValidationConfig(
+            cds_fasta=str(msa_path),
+            tree=str(tree_path),
+            foreground=validation_foreground,
+            outdir=str(input_dir),
+            allow_stop_codons=config.allow_stop_codons,
+            min_taxa=config.min_taxa,
+            min_codons=config.min_codons,
+        )
+    )
+    if validation_summary.get("status") == "fail":
+        raise ValueError("input validation failed: " + ";".join(validation_summary.get("failures") or []))
+
+    alignment_dir = outdir / "user_msa"
+    _write_user_msa_alignment_artifacts(
+        msa_path=msa_path,
+        tree_path=tree_path,
+        records=records,
+        foreground_requested=config.foreground,
+        foregrounds=foregrounds,
+        outdir=alignment_dir,
+    )
+
+    feature_dir = outdir / "features"
+    _extract_direct_branch_site_features(
+        validation_dir=input_dir,
+        alignment_dir=alignment_dir,
+        deployable_model_package=package_dir,
+        outdir=feature_dir,
+        foregrounds=foregrounds,
+    )
+    audit_dir = outdir / "feature_audit"
+    audit_summary = audit_empirical_features(
+        EmpiricalFeatureAuditConfig(
+            features=str(feature_dir / "empirical_branch_site_features.tsv"),
+            deployable_model_package=str(package_dir),
+            outdir=str(audit_dir),
+        )
+    )
+    if audit_summary.get("status") != "ok":
+        raise ValueError("empirical feature safety audit failed")
+    applicability_dir = outdir / "applicability"
+    applicability_summary = run_empirical_applicability(
+        EmpiricalApplicabilityConfig(
+            empirical_validation_dir=str(input_dir),
+            empirical_feature_dir=str(feature_dir),
+            deployable_model_package=str(package_dir),
+            outdir=str(applicability_dir),
+        )
+    )
+
+    status = "dry_run" if config.dry_run else "ok"
+    scoring_summary: Dict[str, Any] = {}
+    if not config.dry_run:
+        scores_dir = outdir / "scores"
+        scoring_summary = score_empirical_branch_sites(
+            EmpiricalBranchSiteScoringConfig(
+                features=str(feature_dir / "empirical_branch_site_features.tsv"),
+                deployable_model_package=str(package_dir),
+                applicability_dir=str(applicability_dir),
+                outdir=str(scores_dir),
+                device=config.device,
+            )
+        )
+        _write_direct_prediction_outputs(outdir, scores_dir, applicability_dir)
+
+    manifest = _direct_prediction_manifest(
+        config=config,
+        outdir=outdir,
+        foregrounds=foregrounds,
+        records=records,
+        validation_summary=validation_summary,
+        applicability_summary=applicability_summary,
+        scoring_summary=scoring_summary,
+        status=status,
+    )
+    _write_json(outdir / "prediction_manifest.json", manifest)
+    (outdir / "qc_report.md").write_text(_render_direct_qc_report(manifest), encoding="utf-8")
+    (outdir / "prediction_report.md").write_text(_render_direct_prediction_report(manifest, outdir), encoding="utf-8")
+    return {
+        "status": status,
+        "outdir": str(outdir),
+        "foreground": config.foreground,
+        "n_foregrounds": len(foregrounds),
+        "n_taxa": len(records),
+        "n_codons": len(next(iter(records.values()))) // 3,
+        "applicability": applicability_summary.get("status"),
+        "device": scoring_summary.get("device", config.device if not config.dry_run else "not_run"),
+        "branch_site_predictions": str(outdir / "branch_site_predictions.tsv") if not config.dry_run else "",
+        "report": str(outdir / "prediction_report.md"),
     }
 
 
@@ -1197,6 +1335,20 @@ def _write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _resolve_deployable_package_path(package: str | Path) -> Path:
+    package_path = Path(package)
+    if package_path.exists():
+        return package_path
+    if str(package) == "deployable_model_conservative_branch_site_100k_mps":
+        try:
+            bundled = resources.files("babappa") / "model_packages" / "deployable_model_conservative_branch_site_100k_mps"
+        except (AttributeError, ModuleNotFoundError):
+            bundled = None
+        if bundled is not None and bundled.is_dir():
+            return Path(str(bundled))
+    raise FileNotFoundError(f"deployable model package not found: {package}")
+
+
 def _parse_csv(value: Sequence[str] | str) -> List[str]:
     if isinstance(value, str):
         return [item.strip() for item in value.split(",") if item.strip()]
@@ -1298,6 +1450,429 @@ def _render_empirical_report_md(payload: Dict[str, Any]) -> str:
     ]
     lines.extend(f"- {item}" for item in payload["limitations"])
     lines.append("")
+    return "\n".join(lines)
+
+
+def _validate_direct_msa(records: Dict[str, str], tree_tips: set[str], min_taxa: int, min_codons: int) -> None:
+    if len(records) < min_taxa:
+        raise ValueError(f"too few taxa in MSA: {len(records)} < {min_taxa}")
+    lengths = {record_id: len(sequence) for record_id, sequence in records.items()}
+    unique_lengths = sorted(set(lengths.values()))
+    if len(unique_lengths) != 1:
+        detail = ",".join(f"{record_id}:{length}" for record_id, length in sorted(lengths.items()))
+        raise ValueError("MSA sequence lengths are not equal; BABAPPA direct prediction requires an aligned codon MSA: " + detail)
+    length = unique_lengths[0]
+    if length % 3 != 0:
+        raise ValueError(f"MSA length is not divisible by 3: {length}")
+    if (length // 3) < min_codons:
+        raise ValueError(f"too few codons in MSA: {length // 3} < {min_codons}")
+    fasta_ids = set(records)
+    missing_in_tree = sorted(fasta_ids - tree_tips)
+    missing_in_msa = sorted(tree_tips - fasta_ids)
+    if missing_in_tree or missing_in_msa:
+        pieces = []
+        if missing_in_tree:
+            pieces.append("msa_ids_missing_from_tree:" + ",".join(missing_in_tree))
+        if missing_in_msa:
+            pieces.append("tree_tips_missing_from_msa:" + ",".join(missing_in_msa))
+        raise ValueError("MSA/tree labels do not match: " + ";".join(pieces))
+
+
+def _resolve_direct_foregrounds(foreground: str, records: Dict[str, str], tree_tips: set[str]) -> List[str]:
+    requested = str(foreground or "all").strip()
+    if requested.lower() == "all":
+        return [record_id for record_id in records if record_id in tree_tips]
+    foregrounds = [item.strip() for item in requested.split(",") if item.strip()]
+    if not foregrounds:
+        raise ValueError("foreground must be 'all' or a comma-separated list of tree tips")
+    missing = [item for item in foregrounds if item not in records or item not in tree_tips]
+    if missing:
+        raise ValueError("foreground tip(s) missing from MSA/tree: " + ",".join(missing))
+    return foregrounds
+
+
+def _write_user_msa_alignment_artifacts(
+    msa_path: Path,
+    tree_path: Path,
+    records: Dict[str, str],
+    foreground_requested: str,
+    foregrounds: List[str],
+    outdir: Path,
+) -> None:
+    outdir.mkdir(parents=True, exist_ok=True)
+    method_dir = outdir / "methods" / "user_msa"
+    site_map_dir = outdir / "site_map"
+    policy_dir = outdir / "method_policy"
+    method_dir.mkdir(parents=True, exist_ok=True)
+    site_map_dir.mkdir(parents=True, exist_ok=True)
+    policy_dir.mkdir(parents=True, exist_ok=True)
+    aligned_fasta = method_dir / "empirical.user_msa.codon.fasta"
+    write_fasta(records, aligned_fasta)
+    site_rows = _build_user_msa_identity_site_map(records, family_id="empirical", method="user_msa")
+    site_map_path = site_map_dir / "user_msa.site_map.tsv"
+    write_tsv(site_map_path, site_rows, _site_map_fields(site_rows))
+    qc_path = method_dir / "empirical.user_msa.qc.json"
+    qc = {
+        "method": "user_msa",
+        "status": "ok",
+        "reason": "user_supplied_authoritative_codon_msa",
+        "validation": _validate_aligned_fasta(aligned_fasta, set(records)),
+        "realignment_performed": False,
+    }
+    _write_json(qc_path, qc)
+    policy_rows = [{
+        "method": "user_msa",
+        "attempted_families": 1,
+        "successful_families": 1,
+        "failed_families": 0,
+        "failure_fraction": "0",
+        "site_map_unique_fraction": "1",
+        "site_map_conflict_fraction": "0",
+        "site_map_frame_error_fraction": "0",
+        "recommendation": "usable",
+        "reason": "user_msa_is_authoritative_input",
+    }]
+    policy_payload = {"usable_methods": ["user_msa"], "quarantined_methods": [], "methods": policy_rows}
+    _write_json(policy_dir / "method_policy.json", policy_payload)
+    write_tsv(policy_dir / "method_policy.tsv", policy_rows, list(policy_rows[0]))
+    (policy_dir / "method_policy.md").write_text(_render_policy_md(policy_payload), encoding="utf-8")
+    method_rows = [{
+        "method": "user_msa",
+        "status": "ok",
+        "reason": "user_supplied_authoritative_codon_msa",
+        "runtime_seconds": "0",
+        "aligned_fasta": str(aligned_fasta),
+        "site_map": str(site_map_path),
+    }]
+    manifest = {
+        "empirical_alignment_version": __version__,
+        "status": "ok",
+        "cds_fasta": str(msa_path),
+        "tree": str(tree_path),
+        "foreground": foreground_requested,
+        "foregrounds_resolved": foregrounds,
+        "methods_requested": ["user_msa"],
+        "methods_run": ["user_msa"],
+        "method_rows": method_rows,
+        "created_files": {
+            "user_msa": {
+                "codon_fasta": str(aligned_fasta),
+                "qc": str(qc_path),
+                "site_map": str(site_map_path),
+            }
+        },
+        "site_map_dir": str(site_map_dir),
+        "method_policy_dir": str(policy_dir),
+        "method_policy": policy_payload,
+        "realignment_performed": False,
+        "user_msa_is_authoritative": True,
+        "failures": [],
+        "warnings": [],
+    }
+    _write_json(outdir / "empirical_alignment_manifest.json", manifest)
+    write_tsv(outdir / "empirical_alignment_summary.tsv", method_rows, ["method", "status", "reason", "runtime_seconds", "aligned_fasta", "site_map"])
+    (outdir / "empirical_alignment_report.md").write_text(
+        "\n".join([
+            "# User-supplied MSA",
+            "",
+            "- status: `ok`",
+            "- method: `user_msa`",
+            "- realignment performed: `False`",
+            "- BABAPPA treated the supplied codon MSA as the authoritative alignment.",
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+
+def _extract_direct_branch_site_features(
+    validation_dir: Path,
+    alignment_dir: Path,
+    deployable_model_package: Path,
+    outdir: Path,
+    foregrounds: List[str],
+) -> None:
+    outdir.mkdir(parents=True, exist_ok=True)
+    feature_schema = _read_json(deployable_model_package / "feature_schema.json")
+    expected_features = [str(item) for item in feature_schema.get("expected_feature_columns", [])]
+    if not expected_features:
+        raise ValueError("deployable package feature_schema.json has no expected_feature_columns")
+    validation = _read_json(validation_dir / "empirical_input_validation.json")
+    align_manifest = _read_json(alignment_dir / "empirical_alignment_manifest.json")
+    files = align_manifest.get("created_files", {}).get("user_msa", {})
+    aligned_fasta = files.get("codon_fasta")
+    site_map_file = files.get("site_map")
+    if not aligned_fasta or not site_map_file:
+        raise ValueError("direct user MSA artifacts are missing codon_fasta or site_map")
+    records = read_fasta(Path(aligned_fasta))
+    site_rows = read_tsv(Path(site_map_file))
+    rows: List[Dict[str, Any]] = []
+    missing_features: List[str] = []
+    for site_row in site_rows:
+        if site_row.get("mapping_status") not in {"unique", "conflict"}:
+            continue
+        for branch_id in foregrounds:
+            feature_values = _feature_row_from_site(
+                records,
+                site_row,
+                branch_id,
+                branch_id,
+                validation,
+                expected_features,
+            )
+            row = {
+                "family_id": "empirical",
+                "method": "user_msa",
+                "branch_id": branch_id,
+                "foreground_taxon": branch_id,
+                "aligned_site_index_zero": site_row.get("aligned_site_index_zero", ""),
+                "original_site_index_zero": site_row.get("original_site_index_zero", ""),
+                "mapping_status": site_row.get("mapping_status", ""),
+            }
+            row.update(feature_values)
+            missing_features.extend([name for name in expected_features if row.get(name) in {None, ""}])
+            rows.append(row)
+    forbidden = _forbidden_columns(FEATURE_OUTPUT_FIELDS + expected_features)
+    schema_match = "pass" if rows and not missing_features and not forbidden else "fail"
+    fields = FEATURE_OUTPUT_FIELDS + expected_features
+    write_tsv(outdir / "empirical_branch_site_features.tsv", rows, fields)
+    schema_check = {
+        "status": schema_match,
+        "feature_schema_match": schema_match,
+        "expected_feature_columns": expected_features,
+        "n_rows": len(rows),
+        "foregrounds_scored": foregrounds,
+        "missing_features": sorted(set(missing_features)),
+        "forbidden_columns": forbidden,
+    }
+    _write_json(outdir / "empirical_feature_schema_check.json", schema_check)
+    manifest = {
+        "empirical_feature_version": __version__,
+        "status": schema_match,
+        "feature_policy": feature_schema.get("feature_policy"),
+        "n_rows": len(rows),
+        "foreground": "all" if len(foregrounds) == len(records) else ",".join(foregrounds),
+        "foregrounds_scored": foregrounds,
+        "alignment_dir": str(alignment_dir),
+        "deployable_model_package": str(deployable_model_package),
+        "feature_schema_check": schema_check,
+        "truth_derived_inputs_excluded": True,
+        "user_msa_is_authoritative": True,
+        "realignment_performed": False,
+        "generated_files": {
+            "features": str(outdir / "empirical_branch_site_features.tsv"),
+            "schema_check": str(outdir / "empirical_feature_schema_check.json"),
+            "report": str(outdir / "empirical_feature_report.md"),
+        },
+    }
+    _write_json(outdir / "empirical_feature_manifest.json", manifest)
+    (outdir / "empirical_feature_report.md").write_text(_render_feature_report(manifest), encoding="utf-8")
+    if schema_match != "pass":
+        raise ValueError("direct MSA feature schema check failed: " + ",".join(schema_check["missing_features"] + forbidden))
+
+
+def _build_user_msa_identity_site_map(records: Dict[str, str], family_id: str, method: str) -> List[Dict[str, Any]]:
+    n_codons = len(next(iter(records.values()))) // 3 if records else 0
+    rows: List[Dict[str, Any]] = []
+    for site_index in range(n_codons):
+        codons = [_site_codon(sequence, site_index) for sequence in records.values()]
+        n_gap = sum(1 for codon in codons if codon == "---")
+        rows.append({
+            "family_id": family_id,
+            "method": method,
+            "aligned_site_index_zero": site_index,
+            "aligned_site_index_one": site_index + 1,
+            "original_site_index_zero": site_index,
+            "original_site_index_one": site_index + 1,
+            "mapping_status": "unique",
+            "n_taxa_mapped": len(codons) - n_gap,
+            "n_taxa_gap": n_gap,
+            "n_taxa_conflict": 0,
+            "mapping_confidence": 1.0,
+        })
+    return rows
+
+
+def _write_direct_prediction_outputs(outdir: Path, scores_dir: Path, applicability_dir: Path) -> None:
+    scores = read_tsv(scores_dir / "empirical_branch_site_scores.tsv")
+    branch_scores = read_tsv(scores_dir / "empirical_branch_scores.tsv")
+    gene_support = read_tsv(scores_dir / "empirical_gene_support.tsv")
+    applicability = _read_json(applicability_dir / "empirical_applicability.json")
+    user_msa_path = outdir / "user_msa" / "methods" / "user_msa" / "empirical.user_msa.codon.fasta"
+    user_msa_records = read_fasta(user_msa_path) if user_msa_path.exists() else {}
+    prediction_rows: List[Dict[str, Any]] = []
+    for row in scores:
+        prob = _as_float(row.get("prob_positive"), 0.0) or 0.0
+        threshold = _as_float(row.get("calibrated_threshold"), 0.5) or 0.5
+        called = int(_as_float(row.get("called_positive"), 0.0) or 0.0)
+        diagnostic_only = str(row.get("diagnostic_only", "")).lower() == "true"
+        aligned_zero = int(float(row.get("aligned_site_index_zero") or 0))
+        original_zero = int(float(row.get("original_site_index_zero") or aligned_zero))
+        branch_id = row.get("branch_id", "")
+        branch_codon = _site_codon(user_msa_records.get(branch_id, ""), aligned_zero) if user_msa_records else ""
+        prediction_rows.append({
+            "branch_id": branch_id,
+            "codon_site": original_zero + 1,
+            "msa_codon_site": aligned_zero + 1,
+            "aligned_codon_site": aligned_zero + 1,
+            "branch_degapped_codon_site": _degapped_codon_site(user_msa_records.get(branch_id, ""), aligned_zero),
+            "branch_codon": branch_codon,
+            "prob_positive": prob,
+            "called_positive": called,
+            "confidence": _prediction_confidence(prob, threshold, called, diagnostic_only),
+            "tier_model": row.get("tier_model", ""),
+            "calibrated_threshold": threshold,
+            "diagnostic_only": diagnostic_only,
+            "method": row.get("method", "user_msa"),
+        })
+    write_tsv(
+        outdir / "branch_site_predictions.tsv",
+        prediction_rows,
+        [
+            "branch_id",
+            "codon_site",
+            "msa_codon_site",
+            "aligned_codon_site",
+            "branch_degapped_codon_site",
+            "branch_codon",
+            "prob_positive",
+            "called_positive",
+            "confidence",
+            "tier_model",
+            "calibrated_threshold",
+            "diagnostic_only",
+            "method",
+        ],
+    )
+    write_tsv(outdir / "branch_predictions.tsv", branch_scores, list(branch_scores[0]) if branch_scores else ["family_id", "branch_id"])
+    max_gene_support = max((_as_float(row.get("max_prob_positive"), 0.0) or 0.0 for row in gene_support), default=0.0)
+    n_called = sum(int(_as_float(row.get("called_positive"), 0.0) or 0.0) for row in scores)
+    summary_rows = [{
+        "family_id": "empirical",
+        "n_branches_scored": len({row.get("branch_id", "") for row in scores}),
+        "n_branch_site_rows": len(scores),
+        "n_called_positive": n_called,
+        "max_gene_support": max_gene_support,
+        "applicability_status": applicability.get("applicability_status"),
+        "tier_model": scores[0].get("tier_model", "") if scores else "",
+        "diagnostic_only": any(str(row.get("diagnostic_only", "")).lower() == "true" for row in scores),
+        "result_class": "diagnostic_positive" if n_called > 0 else "diagnostic_negative",
+    }]
+    write_tsv(outdir / "gene_summary.tsv", summary_rows, list(summary_rows[0]))
+
+
+def _degapped_codon_site(sequence: str, aligned_site_zero: int) -> str:
+    if not sequence:
+        return ""
+    count = 0
+    for site_index in range(0, aligned_site_zero + 1):
+        codon = _site_codon(sequence, site_index)
+        if "-" not in codon:
+            count += 1
+    target = _site_codon(sequence, aligned_site_zero)
+    return "" if "-" in target else str(count)
+
+
+def _prediction_confidence(prob: float, threshold: float, called: int, diagnostic_only: bool) -> str:
+    if diagnostic_only:
+        return "diagnostic_only"
+    if not called:
+        return "below_threshold"
+    if prob >= max(0.9, threshold):
+        return "high"
+    return "moderate"
+
+
+def _direct_prediction_manifest(
+    config: DirectBranchSitePredictionConfig,
+    outdir: Path,
+    foregrounds: List[str],
+    records: Dict[str, str],
+    validation_summary: Dict[str, Any],
+    applicability_summary: Dict[str, Any],
+    scoring_summary: Dict[str, Any],
+    status: str,
+) -> Dict[str, Any]:
+    gene_summary_path = outdir / "gene_summary.tsv"
+    branch_site_path = outdir / "branch_site_predictions.tsv"
+    gene_summary_rows = read_tsv(gene_summary_path) if gene_summary_path.exists() else []
+    prediction_rows = read_tsv(branch_site_path) if branch_site_path.exists() else []
+    return {
+        "direct_prediction_version": __version__,
+        "status": status,
+        "msa": config.msa,
+        "tree": config.tree,
+        "model_package": config.model_package,
+        "foreground_requested": config.foreground,
+        "foregrounds_scored": foregrounds,
+        "n_taxa": len(records),
+        "n_codons": len(next(iter(records.values()))) // 3,
+        "user_msa_is_authoritative": True,
+        "realignment_performed": False,
+        "no_simulator_truth_used": True,
+        "truth_derived_inputs_excluded": True,
+        "validation_status": validation_summary.get("status"),
+        "applicability_status": applicability_summary.get("status"),
+        "applicability_reasons": applicability_summary.get("reasons"),
+        "scoring": scoring_summary,
+        "summary": gene_summary_rows[0] if gene_summary_rows else {},
+        "n_prediction_rows": len(prediction_rows),
+        "outputs": {
+            "branch_site_predictions": str(branch_site_path) if branch_site_path.exists() else "",
+            "branch_predictions": str(outdir / "branch_predictions.tsv") if (outdir / "branch_predictions.tsv").exists() else "",
+            "gene_summary": str(gene_summary_path) if gene_summary_path.exists() else "",
+            "prediction_report": str(outdir / "prediction_report.md"),
+            "qc_report": str(outdir / "qc_report.md"),
+        },
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+def _render_direct_qc_report(manifest: Dict[str, Any]) -> str:
+    return "\n".join([
+        "# BABAPPA Direct MSA QC",
+        "",
+        f"- status: `{manifest['status']}`",
+        f"- n_taxa: `{manifest['n_taxa']}`",
+        f"- n_codons: `{manifest['n_codons']}`",
+        f"- foreground requested: `{manifest['foreground_requested']}`",
+        f"- foregrounds scored: `{','.join(manifest['foregrounds_scored'])}`",
+        f"- input validation: `{manifest['validation_status']}`",
+        f"- applicability: `{manifest['applicability_status']}`",
+        "- user MSA is authoritative: `True`",
+        "- realignment performed: `False`",
+        "- simulator truth used during empirical inference: `False`",
+        "",
+    ])
+
+
+def _render_direct_prediction_report(manifest: Dict[str, Any], outdir: Path) -> str:
+    summary = manifest.get("summary") or {}
+    lines = [
+        "# BABAPPA Branch-Site Prediction",
+        "",
+        "BABAPPA used the supplied codon MSA as the authoritative alignment. No realignment or aligner-disagreement analysis was performed.",
+        "",
+        f"- status: `{manifest['status']}`",
+        f"- applicability: `{manifest['applicability_status']}`",
+        f"- foreground requested: `{manifest['foreground_requested']}`",
+        f"- branches scored: `{summary.get('n_branches_scored', len(manifest['foregrounds_scored']))}`",
+        f"- branch-site rows: `{summary.get('n_branch_site_rows', manifest['n_prediction_rows'])}`",
+        f"- called positive branch-site rows: `{summary.get('n_called_positive', 'not_scored')}`",
+        f"- max gene support: `{summary.get('max_gene_support', 'not_scored')}`",
+        f"- result class: `{summary.get('result_class', manifest['status'])}`",
+        "",
+        "## Main Outputs",
+        "",
+        f"- branch-site predictions: `{outdir / 'branch_site_predictions.tsv'}`",
+        f"- branch summaries: `{outdir / 'branch_predictions.tsv'}`",
+        f"- gene summary: `{outdir / 'gene_summary.tsv'}`",
+        "",
+        "## Interpretation Boundary",
+        "",
+        "A BABAPPA diagnostic-positive result is not, by itself, a publishable empirical positive-selection claim. Interpret scores with dataset-specific QC, matched-null calibration, biological controls, and reference-tool comparison when making manuscript claims.",
+        "",
+    ]
     return "\n".join(lines)
 
 

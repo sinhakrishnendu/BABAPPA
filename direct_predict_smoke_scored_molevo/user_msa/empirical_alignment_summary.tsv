@@ -1,0 +1,2 @@
+method	status	reason	runtime_seconds	aligned_fasta	site_map
+user_msa	ok	user_supplied_authoritative_codon_msa	0	direct_predict_smoke_scored_molevo/user_msa/methods/user_msa/empirical.user_msa.codon.fasta	direct_predict_smoke_scored_molevo/user_msa/site_map/user_msa.site_map.tsv

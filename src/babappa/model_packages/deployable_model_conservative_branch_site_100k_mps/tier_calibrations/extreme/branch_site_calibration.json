@@ -1,0 +1,49 @@
+{
+  "branch_site_calibration_version": "0.4.2-alpha",
+  "calibrated_calibration_metrics": {
+    "brier": 0.02707056456091339,
+    "ece": 0.016671694714582172,
+    "n": 50000,
+    "positives": 19587
+  },
+  "calibration_method": "temperature",
+  "calibration_split_positive_count": 19587,
+  "calibration_split_size": 50000,
+  "generated_files": {
+    "calibration": "branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_calibration.json",
+    "markdown": "branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_calibration.md",
+    "metrics": "branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_calibrated_metrics.json",
+    "predictions": "branch_site_calibration_explicit_branch_truth_100k_mps_extreme_streamed/branch_site_calibrated_predictions.tsv"
+  },
+  "note": "Branch-site calibration for research-alpha simulation-supervised classifier.",
+  "raw_calibration_metrics": {
+    "brier": 0.027174171075392092,
+    "ece": 0.016840492644730774,
+    "n": 50000,
+    "positives": 19587
+  },
+  "selected_threshold": 0.214,
+  "source_model_dir": "branch_site_neural_explicit_branch_truth_100k_mps_extreme_streamed",
+  "target_fdr": 0.1,
+  "temperature": 0.9500000000000001,
+  "threshold_selection": {
+    "metrics": {
+      "accuracy": 0.95038,
+      "called_negative": 28654,
+      "called_positive": 21346,
+      "empirical_fdr": 0.09931603110653049,
+      "f1": 0.9393887572374369,
+      "fn": 361,
+      "fp": 2120,
+      "precision": 0.9006839688934695,
+      "recall": 0.9815694082810027,
+      "specificity": 0.9302929668233979,
+      "threshold": 0.214,
+      "tn": 28293,
+      "tp": 19226
+    },
+    "selected_threshold": 0.214,
+    "warnings": []
+  },
+  "warnings": []
+}

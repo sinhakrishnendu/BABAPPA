@@ -1,0 +1,19 @@
+{
+  "applicability_status": "borderline",
+  "calibration": {
+    "selected_threshold": 0.022,
+    "target_fdr": 0.1,
+    "temperature": 1.0
+  },
+  "device": "cpu",
+  "diagnostic_only": false,
+  "empirical_scoring_version": "0.5.2-alpha",
+  "n_rows": 15,
+  "outputs": {
+    "branch_scores": "direct_predict_smoke_scored_molevo/scores/empirical_branch_scores.tsv",
+    "branch_site_scores": "direct_predict_smoke_scored_molevo/scores/empirical_branch_site_scores.tsv",
+    "gene_support": "direct_predict_smoke_scored_molevo/scores/empirical_gene_support.tsv"
+  },
+  "status": "ok",
+  "tier_model": "moderate"
+}

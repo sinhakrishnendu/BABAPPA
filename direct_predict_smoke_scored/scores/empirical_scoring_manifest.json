@@ -1,0 +1,5 @@
+{
+  "message": "PyTorch is required for empirical scoring; metadata-only scoring is not allowed.",
+  "reason": "torch_unavailable:ModuleNotFoundError(\"No module named 'torch'\")",
+  "status": "fail"
+}

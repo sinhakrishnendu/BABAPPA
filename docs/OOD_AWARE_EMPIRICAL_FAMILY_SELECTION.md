@@ -23,7 +23,7 @@ For the first real empirical pilots, prefer:
 
 Broad plant panels can become saturated quickly. For Arabidopsis WRKY-like pilots, start with a Brassicaceae-heavy panel before mixing monocots, legumes, and deeply divergent angiosperms.
 
-The close Brassicaceae redesign produced `WRKY_candidate_02_close`, which passed the OOD gate and became the first in-domain diagnostic empirical pilot. That success means the selection strategy worked; it does not by itself establish biological positive selection. The accepted family still requires matched-null calibration and codeml/HyPhy-style reference comparison before any manuscript-level interpretation.
+The close Brassicaceae redesign produced `WRKY_candidate_02_close`, which passed the OOD gate and became the first in-domain diagnostic empirical pilot. That success means the selection strategy worked; it does not by itself establish biological positive selection. The accepted family now has codeml/HyPhy-style reference comparison and a completed feature-level 100-null matched calibration, but those results are mixed: reference tools are negative, while the BABAPPA called-row burden is unusual against feature-level nulls. Manuscript-level interpretation still requires close-taxa controls and conservative biological review.
 
 ## Long-Run Handoff Policy
 

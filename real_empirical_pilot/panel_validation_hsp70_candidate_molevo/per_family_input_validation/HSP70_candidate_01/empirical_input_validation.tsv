@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+warning	Cucsa.010680|Cucsa.010680.1	8	337	0.0	0.0	0.6863622898841618	extreme		unequal_sequence_lengths_unaligned_input;high_pairwise_p_distance:0.686362

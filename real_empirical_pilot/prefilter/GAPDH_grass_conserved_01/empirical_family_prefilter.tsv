@@ -1,0 +1,2 @@
+decision	n_taxa	n_codons	mean_pairwise_p_distance	max_pairwise_p_distance	saturation_proxy	gap_fraction	ambiguous_fraction	foreground_present	tree_tip_compatible	paralogy_risk_flags	recommended_action
+reject_possible_paralogy	9	289	0.225588	0.353078	high	0.121453	0	True	True	duplicate_species:Phala	curate one ortholog per species and remove obvious paralogs

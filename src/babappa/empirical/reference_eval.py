@@ -124,6 +124,14 @@ class SimulationMatchedNullCalibrationConfig:
     device: str = "auto"
     seed: int = 42
     fast_null_mode: bool = False
+    evidence_pack: str = ""
+    dry_run: bool = False
+    n_alt: int = 0
+    tier: str = ""
+    family_id: str = ""
+    max_workers: int = 1
+    resume: bool = False
+    force: bool = False
 
 
 @dataclass(frozen=True)
@@ -311,17 +319,44 @@ def write_wrky_matched_null_script(plan_dir: str, output_root: str) -> Path:
     path = plan_path / "run_wrky_close_matched_nulls.sh"
     output_dir = Path(output_root)
     output_dir.mkdir(parents=True, exist_ok=True)
+    evidence_pack = plan_path.parent if plan_path.name == "simulation_matched_calibration_plan" else None
+    if evidence_pack is not None:
+        run_command = [
+            "babappa run-simulation-matched-null-calibration \\",
+            f"  --evidence-pack {evidence_pack} \\",
+            f"  --outdir {output_dir} \\",
+            "  --n-null 100 \\",
+            "  --seed 20260530 \\",
+            "  --device mps",
+        ]
+        dry_run_comment = [
+            "# Safe dry-run preview:",
+            "# babappa run-simulation-matched-null-calibration \\",
+            f"#   --evidence-pack {evidence_pack} \\",
+            f"#   --outdir {output_dir}_dryrun \\",
+            "#   --n-null 100 \\",
+            "#   --seed 20260530 \\",
+            "#   --device mps \\",
+            "#   --dry-run",
+        ]
+    else:
+        run_command = [
+            "babappa run-simulation-matched-null-calibration \\",
+            f"  --plan-dir {Path(plan_dir)} \\",
+            "  --deployable-model-package deployable_model_conservative_branch_site_100k_mps \\",
+            f"  --outdir {Path(output_root)} \\",
+            "  --n-replicates 100 \\",
+            "  --device auto \\",
+            "  --seed 42",
+        ]
+        dry_run_comment = []
     path.write_text("\n".join([
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         f"echo '{USER_RUN_ONLY}'",
-        "babappa run-simulation-matched-null-calibration \\",
-        f"  --plan-dir {Path(plan_dir)} \\",
-        "  --deployable-model-package deployable_model_conservative_branch_site_100k_mps \\",
-        f"  --outdir {Path(output_root)} \\",
-        "  --n-replicates 100 \\",
-        "  --device auto \\",
-        "  --seed 42",
+        "# This launches the real user-run matched-null command. Do not execute it in Codex.",
+        *dry_run_comment,
+        *run_command,
         "",
     ]), encoding="utf-8")
     path.chmod(0o755)
@@ -331,13 +366,7 @@ def write_wrky_matched_null_script(plan_dir: str, output_root: str) -> Path:
         "set -euo pipefail",
         f"echo '{USER_RUN_ONLY}'",
         "cd \"$(dirname \"$0\")/../../..\"",
-        "babappa run-simulation-matched-null-calibration \\",
-        f"  --plan-dir {Path(plan_dir)} \\",
-        "  --deployable-model-package deployable_model_conservative_branch_site_100k_mps \\",
-        f"  --outdir {output_dir} \\",
-        "  --n-replicates 100 \\",
-        "  --device auto \\",
-        "  --seed 42",
+        *run_command,
         "",
     ]), encoding="utf-8")
     monitor_script = output_dir / "monitor_user_wrky_null100.sh"
@@ -567,6 +596,9 @@ def build_reference_results_table(config: ReferenceResultsTableConfig) -> Dict[s
 
 
 def run_simulation_matched_null_calibration(config: SimulationMatchedNullCalibrationConfig) -> Dict[str, Any]:
+    if config.evidence_pack:
+        return _run_evidence_pack_matched_null_calibration(config)
+
     plan_dir = Path(config.plan_dir)
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
@@ -655,6 +687,523 @@ def run_simulation_matched_null_calibration(config: SimulationMatchedNullCalibra
     }
 
 
+def _run_evidence_pack_matched_null_calibration(config: SimulationMatchedNullCalibrationConfig) -> Dict[str, Any]:
+    evidence_pack = Path(config.evidence_pack)
+    family_id = config.family_id or evidence_pack.name
+    outdir = Path(config.outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+    plan_dir = Path(config.plan_dir) if config.plan_dir else evidence_pack / "simulation_matched_calibration_plan"
+    input_rows, failures = _validate_matched_null_evidence_pack(evidence_pack, family_id)
+    write_tsv(
+        outdir / "calibration_input_validation.tsv",
+        input_rows,
+        ["role", "path", "required", "exists", "status", "reason"],
+    )
+    plan_payload = _build_evidence_pack_calibration_plan(config, evidence_pack, plan_dir, input_rows, failures, family_id)
+    _write_json(outdir / "calibration_run_plan.json", plan_payload)
+    (outdir / "calibration_run_plan.md").write_text(_render_calibration_run_plan_md(plan_payload), encoding="utf-8")
+
+    if failures:
+        status_payload = {
+            "matched_null_calibration_run_status_version": __version__,
+            "status": "fail",
+            "mode": "dry_run" if config.dry_run else "run",
+            "evidence_pack": str(evidence_pack),
+            "outdir": str(outdir),
+            "failures": failures,
+            "heavy_jobs_executed": False,
+            "null_results_fabricated": False,
+            "claim_boundary": CLAIM_BOUNDARY,
+        }
+        _write_json(outdir / "calibration_status.json", status_payload)
+        (outdir / "calibration_status.md").write_text(_render_calibration_status_md(status_payload), encoding="utf-8")
+        raise ValueError("matched-null calibration input validation failed: " + "; ".join(failures))
+
+    if config.dry_run:
+        status_payload = {
+            "matched_null_calibration_run_status_version": __version__,
+            "status": "dry_run",
+            "mode": "dry_run",
+            "evidence_pack": str(evidence_pack),
+            "outdir": str(outdir),
+            "n_null": int(config.n_replicates),
+            "seed": int(config.seed),
+            "device": config.device,
+            "heavy_jobs_executed": False,
+            "null_results_fabricated": False,
+            "matched_null_scores_written": False,
+            "message": "Inputs validated and execution plan written. No simulations or null scoring were run.",
+            "claim_boundary": CLAIM_BOUNDARY,
+        }
+        _write_json(outdir / "calibration_status.json", status_payload)
+        (outdir / "calibration_status.md").write_text(_render_calibration_status_md(status_payload), encoding="utf-8")
+        return {
+            "status": "dry_run",
+            "outdir": str(outdir),
+            "n_replicates_requested": int(config.n_replicates),
+            "n_replicates_completed": 0,
+            "observed_max_gene_support": plan_payload["observed_values"].get("max_gene_support"),
+            "observed_called_rows": plan_payload["observed_values"].get("called_branch_site_rows"),
+        }
+
+    if not config.fast_null_mode:
+        return _run_feature_matched_mode_from_evidence_pack(config, evidence_pack, plan_payload)
+
+    return _run_fast_mode_from_evidence_pack(config, evidence_pack, plan_payload)
+
+
+def _validate_matched_null_evidence_pack(evidence_pack: Path, family_id: str) -> Tuple[List[Dict[str, Any]], List[str]]:
+    required = [
+        ("cds_fasta", evidence_pack / "inputs" / f"{family_id}.cds.fasta"),
+        ("tree_file", evidence_pack / "inputs" / f"{family_id}.treefile"),
+        ("empirical_branch_site_scores", evidence_pack / "babappa" / "empirical_scores" / "empirical_branch_site_scores.tsv"),
+        ("empirical_gene_support", evidence_pack / "babappa" / "empirical_scores" / "empirical_gene_support.tsv"),
+        ("empirical_applicability", evidence_pack / "babappa" / "empirical_applicability" / "empirical_applicability.tsv"),
+        ("family_prefilter", evidence_pack / "prefilter" / "empirical_family_prefilter.tsv"),
+    ]
+    rows: List[Dict[str, Any]] = []
+    failures: List[str] = []
+    if not evidence_pack.exists():
+        failures.append(f"missing_evidence_pack:{evidence_pack}")
+    for role, path in required:
+        exists = path.exists()
+        if not exists:
+            failures.append(f"missing_required_{role}:{path}")
+        rows.append({
+            "role": role,
+            "path": str(path),
+            "required": True,
+            "exists": exists,
+            "status": "ok" if exists else "missing",
+            "reason": "required_for_matched_null_calibration",
+        })
+    return rows, failures
+
+
+def _build_evidence_pack_calibration_plan(
+    config: SimulationMatchedNullCalibrationConfig,
+    evidence_pack: Path,
+    plan_dir: Path,
+    input_rows: List[Dict[str, Any]],
+    failures: List[str],
+    family_id: str,
+) -> Dict[str, Any]:
+    plan = _read_json_or_empty(plan_dir / "simulation_matched_calibration_plan.json", [])
+    params = dict(plan.get("proposed_simulation_parameters", {}))
+    app_json = evidence_pack / "babappa" / "empirical_applicability" / "empirical_applicability.json"
+    if app_json.exists():
+        app = _read_json_or_empty(app_json, [])
+        validation = app.get("validation", {})
+        if validation.get("p_distance_used") is not None:
+            params["mean_pairwise_p_distance"] = validation.get("p_distance_used")
+            params["p_distance_source"] = validation.get("p_distance_source")
+        if app.get("recommended_tier"):
+            params["recommended_tier"] = app.get("recommended_tier")
+        if validation.get("n_taxa") is not None:
+            params["n_taxa"] = validation.get("n_taxa")
+        if validation.get("n_codons") is not None:
+            params["n_codons"] = validation.get("n_codons")
+    if config.tier:
+        params["recommended_tier"] = config.tier
+    params.setdefault("n_taxa", 7)
+    params.setdefault("n_codons", 490)
+    params.setdefault("foreground", "Arabidopsis_thaliana")
+    params.setdefault("recommended_tier", "moderate")
+    observed = _observed_from_evidence_pack(evidence_pack)
+    return {
+        "matched_null_calibration_plan_version": __version__,
+        "status": "blocked_missing_inputs" if failures else ("dry_run" if config.dry_run else "planned"),
+        "family_id": family_id,
+        "evidence_pack": str(evidence_pack),
+        "plan_dir": str(plan_dir),
+        "model_package": config.deployable_model_package,
+        "outdir": config.outdir,
+        "n_null": int(config.n_replicates),
+        "n_alt": int(config.n_alt),
+        "seed": int(config.seed),
+        "device": config.device,
+        "max_workers": int(config.max_workers),
+        "resume": bool(config.resume),
+        "force": bool(config.force),
+        "dry_run": bool(config.dry_run),
+        "fast_null_mode": bool(config.fast_null_mode),
+        "matched_parameters": params,
+        "observed_values": observed,
+        "input_validation": input_rows,
+        "failures": failures,
+        "expected_final_outputs": _expected_matched_null_output_names(),
+        "real_backend_status": "not_wired_for_evidence_pack_execution",
+        "heavy_jobs_executed": False,
+        "null_results_fabricated": False,
+        "claim_boundary": CLAIM_BOUNDARY,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+def _observed_from_evidence_pack(evidence_pack: Path) -> Dict[str, Any]:
+    scores_dir = evidence_pack / "babappa" / "empirical_scores"
+    gene_rows = read_tsv(scores_dir / "empirical_gene_support.tsv") if (scores_dir / "empirical_gene_support.tsv").exists() else []
+    branch_rows = read_tsv(scores_dir / "empirical_branch_scores.tsv") if (scores_dir / "empirical_branch_scores.tsv").exists() else []
+    site_rows = read_tsv(scores_dir / "empirical_branch_site_scores.tsv") if (scores_dir / "empirical_branch_site_scores.tsv").exists() else []
+    return {
+        "max_gene_support": _max_float(row.get("max_prob_positive") for row in gene_rows),
+        "max_branch_support": _max_float(row.get("max_prob_positive") for row in branch_rows),
+        "called_branch_site_rows": sum(_safe_int(row.get("n_called_positive")) for row in gene_rows),
+        "score_rows": len(site_rows),
+        "source": str(scores_dir),
+    }
+
+
+def _expected_matched_null_output_names() -> List[str]:
+    return [
+        "matched_null_manifest.json",
+        "matched_null_manifest.tsv",
+        "matched_null_scores.tsv",
+        "matched_null_gene_support.tsv",
+        "matched_null_branch_site_summary.tsv",
+        "matched_null_calibration_summary.json",
+        "matched_null_calibration_summary.tsv",
+        "matched_null_calibration_report.md",
+        "wrky_close_matched_null_interpretation.json",
+        "wrky_close_matched_null_interpretation.md",
+    ]
+
+
+def _render_calibration_run_plan_md(payload: Dict[str, Any]) -> str:
+    lines = [
+        "# Simulation-Matched Null Calibration Run Plan",
+        "",
+        f"- status: `{payload['status']}`",
+        f"- family: `{payload['family_id']}`",
+        f"- evidence pack: `{payload['evidence_pack']}`",
+        f"- output directory: `{payload['outdir']}`",
+        f"- requested nulls: `{payload['n_null']}`",
+        f"- seed: `{payload['seed']}`",
+        f"- device: `{payload['device']}`",
+        f"- dry run: `{payload['dry_run']}`",
+        f"- heavy jobs executed: `{payload['heavy_jobs_executed']}`",
+        "",
+        "## Matched Parameters",
+        "",
+    ]
+    for key, value in payload.get("matched_parameters", {}).items():
+        lines.append(f"- {key}: `{value}`")
+    lines.extend([
+        "",
+        "## Observed BABAPPA Values",
+        "",
+    ])
+    for key, value in payload.get("observed_values", {}).items():
+        lines.append(f"- {key}: `{value}`")
+    lines.extend([
+        "",
+        "## Backend Status",
+        "",
+        f"- real backend: `{payload['real_backend_status']}`",
+        "- dry-run mode validates inputs and writes this plan only.",
+        "- Non-dry-run evidence-pack execution must not fabricate null distributions.",
+        "",
+        "## Claim Boundary",
+        "",
+        payload["claim_boundary"],
+        "",
+    ])
+    if payload.get("failures"):
+        lines.extend(["## Failures", ""])
+        lines.extend(f"- {item}" for item in payload["failures"])
+        lines.append("")
+    return "\n".join(lines)
+
+
+def _render_calibration_status_md(payload: Dict[str, Any]) -> str:
+    lines = [
+        "# Simulation-Matched Null Calibration Status",
+        "",
+        f"- status: `{payload['status']}`",
+        f"- mode: `{payload.get('mode')}`",
+        f"- evidence pack: `{payload.get('evidence_pack')}`",
+        f"- output directory: `{payload.get('outdir')}`",
+        f"- heavy jobs executed: `{payload.get('heavy_jobs_executed')}`",
+        f"- null results fabricated: `{payload.get('null_results_fabricated')}`",
+        f"- message: {payload.get('message', '')}",
+        "",
+        "## Claim Boundary",
+        "",
+        payload.get("claim_boundary", CLAIM_BOUNDARY),
+        "",
+    ]
+    if payload.get("failures"):
+        lines.extend(["## Failures", ""])
+        lines.extend(f"- {item}" for item in payload["failures"])
+        lines.append("")
+    return "\n".join(lines)
+
+
+def _run_fast_mode_from_evidence_pack(
+    config: SimulationMatchedNullCalibrationConfig,
+    evidence_pack: Path,
+    plan_payload: Dict[str, Any],
+) -> Dict[str, Any]:
+    outdir = Path(config.outdir)
+    params = dict(plan_payload.get("matched_parameters", {}))
+    observed = dict(plan_payload.get("observed_values", {}))
+    requested = int(config.n_replicates)
+    _mark_stage_partial(outdir, "generate_nulls")
+    replicate_rows = _null_replicate_rows(params, requested, config.seed, True)
+    write_tsv(outdir / "matched_null_replicates.tsv", replicate_rows, ["replicate", "seed", "status", "n_taxa", "n_codons", "target_p_distance", "tier", "foreground"])
+    _mark_stage_complete(outdir, "generate_nulls")
+    _mark_stage_partial(outdir, "score_nulls")
+    rows = _fast_null_score_rows(replicate_rows, observed)
+    completed = sum(1 for row in rows if row.get("status") == "scored")
+    write_tsv(outdir / "matched_null_scores.tsv", rows, ["replicate", "seed", "status", "n_taxa", "n_codons", "target_p_distance", "tier", "max_gene_support", "max_branch_support", "called_branch_site_rows", "max_site_score", "q95_site_score", "q99_site_score"])
+    _mark_stage_complete(outdir, "score_nulls")
+    manifest = {
+        "matched_null_calibration_version": __version__,
+        "status": "ok",
+        "evidence_pack": str(evidence_pack),
+        "plan_dir": plan_payload.get("plan_dir"),
+        "deployable_model_package": config.deployable_model_package,
+        "outdir": str(outdir),
+        "n_replicates_requested": requested,
+        "n_replicates_staged": len(replicate_rows),
+        "n_replicates_completed": completed,
+        "device": config.device,
+        "seed": config.seed,
+        "fast_null_mode": True,
+        "matched_parameters": params,
+        "observed_values": observed,
+        "null_scoring_completed": completed > 0,
+        "claim_boundary": "Fast null mode is for tiny software smoke tests only; it is not a publishable empirical calibration.",
+    }
+    _write_json(outdir / "matched_null_manifest.json", manifest)
+    write_tsv(outdir / "matched_null_manifest.tsv", [manifest], ["status", "evidence_pack", "n_replicates_requested", "n_replicates_completed", "device", "seed", "fast_null_mode"])
+    _mark_stage_partial(outdir, "summarize_nulls")
+    percentiles = _observed_null_percentiles(observed, rows)
+    summary = {
+        **manifest,
+        "p_empirical_support": percentiles.get("p_empirical_support"),
+        "p_empirical_called_rows": percentiles.get("p_empirical_called_rows"),
+        "p_empirical_branch_support": percentiles.get("p_empirical_branch_support"),
+        "high_score_tail_quantiles": _null_tail_quantiles(rows),
+    }
+    _write_json(outdir / "matched_null_summary.json", summary)
+    _write_json(outdir / "matched_null_calibration_summary.json", summary)
+    write_tsv(outdir / "matched_null_calibration_summary.tsv", [summary], ["status", "n_replicates_requested", "n_replicates_completed", "p_empirical_support", "p_empirical_called_rows", "p_empirical_branch_support"])
+    write_tsv(outdir / "matched_null_gene_support.tsv", [{"replicate": row["replicate"], "max_gene_support": row["max_gene_support"]} for row in rows], ["replicate", "max_gene_support"])
+    write_tsv(outdir / "matched_null_branch_site_summary.tsv", [{"replicate": row["replicate"], "called_branch_site_rows": row["called_branch_site_rows"], "max_site_score": row["max_site_score"]} for row in rows], ["replicate", "called_branch_site_rows", "max_site_score"])
+    observed_vs_null = {
+        "status": "ok",
+        "observed_values": observed,
+        "p_empirical_support": summary["p_empirical_support"],
+        "p_empirical_called_rows": summary["p_empirical_called_rows"],
+        "p_empirical_branch_support": summary["p_empirical_branch_support"],
+        "reason": "computed_from_fast_null_mode_for_software_smoke_only",
+    }
+    _write_json(outdir / "observed_vs_null.json", observed_vs_null)
+    _write_json(outdir / "wrky_close_matched_null_interpretation.json", {
+        "status": "software_smoke_only",
+        "manuscript_ready": False,
+        "decision": "not_interpretable_for_empirical_claim",
+        "reason": "fast_null_mode_is_not_real_matched_null_calibration",
+    })
+    (outdir / "matched_null_summary.md").write_text(_render_matched_null_summary_md(summary), encoding="utf-8")
+    (outdir / "matched_null_calibration_report.md").write_text(_render_matched_null_summary_md(summary), encoding="utf-8")
+    (outdir / "observed_vs_null.md").write_text(_render_observed_vs_null_md(outdir / "observed_vs_null.json"), encoding="utf-8")
+    (outdir / "wrky_close_matched_null_interpretation.md").write_text(
+        "# WRKY Close Matched Null Interpretation\n\n- status: `software_smoke_only`\n- manuscript-ready: `False`\n- reason: fast null mode is not real matched-null calibration.\n",
+        encoding="utf-8",
+    )
+    _mark_stage_complete(outdir, "summarize_nulls")
+    status_payload = {
+        "matched_null_calibration_run_status_version": __version__,
+        "status": "ok",
+        "mode": "fast_null_mode",
+        "evidence_pack": str(evidence_pack),
+        "outdir": str(outdir),
+        "heavy_jobs_executed": False,
+        "null_results_fabricated": False,
+        "message": "Tiny fast-null software smoke completed; not valid empirical calibration.",
+        "claim_boundary": CLAIM_BOUNDARY,
+    }
+    _write_json(outdir / "calibration_status.json", status_payload)
+    (outdir / "calibration_status.md").write_text(_render_calibration_status_md(status_payload), encoding="utf-8")
+    return {
+        "status": "ok",
+        "outdir": str(outdir),
+        "n_replicates_requested": requested,
+        "n_replicates_completed": completed,
+        "observed_max_gene_support": observed.get("max_gene_support"),
+        "observed_called_rows": observed.get("called_branch_site_rows"),
+    }
+
+
+def _run_feature_matched_mode_from_evidence_pack(
+    config: SimulationMatchedNullCalibrationConfig,
+    evidence_pack: Path,
+    plan_payload: Dict[str, Any],
+) -> Dict[str, Any]:
+    outdir = Path(config.outdir)
+    params = dict(plan_payload.get("matched_parameters", {}))
+    observed = dict(plan_payload.get("observed_values", {}))
+    requested = int(config.n_replicates)
+    if requested <= 0:
+        raise ValueError("n_null must be positive")
+    _mark_stage_partial(outdir, "generate_nulls")
+    replicate_rows = _null_replicate_rows(params, requested, config.seed, False)
+    write_tsv(outdir / "matched_null_replicates.tsv", replicate_rows, ["replicate", "seed", "status", "n_taxa", "n_codons", "target_p_distance", "tier", "foreground"])
+    _mark_stage_complete(outdir, "generate_nulls")
+    _mark_stage_partial(outdir, "score_nulls")
+    try:
+        rows = _score_null_replicates_with_model(
+            replicate_rows=replicate_rows,
+            params=params,
+            package_dir=Path(config.deployable_model_package),
+            device_request=config.device,
+            outdir=outdir,
+        )
+    except Exception as exc:
+        status_payload = {
+            "matched_null_calibration_run_status_version": __version__,
+            "status": "fail",
+            "mode": "feature_matched_model_scoring",
+            "evidence_pack": str(evidence_pack),
+            "outdir": str(outdir),
+            "n_null": requested,
+            "seed": int(config.seed),
+            "device": config.device,
+            "heavy_jobs_executed": False,
+            "null_results_fabricated": False,
+            "message": f"Feature-matched deployable-model null scoring failed: {exc}",
+            "claim_boundary": CLAIM_BOUNDARY,
+        }
+        _write_json(outdir / "calibration_status.json", status_payload)
+        (outdir / "calibration_status.md").write_text(_render_calibration_status_md(status_payload), encoding="utf-8")
+        raise ValueError(status_payload["message"]) from exc
+    completed = sum(1 for row in rows if row.get("status") == "scored")
+    write_tsv(outdir / "matched_null_scores.tsv", rows, ["replicate", "seed", "status", "n_taxa", "n_codons", "target_p_distance", "tier", "max_gene_support", "max_branch_support", "called_branch_site_rows", "max_site_score", "q95_site_score", "q99_site_score"])
+    if completed:
+        _mark_stage_complete(outdir, "score_nulls")
+    manifest = {
+        "matched_null_calibration_version": __version__,
+        "status": "ok" if completed == requested else ("partial" if completed else "scoring_incomplete"),
+        "calibration_backend": "feature_matched_deployable_model_null",
+        "calibration_scope": "feature-level matched null scoring; not full raw sequence simulation/alignment replay",
+        "evidence_pack": str(evidence_pack),
+        "plan_dir": plan_payload.get("plan_dir"),
+        "deployable_model_package": config.deployable_model_package,
+        "outdir": str(outdir),
+        "n_replicates_requested": requested,
+        "n_replicates_staged": len(replicate_rows),
+        "n_replicates_completed": completed,
+        "device": config.device,
+        "seed": config.seed,
+        "fast_null_mode": False,
+        "matched_parameters": params,
+        "observed_values": observed,
+        "null_scoring_completed": completed > 0,
+        "null_results_fabricated": False,
+        "claim_boundary": "Feature-matched null calibration is diagnostic. It is not by itself a final empirical discovery claim.",
+    }
+    _write_json(outdir / "matched_null_manifest.json", manifest)
+    write_tsv(outdir / "matched_null_manifest.tsv", [manifest], ["status", "calibration_backend", "calibration_scope", "evidence_pack", "n_replicates_requested", "n_replicates_completed", "device", "seed", "fast_null_mode"])
+    _mark_stage_partial(outdir, "summarize_nulls")
+    percentiles = _observed_null_percentiles(observed, rows)
+    summary = {
+        **manifest,
+        "p_empirical_support": percentiles.get("p_empirical_support"),
+        "p_empirical_called_rows": percentiles.get("p_empirical_called_rows"),
+        "p_empirical_branch_support": percentiles.get("p_empirical_branch_support"),
+        "high_score_tail_quantiles": _null_tail_quantiles(rows),
+    }
+    _write_json(outdir / "matched_null_summary.json", summary)
+    _write_json(outdir / "matched_null_calibration_summary.json", summary)
+    write_tsv(outdir / "matched_null_calibration_summary.tsv", [summary], ["status", "calibration_backend", "n_replicates_requested", "n_replicates_completed", "p_empirical_support", "p_empirical_called_rows", "p_empirical_branch_support"])
+    write_tsv(outdir / "matched_null_gene_support.tsv", [{"replicate": row["replicate"], "max_gene_support": row["max_gene_support"]} for row in rows], ["replicate", "max_gene_support"])
+    write_tsv(outdir / "matched_null_branch_site_summary.tsv", [{"replicate": row["replicate"], "called_branch_site_rows": row["called_branch_site_rows"], "max_site_score": row["max_site_score"]} for row in rows], ["replicate", "called_branch_site_rows", "max_site_score"])
+    observed_vs_null = {
+        "status": "ok" if completed else "no_null_scores",
+        "calibration_backend": manifest["calibration_backend"],
+        "calibration_scope": manifest["calibration_scope"],
+        "observed_values": observed,
+        "p_empirical_support": summary["p_empirical_support"],
+        "p_empirical_called_rows": summary["p_empirical_called_rows"],
+        "p_empirical_branch_support": summary["p_empirical_branch_support"],
+        "reason": "computed_from_feature_matched_deployable_model_nulls" if completed else "No scored null distributions are available.",
+    }
+    _write_json(outdir / "observed_vs_null.json", observed_vs_null)
+    decision = _matched_null_decision(summary)
+    _write_json(outdir / "wrky_close_matched_null_interpretation.json", {
+        "status": "ok" if completed else "incomplete",
+        "decision": decision,
+        "manuscript_ready": False,
+        "calibration_backend": manifest["calibration_backend"],
+        "calibration_scope": manifest["calibration_scope"],
+        "p_empirical_support": summary["p_empirical_support"],
+        "p_empirical_called_rows": summary["p_empirical_called_rows"],
+        "claim_boundary": CLAIM_BOUNDARY,
+    })
+    (outdir / "matched_null_summary.md").write_text(_render_matched_null_summary_md(summary), encoding="utf-8")
+    (outdir / "matched_null_calibration_report.md").write_text(_render_matched_null_summary_md(summary), encoding="utf-8")
+    (outdir / "observed_vs_null.md").write_text(_render_observed_vs_null_md(outdir / "observed_vs_null.json"), encoding="utf-8")
+    (outdir / "wrky_close_matched_null_interpretation.md").write_text(
+        "\n".join([
+            "# WRKY Close Matched Null Interpretation",
+            "",
+            f"- status: `{'ok' if completed else 'incomplete'}`",
+            f"- decision: `{decision}`",
+            "- manuscript-ready: `False`",
+            f"- calibration backend: `{manifest['calibration_backend']}`",
+            f"- calibration scope: {manifest['calibration_scope']}",
+            f"- p_empirical_support: `{summary['p_empirical_support']}`",
+            f"- p_empirical_called_rows: `{summary['p_empirical_called_rows']}`",
+            "",
+            CLAIM_BOUNDARY,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+    if completed:
+        _mark_stage_complete(outdir, "summarize_nulls")
+    status_payload = {
+        "matched_null_calibration_run_status_version": __version__,
+        "status": manifest["status"],
+        "mode": manifest["calibration_backend"],
+        "evidence_pack": str(evidence_pack),
+        "outdir": str(outdir),
+        "n_null": requested,
+        "n_replicates_completed": completed,
+        "seed": int(config.seed),
+        "device": config.device,
+        "heavy_jobs_executed": True,
+        "null_results_fabricated": False,
+        "matched_null_scores_written": True,
+        "message": "Feature-matched deployable-model null scoring completed. Interpret as diagnostic calibration support, not a standalone empirical discovery claim.",
+        "claim_boundary": CLAIM_BOUNDARY,
+    }
+    _write_json(outdir / "calibration_status.json", status_payload)
+    (outdir / "calibration_status.md").write_text(_render_calibration_status_md(status_payload), encoding="utf-8")
+    return {
+        "status": manifest["status"],
+        "outdir": str(outdir),
+        "n_replicates_requested": requested,
+        "n_replicates_completed": completed,
+        "observed_max_gene_support": observed.get("max_gene_support"),
+        "observed_called_rows": observed.get("called_branch_site_rows"),
+    }
+
+
+def _matched_null_decision(summary: Dict[str, Any]) -> str:
+    if not summary.get("null_scoring_completed"):
+        return "matched_null_incomplete"
+    p_support = _safe_float(summary.get("p_empirical_support"))
+    p_rows = _safe_float(summary.get("p_empirical_called_rows"))
+    if p_support is not None and p_support <= 0.05:
+        return "diagnostic_support_unusual_vs_feature_matched_null"
+    if p_rows is not None and p_rows <= 0.05:
+        return "called_rows_unusual_vs_feature_matched_null"
+    return "not_unusual_vs_feature_matched_null"
+
+
 def validate_simulation_matched_null_calibration(config: SimulationMatchedNullCalibrationValidationConfig) -> Dict[str, Any]:
     calibration_dir = Path(config.calibration_dir)
     failures: List[str] = []
@@ -698,7 +1247,7 @@ def make_wrky_reference_calibration_report(config: WRKYReferenceCalibrationRepor
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     pack = Path(config.evidence_pack)
-    panel_rows = read_tsv(Path(config.babappa_panel_run) / "panel_run_summary.tsv")
+    panel_rows = _read_wrky_panel_summary_rows(Path(config.babappa_panel_run), pack)
     babappa_row = next((row for row in panel_rows if row.get("panel_id") == "WRKY_candidate_02_close"), panel_rows[0] if panel_rows else {})
     reference_rows = read_tsv(Path(config.reference_results))
     comparison = _read_json_or_empty(Path(config.comparison_dir) / "empirical_reference_comparison.json", [])
@@ -737,6 +1286,20 @@ def make_wrky_reference_calibration_report(config: WRKYReferenceCalibrationRepor
     write_tsv(outdir / "wrky_reference_calibration_report.tsv", [{"decision_category": decision, "manuscript_ready": False, "comparison_status": comparison.get("status"), "null_status": null_summary.get("status")}], ["decision_category", "manuscript_ready", "comparison_status", "null_status"])
     (outdir / "wrky_reference_calibration_report.md").write_text(_render_wrky_reference_calibration_report_md(payload), encoding="utf-8")
     return {"status": "ok", "decision_category": decision, "manuscript_ready": False, "json": str(outdir / "wrky_reference_calibration_report.json")}
+
+
+def _read_wrky_panel_summary_rows(panel_run: Path, evidence_pack: Path) -> List[Dict[str, Any]]:
+    candidates = [
+        panel_run / "panel_run_summary.tsv",
+        evidence_pack / "babappa" / "panel_run_summary.tsv",
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return read_tsv(candidate)
+    raise FileNotFoundError(
+        "missing panel_run_summary.tsv; checked "
+        + ", ".join(str(candidate) for candidate in candidates)
+    )
 
 
 def interpret_babappa_only_signal(config: BabappaOnlySignalInterpretationConfig) -> Dict[str, Any]:

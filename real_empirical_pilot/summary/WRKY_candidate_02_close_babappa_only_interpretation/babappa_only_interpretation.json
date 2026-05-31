@@ -1,13 +1,13 @@
 {
-  "babappa_only_interpretation_version": "0.5.1-alpha",
-  "babappa_report_decision": "diagnostic_positive_calibration_pending",
+  "babappa_only_interpretation_version": "0.5.2-alpha",
+  "babappa_report_decision": "diagnostic_positive_not_supported_by_reference",
   "claim_boundary": "Diagnostic empirical evidence only. Not manuscript-ready and not a final positive-selection discovery claim until simulation-matched calibration and codeml/HyPhy-style reference comparison are interpreted.",
-  "decision": "babappa_only_inconclusive",
+  "decision": "babappa_only_supported_by_null",
   "manuscript_ready": false,
-  "null_scoring_completed": false,
-  "p_empirical_called_rows": null,
-  "p_empirical_support": null,
-  "reason": "matched_null_scoring_incomplete",
+  "null_scoring_completed": true,
+  "p_empirical_called_rows": 0.009900990099009901,
+  "p_empirical_support": 1.0,
+  "reason": "references_negative_but_matched_null_percentile_extreme",
   "references_negative": true,
   "status": "ok"
 }

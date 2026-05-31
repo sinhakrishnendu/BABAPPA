@@ -1,0 +1,42 @@
+{
+  "ambiguous_fraction": 0.0,
+  "cds_fasta": "real_empirical_pilot/input/cds/DGAPDH_candidate_01.cds.fasta",
+  "decision": "diagnostic_only",
+  "empirical_family_prefilter_version": "0.5.2-alpha",
+  "foreground": "SMAR006602-PA",
+  "foreground_present": true,
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T09:51:54.126391+00:00",
+  "internal_stop_codons": [],
+  "length_ratio": 1.1143790849673203,
+  "long_branch_outliers": [
+    "BL20647_evm1"
+  ],
+  "max_mean_pdistance": 0.35,
+  "max_pairwise_p_distance": 0.7465483234714004,
+  "mean_pairwise_p_distance": 0.6803086429207985,
+  "min_codons_required": 100,
+  "min_taxa_required": 6,
+  "missing_in_fasta": [],
+  "missing_in_tree": [],
+  "n_codons": 306,
+  "n_taxa": 8,
+  "paralogy_risk_flags": [
+    "long_branch_outliers:BL20647_evm1",
+    "unusually_divergent_pair:0.746548"
+  ],
+  "recommended_action": "use this only as an OOD stress test; build a closer-taxa panel",
+  "saturation_proxy": "extreme",
+  "status": "ok",
+  "terminal_stop_codons": [
+    "SMAR006602-PA:TAA",
+    "EJD75047.1:TAA",
+    "EJD75049.1:TAA",
+    "SMAR000460-PA:TGA",
+    "EDO40842:TAG",
+    "HMIM003864-PA:TAA",
+    "BL20647_evm1:TGA"
+  ],
+  "tree_file": "real_empirical_pilot/input/trees/DGAPDH_candidate_01.treefile",
+  "tree_tip_compatible": true
+}

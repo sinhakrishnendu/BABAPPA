@@ -1,0 +1,2 @@
+decision	n_taxa	n_codons	mean_pairwise_p_distance	max_pairwise_p_distance	saturation_proxy	gap_fraction	ambiguous_fraction	foreground_present	tree_tip_compatible	paralogy_risk_flags	recommended_action
+reject_possible_paralogy	8	337	0.686362	0.74184	extreme	0	0	True	True	duplicate_species:ChfasH1;extreme_length_ratio:2.288;long_branch_outliers:100,Glyma.13G224100|Glyma.13G224100.1,Psat06G0270900|Psat06G0270900-T1;unusually_divergent_pair:0.74184	curate one ortholog per species and remove obvious paralogs

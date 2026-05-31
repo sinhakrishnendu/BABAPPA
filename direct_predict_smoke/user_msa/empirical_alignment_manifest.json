@@ -1,0 +1,61 @@
+{
+  "cds_fasta": "tests/data/empirical_smoke/tiny_empirical.cds.fasta",
+  "created_files": {
+    "user_msa": {
+      "codon_fasta": "direct_predict_smoke/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "qc": "direct_predict_smoke/user_msa/methods/user_msa/empirical.user_msa.qc.json",
+      "site_map": "direct_predict_smoke/user_msa/site_map/user_msa.site_map.tsv"
+    }
+  },
+  "empirical_alignment_version": "0.5.2-alpha",
+  "failures": [],
+  "foreground": "all",
+  "foregrounds_resolved": [
+    "taxon1",
+    "taxon2",
+    "taxon3"
+  ],
+  "method_policy": {
+    "methods": [
+      {
+        "attempted_families": 1,
+        "failed_families": 0,
+        "failure_fraction": "0",
+        "method": "user_msa",
+        "reason": "user_msa_is_authoritative_input",
+        "recommendation": "usable",
+        "site_map_conflict_fraction": "0",
+        "site_map_frame_error_fraction": "0",
+        "site_map_unique_fraction": "1",
+        "successful_families": 1
+      }
+    ],
+    "quarantined_methods": [],
+    "usable_methods": [
+      "user_msa"
+    ]
+  },
+  "method_policy_dir": "direct_predict_smoke/user_msa/method_policy",
+  "method_rows": [
+    {
+      "aligned_fasta": "direct_predict_smoke/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "method": "user_msa",
+      "reason": "user_supplied_authoritative_codon_msa",
+      "runtime_seconds": "0",
+      "site_map": "direct_predict_smoke/user_msa/site_map/user_msa.site_map.tsv",
+      "status": "ok"
+    }
+  ],
+  "methods_requested": [
+    "user_msa"
+  ],
+  "methods_run": [
+    "user_msa"
+  ],
+  "realignment_performed": false,
+  "site_map_dir": "direct_predict_smoke/user_msa/site_map",
+  "status": "ok",
+  "tree": "tests/data/empirical_smoke/tiny_empirical.treefile",
+  "user_msa_is_authoritative": true,
+  "warnings": []
+}

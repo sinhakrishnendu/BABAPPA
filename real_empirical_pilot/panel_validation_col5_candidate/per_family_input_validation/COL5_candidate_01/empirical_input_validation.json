@@ -1,0 +1,40 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/COL5_candidate_01.cds.fasta",
+  "empirical_input_validation_version": "0.5.2-alpha",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "ChfasH1.2G258800|ChfasH1.2G258800.1",
+    "Cucsa.092180|Cucsa.092180.1",
+    "Glyma.17G066600|Glyma.17G066600.1",
+    "GlysoPI483463.17G061300|GlysoPI483463.17G061300.1",
+    "Lj4g0015701|Lj4g0015701.1",
+    "Medtr3g034680|Medtr3g034680.1",
+    "Psat04G0038300|Psat04G0038300-T1"
+  ],
+  "foreground": "Cucsa.092180|Cucsa.092180.1",
+  "foreground_taxon": "Cucsa.092180|Cucsa.092180.1",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T06:20:57.362664+00:00",
+  "mean_pairwise_p_distance": 0.6594562565327912,
+  "n_codons": 97,
+  "n_taxa": 7,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/COL5_candidate_01.treefile",
+  "tree_shape_summary": "n_tips=7;n_internal_commas=6",
+  "tree_tips": [
+    "ChfasH1.2G258800|ChfasH1.2G258800.1",
+    "Cucsa.092180|Cucsa.092180.1",
+    "Glyma.17G066600|Glyma.17G066600.1",
+    "GlysoPI483463.17G061300|GlysoPI483463.17G061300.1",
+    "Lj4g0015701|Lj4g0015701.1",
+    "Medtr3g034680|Medtr3g034680.1",
+    "Psat04G0038300|Psat04G0038300-T1"
+  ],
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input",
+    "high_pairwise_p_distance:0.659456"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "ambiguous_fraction": 0.0,
+  "cds_fasta": "real_empirical_pilot/input/cds/HSP70_candidate_01.cds.fasta",
+  "decision": "reject_possible_paralogy",
+  "empirical_family_prefilter_version": "0.5.2-alpha",
+  "foreground": "Cucsa.010680|Cucsa.010680.1",
+  "foreground_present": true,
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T08:02:39.024607+00:00",
+  "internal_stop_codons": [],
+  "length_ratio": 2.287833827893175,
+  "long_branch_outliers": [
+    "100",
+    "Glyma.13G224100|Glyma.13G224100.1",
+    "Psat06G0270900|Psat06G0270900-T1"
+  ],
+  "max_mean_pdistance": 0.35,
+  "max_pairwise_p_distance": 0.7418397626112759,
+  "mean_pairwise_p_distance": 0.6863622898841618,
+  "min_codons_required": 100,
+  "min_taxa_required": 6,
+  "missing_in_fasta": [],
+  "missing_in_tree": [],
+  "n_codons": 337,
+  "n_taxa": 8,
+  "paralogy_risk_flags": [
+    "duplicate_species:ChfasH1",
+    "extreme_length_ratio:2.288",
+    "long_branch_outliers:100,Glyma.13G224100|Glyma.13G224100.1,Psat06G0270900|Psat06G0270900-T1",
+    "unusually_divergent_pair:0.74184"
+  ],
+  "recommended_action": "curate one ortholog per species and remove obvious paralogs",
+  "saturation_proxy": "extreme",
+  "status": "ok",
+  "terminal_stop_codons": [
+    "Cucsa.010680|Cucsa.010680.1:TAA",
+    "Glyma.13G224100|Glyma.13G224100.1:TGA",
+    "Medtr4g130540|Medtr4g130540.1:TAA",
+    "GlysoPI483463.08G277300|GlysoPI483463.08G277300.1:TGA",
+    "Lj6g0017279|Lj6g0017279.1:TGA",
+    "ChfasH1.6G167600|ChfasH1.6G167600.1:TAA",
+    "ChfasH1.6G167600|ChfasH1.6G167600.2:TAA",
+    "Psat06G0270900|Psat06G0270900-T1:TGA"
+  ],
+  "tree_file": "real_empirical_pilot/input/trees/HSP70_candidate_01.treefile",
+  "tree_tip_compatible": true
+}

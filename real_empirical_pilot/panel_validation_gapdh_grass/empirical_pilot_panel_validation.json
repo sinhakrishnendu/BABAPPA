@@ -1,0 +1,38 @@
+{
+  "category_counts": {
+    "paralogy_risk": 1
+  },
+  "empirical_pilot_panel_validation_version": "0.5.2-alpha",
+  "failures": [],
+  "generated_at": "2026-05-31T05:20:52.510138+00:00",
+  "n_rows": 1,
+  "panel_manifest": "real_empirical_pilot/manifest/gapdh_grass_control_panel.tsv",
+  "required_columns": [
+    "panel_id",
+    "gene_family",
+    "species_group",
+    "cds_fasta",
+    "tree_file",
+    "foreground",
+    "expected_category",
+    "reference_status",
+    "notes"
+  ],
+  "row_summaries": [
+    {
+      "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/GAPDH_grass_conserved_01.cds.fasta",
+      "expected_category": "paralogy_risk",
+      "failures": "",
+      "foreground": "LOC_Os02g07490_LOC_Os02g07490.1",
+      "gene_family": "GAPDH_grass",
+      "input_status": "pass",
+      "panel_id": "GAPDH_grass_conserved_01",
+      "reference_status": "planned",
+      "row_status": "ok",
+      "tree_file": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/GAPDH_grass_conserved_01.treefile",
+      "warnings": ""
+    }
+  ],
+  "status": "ok",
+  "warnings": []
+}

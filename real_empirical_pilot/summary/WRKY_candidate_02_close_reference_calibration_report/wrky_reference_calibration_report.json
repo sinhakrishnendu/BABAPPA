@@ -78,16 +78,25 @@
     ],
     "status": "ok"
   },
-  "decision_category": "diagnostic_positive_calibration_pending",
+  "decision_category": "diagnostic_positive_not_supported_by_reference",
   "evidence_pack": "real_empirical_pilot/evidence_packs/WRKY_candidate_02_close",
   "forbidden_discovery_language_absent": true,
   "manuscript_ready": false,
   "matched_null_calibration": {
-    "claim_boundary": "No null p-like percentiles are calculated until null scoring is completed.",
+    "calibration_backend": "feature_matched_deployable_model_null",
+    "calibration_scope": "feature-level matched null scoring; not full raw sequence simulation/alignment replay",
+    "claim_boundary": "Feature-matched null calibration is diagnostic. It is not by itself a final empirical discovery claim.",
     "deployable_model_package": "deployable_model_conservative_branch_site_100k_mps",
-    "device": "auto",
-    "high_score_tail_quantiles": {},
-    "matched_null_calibration_version": "0.5.1-alpha",
+    "device": "mps",
+    "evidence_pack": "real_empirical_pilot/evidence_packs/WRKY_candidate_02_close",
+    "fast_null_mode": false,
+    "high_score_tail_quantiles": {
+      "called_rows_q95": 891.05,
+      "called_rows_q99": 947.0500000000001,
+      "max_site_score_q95": 0.6530630916357041,
+      "max_site_score_q99": 0.7071493977308274
+    },
+    "matched_null_calibration_version": "0.5.2-alpha",
     "matched_parameters": {
       "alignment_disagreement": "pending_alignment_ensemble_qc",
       "alt_replicates_initial": 250,
@@ -105,23 +114,25 @@
       "saturation_proxy": "extreme",
       "tree_shape_summary": "n_tips=7;n_internal_commas=6"
     },
-    "missing_downstream_stage": "run matched null simulations through alignment/feature/scoring path",
-    "n_replicates_completed": 0,
+    "n_replicates_completed": 100,
     "n_replicates_requested": 100,
     "n_replicates_staged": 100,
-    "null_scoring_completed": false,
+    "null_results_fabricated": false,
+    "null_scoring_completed": true,
     "observed_values": {
       "called_branch_site_rows": 6954,
       "max_branch_support": 0.17718860507011414,
       "max_gene_support": 0.17718860507011414,
-      "source": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/empirical_scores"
+      "score_rows": 10451,
+      "source": "real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/babappa/empirical_scores"
     },
     "outdir": "real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null100",
-    "p_empirical_called_rows": null,
-    "p_empirical_support": null,
-    "plan_dir": "real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/simulation_matched_calibration_plan",
-    "seed": 42,
-    "status": "staged_downstream_scoring_missing"
+    "p_empirical_branch_support": 1.0,
+    "p_empirical_called_rows": 0.009900990099009901,
+    "p_empirical_support": 1.0,
+    "plan_dir": "real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/simulation_matched_calibration_plan",
+    "seed": 20260530,
+    "status": "ok"
   },
   "reference_results": [
     {
@@ -159,5 +170,5 @@
     }
   ],
   "status": "ok",
-  "wrky_reference_calibration_report_version": "0.5.1-alpha"
+  "wrky_reference_calibration_report_version": "0.5.2-alpha"
 }

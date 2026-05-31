@@ -1,0 +1,36 @@
+{
+  "applicability_reasons": [
+    "low_taxa:3",
+    "short_alignment:5"
+  ],
+  "applicability_status": "borderline",
+  "direct_prediction_version": "0.5.2-alpha",
+  "foreground_requested": "all",
+  "foregrounds_scored": [
+    "taxon1",
+    "taxon2",
+    "taxon3"
+  ],
+  "generated_at": "2026-05-31T11:44:33.554630+00:00",
+  "model_package": "deployable_model_conservative_branch_site_100k_mps",
+  "msa": "tests/data/empirical_smoke/tiny_empirical.cds.fasta",
+  "n_codons": 5,
+  "n_prediction_rows": 0,
+  "n_taxa": 3,
+  "no_simulator_truth_used": true,
+  "outputs": {
+    "branch_predictions": "",
+    "branch_site_predictions": "",
+    "gene_summary": "",
+    "prediction_report": "direct_predict_smoke/prediction_report.md",
+    "qc_report": "direct_predict_smoke/qc_report.md"
+  },
+  "realignment_performed": false,
+  "scoring": {},
+  "status": "dry_run",
+  "summary": {},
+  "tree": "tests/data/empirical_smoke/tiny_empirical.treefile",
+  "truth_derived_inputs_excluded": true,
+  "user_msa_is_authoritative": true,
+  "validation_status": "pass"
+}

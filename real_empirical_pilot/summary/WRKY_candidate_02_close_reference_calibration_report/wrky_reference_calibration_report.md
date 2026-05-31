@@ -19,13 +19,13 @@
 
 ## Simulation-Matched Null Calibration
 
-- status: `staged_downstream_scoring_missing`
-- completed scored replicates: `0`
-- p_empirical_support: `None`
+- status: `ok`
+- completed scored replicates: `100`
+- p_empirical_support: `1.0`
 
 ## Final Decision Category
 
-- decision: `diagnostic_positive_calibration_pending`
+- decision: `diagnostic_positive_not_supported_by_reference`
 - manuscript-ready: `False`
 
 ## Claim Boundary

@@ -1,0 +1,2 @@
+decision	n_taxa	n_codons	mean_pairwise_p_distance	max_pairwise_p_distance	saturation_proxy	gap_fraction	ambiguous_fraction	foreground_present	tree_tip_compatible	paralogy_risk_flags	recommended_action
+diagnostic_only	7	320	0.683663	0.746548	extreme	0	0	True	True	unusually_divergent_pair:0.746548	use this only as an OOD stress test; build a closer-taxa panel

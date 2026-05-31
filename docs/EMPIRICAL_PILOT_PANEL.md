@@ -1,6 +1,6 @@
 # Empirical Pilot Panel
 
-BABAPPA `0.4.9-alpha` includes a small curated empirical pilot-panel framework. It is diagnostic benchmarking only, not final empirical inference.
+BABAPPA `0.5.2-alpha` includes a small curated empirical pilot-panel framework. It is diagnostic benchmarking only, not final empirical inference.
 
 ## Manifest Schema
 
@@ -60,7 +60,7 @@ babappa plan-ood-aware-family-build --family-id WRKY_candidate_02_close --query-
 
 The first real WRKY family was useful as a stress-test/failure-mode case, not as a discovery. Its mean p-distance was far above the recommended first-pilot gate, so BABAPPA treats it as OOD and diagnostic-only.
 
-`WRKY_candidate_02_close` is the first accepted in-domain diagnostic empirical pilot. It should be used as the reference/calibration development case, not as a manuscript claim. Cycle 48 writes install plans for codeml/HyPhy, parses reference outputs when present, records `pending_tool_missing` when tools are absent, builds a reference-results table, and produces an integrated report. The decision must stay cautious unless BABAPPA is in-domain, matched-null calibration supports non-null behavior, and at least one external reference workflow gives compatible evidence.
+`WRKY_candidate_02_close` is the first accepted in-domain diagnostic empirical pilot. It should be used as the reference/calibration development case, not as a manuscript discovery claim. Its current status is BABAPPA diagnostic-positive but codeml and HyPhy negative. A 100-replicate feature-level matched-null calibration completed with unusual called-row burden (`p_empirical_called_rows=0.009900990099009901`) but non-unusual maximum gene support (`p_empirical_support=1.0`). The interpretation is therefore BABAPPA-only with mixed feature-level null support, and inconclusive as an empirical discovery claim.
 
 ## Long-Run Handoff Policy
 

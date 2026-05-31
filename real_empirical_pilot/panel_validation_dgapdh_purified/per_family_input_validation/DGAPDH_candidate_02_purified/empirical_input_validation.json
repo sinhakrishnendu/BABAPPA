@@ -1,0 +1,40 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/cds/DGAPDH_candidate_02_purified.cds.fasta",
+  "empirical_input_validation_version": "0.5.2-alpha",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "EDO40842",
+    "EJD75047.1",
+    "EJD75049.1",
+    "HMIM003864-PA",
+    "SMAR000460-PA",
+    "SMAR006602-PA",
+    "TriadP64020"
+  ],
+  "foreground": "SMAR006602-PA",
+  "foreground_taxon": "SMAR006602-PA",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T10:00:07.263584+00:00",
+  "mean_pairwise_p_distance": 0.6836628985183216,
+  "n_codons": 320,
+  "n_taxa": 7,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "/Users/krishnendu/Documents/GitHub/BABAPPA/real_empirical_pilot/input/trees/DGAPDH_candidate_02_purified.treefile",
+  "tree_shape_summary": "n_tips=7;n_internal_commas=6",
+  "tree_tips": [
+    "EDO40842",
+    "EJD75047.1",
+    "EJD75049.1",
+    "HMIM003864-PA",
+    "SMAR000460-PA",
+    "SMAR006602-PA",
+    "TriadP64020"
+  ],
+  "warnings": [
+    "unequal_sequence_lengths_unaligned_input",
+    "high_pairwise_p_distance:0.683663"
+  ]
+}

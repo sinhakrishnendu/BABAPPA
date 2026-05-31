@@ -1,0 +1,29 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "tests/data/empirical_smoke/tiny_empirical.cds.fasta",
+  "empirical_input_validation_version": "0.5.2-alpha",
+  "empirical_validation_status": "pass",
+  "failures": [],
+  "fasta_ids": [
+    "taxon1",
+    "taxon2",
+    "taxon3"
+  ],
+  "foreground": "taxon1",
+  "foreground_taxon": "taxon1",
+  "gap_fraction": 0.0,
+  "generated_at": "2026-05-31T11:34:18.956698+00:00",
+  "mean_pairwise_p_distance": 0.08888888888888889,
+  "n_codons": 5,
+  "n_taxa": 3,
+  "saturation_proxy": "moderate",
+  "status": "pass",
+  "tree": "tests/data/empirical_smoke/tiny_empirical.treefile",
+  "tree_shape_summary": "n_tips=3;n_internal_commas=2",
+  "tree_tips": [
+    "taxon1",
+    "taxon2",
+    "taxon3"
+  ],
+  "warnings": []
+}

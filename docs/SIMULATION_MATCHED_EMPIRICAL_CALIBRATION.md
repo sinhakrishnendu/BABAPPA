@@ -1,6 +1,6 @@
 # Simulation-Matched Empirical Calibration
 
-BABAPPA empirical calibration is a scaffold in `0.4.8-alpha`. It does not run heavy simulations and it does not make final empirical branch-site inference claims.
+BABAPPA empirical calibration is a research-alpha scaffold in `0.5.2-alpha`. It plans and validates simulation-matched calibration workflows for empirical diagnostic results, but completed calibration is still required before any final empirical branch-site inference claim.
 
 ## Why Calibration Is Required
 
@@ -70,16 +70,18 @@ Cycle 43 real-pilot readiness stops before scoring when real CDS/tree files are 
 
 ## Cycle 48 WRKY Null Calibration Pilot
 
-`WRKY_candidate_02_close` is the first in-domain diagnostic empirical pilot. Its BABAPPA score remains non-manuscript-ready until reference and matched-null results are interpreted.
+`WRKY_candidate_02_close` is the first in-domain diagnostic empirical pilot. Its BABAPPA score remains non-manuscript-ready until reference disagreement, feature-level matched-null results, and biological controls are interpreted together.
 
-Cycle 48 adds:
+For the WRKY close-taxa pilot, the user-run feature-level matched-null calibration command is:
 
 ```bash
-babappa run-simulation-matched-null-calibration --plan-dir real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/simulation_matched_calibration_plan --deployable-model-package deployable_model_conservative_branch_site_100k_mps --outdir real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null100 --n-replicates 100 --device auto --seed 42
+babappa run-simulation-matched-null-calibration --evidence-pack real_empirical_pilot/evidence_packs/WRKY_candidate_02_close --outdir real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null100 --n-null 100 --seed 20260530 --device mps
 babappa validate-simulation-matched-null-calibration --calibration-dir real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null100
 ```
 
-The matched-null runner supports resumable user-run scoring. Codex only runs tiny `--fast-null-mode` smoke tests, and BABAPPA does not fabricate null p-like percentiles; percentiles are written only from completed scored null replicates. Reports must remain diagnostic while `null_scoring_completed` is false.
+The completed WRKY run has 100/100 scored feature-level null replicates, validation status `ok`, `p_empirical_called_rows=0.009900990099009901`, and `p_empirical_support=1.0`. This is mixed diagnostic support: the called-row burden is unusual, but maximum gene support is not. It remains feature-level matched null scoring, not full raw sequence simulation/alignment replay.
+
+The matched-null runner supports resumable user-run scoring. Codex only runs tiny smoke tests or dry runs, and BABAPPA does not fabricate null p-like percentiles; percentiles are written only from completed scored null replicates. Reports must remain diagnostic while `null_scoring_completed` is false.
 
 ## Long-Run Handoff Policy
 
@@ -91,4 +93,4 @@ Cycle 49 permits only tiny smoke runs in Codex, such as:
 babappa run-simulation-matched-null-calibration --plan-dir real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware/per_family/WRKY_candidate_02_close/simulation_matched_calibration_plan --deployable-model-package deployable_model_conservative_branch_site_100k_mps --outdir real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null3_smoke --n-replicates 3 --device auto --seed 42 --fast-null-mode
 ```
 
-The real 100-null run remains USER-RUN ONLY.
+Large or repeated calibration runs remain USER-RUN ONLY.
