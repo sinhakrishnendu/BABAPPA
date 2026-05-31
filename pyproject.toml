@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "babappa"
-version = "0.5.2-alpha"
+version = "0.6.0"
 description = "Simulation-trained branch-site selection support from user-supplied codon MSAs and trees"
 readme = "README.md"
 requires-python = ">=3.9"
