@@ -1,17 +1,18 @@
 # Fdb version 4
-["bibtex BABAPPA_method_paper_auxiliary_saturation"] 1780195549.5707 "BABAPPA_method_paper_auxiliary_saturation.aux" "BABAPPA_method_paper_auxiliary_saturation.bbl" "BABAPPA_method_paper_auxiliary_saturation" 1780198696.95247 0
+["bibtex BABAPPA_method_paper_auxiliary_saturation"] 1780289462.85149 "BABAPPA_method_paper_auxiliary_saturation.aux" "BABAPPA_method_paper_auxiliary_saturation.bbl" "BABAPPA_method_paper_auxiliary_saturation" 1780289692.92338 0
   "./references_auxiliary_saturation.bib" 1778473843 14104 aa09195f6d5110f1848cdf8b98146cd6 ""
   "/usr/local/texlive/2026basic/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "BABAPPA_method_paper_auxiliary_saturation.aux" 1780198696.89049 4417 9a3cb8cbb2b688ba0faac90a05e82f9d "pdflatex"
+  "BABAPPA_method_paper_auxiliary_saturation.aux" 1780289692.85839 4814 28a31cf035f07a1757bf561a920a0fe6 "pdflatex"
   (generated)
   "BABAPPA_method_paper_auxiliary_saturation.bbl"
   "BABAPPA_method_paper_auxiliary_saturation.blg"
   (rewritten before read)
-["pdflatex"] 1780198696.66115 "BABAPPA_method_paper_auxiliary_saturation.tex" "BABAPPA_method_paper_auxiliary_saturation.pdf" "BABAPPA_method_paper_auxiliary_saturation" 1780198696.95258 0
+["pdflatex"] 1780289692.65204 "BABAPPA_method_paper_auxiliary_saturation.tex" "BABAPPA_method_paper_auxiliary_saturation.pdf" "BABAPPA_method_paper_auxiliary_saturation" 1780289692.92346 0
   "/Users/krishnendu/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1779157141 388057 1d082679fa014e10f6b3f8e591ecf8f4 ""
   "/Users/krishnendu/Library/texmf/tex/latex/enumitem/enumitem.sty" 1738874546 52272 63d293bc0d496619edb57585740861a2 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
+  "/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc" 1202520719 2327 9d6df24f9c4f7368395224341a95523a ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc" 1254269338 3031 6c4d3515bf7115d8518af1c9ab97ca44 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/tfm/jknappen/ec/ecrm1095.tfm" 1136768653 3584 929cdff2b7a8c11bd4d49fd68cb0ae70 ""
@@ -47,7 +48,9 @@
   "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmr10.pfb" 1255129361 119235 f35b44530a1d90eb90fe15d9cba67ea0 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmr12.pfb" 1255129361 113634 f99c44d58bae0863375faf0e1d74d612 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmr17.pfb" 1255129361 119752 1bd8d06e4079df624bf59ce3ad7c9aa6 ""
+  "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmr8.pfb" 1255129361 122174 a7a08406857c9530a0320a2517f60370 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmri10.pfb" 1255129361 112593 fda2373ba4420af33949610de4c28fe8 ""
+  "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmsy10.pfb" 1254269338 27863 09ce3735688ffde955e72da27c95b61a ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb" 1255129361 113227 1010e11451afc2822c95dae77c390042 ""
   "/usr/local/texlive/2026basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2026basic/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty" 1576625341 40635 c40361e206be584d448876bba8a64a3b ""
@@ -111,10 +114,10 @@
   "/usr/local/texlive/2026basic/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1780143318 2966192 4afa68c68e4ef28cab75c32a453d1c4f ""
   "/usr/local/texlive/2026basic/texmf.cnf" 1772405582 628 bbc09d6d38872d53c11bb48dc9b14e88 ""
-  "BABAPPA_method_paper_auxiliary_saturation.aux" 1780198696.89049 4417 9a3cb8cbb2b688ba0faac90a05e82f9d "pdflatex"
-  "BABAPPA_method_paper_auxiliary_saturation.bbl" 1780195549.58413 5214 49f8dda7cac0c1cc214c82fa43a58bef "bibtex BABAPPA_method_paper_auxiliary_saturation"
-  "BABAPPA_method_paper_auxiliary_saturation.out" 1780198696.89109 3105 ee1f018d08553b7d38e81b67ced40acc "pdflatex"
-  "BABAPPA_method_paper_auxiliary_saturation.tex" 1780198630.53636 22664 b772768e28588663740f4f40790d99d4 ""
+  "BABAPPA_method_paper_auxiliary_saturation.aux" 1780289692.85839 4814 28a31cf035f07a1757bf561a920a0fe6 "pdflatex"
+  "BABAPPA_method_paper_auxiliary_saturation.bbl" 1780289462.86347 5660 df3018625fffaf789ae6ef35ffc96fc5 "bibtex BABAPPA_method_paper_auxiliary_saturation"
+  "BABAPPA_method_paper_auxiliary_saturation.out" 1780289692.85876 3629 b74eb27b938d6c374e23be5c84b55829 "pdflatex"
+  "BABAPPA_method_paper_auxiliary_saturation.tex" 1780289679.33772 23109 d8f26500cdb4989bfdcefbdcc7f1b6a8 ""
   (generated)
   "BABAPPA_method_paper_auxiliary_saturation.aux"
   "BABAPPA_method_paper_auxiliary_saturation.log"

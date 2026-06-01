@@ -27,15 +27,15 @@
 
 \newcommand{\ProjectName}{BABAPPA}
 \newcommand{\ProjectExpansion}{Branch-site Alignment-Bias-Aware Probabilistic Positive-selection Analyzer}
-\newcommand{\ProjectVersion}{0.5.2-alpha}
-\newcommand{\ReleaseArchiveLabel}{0.5.0-alpha}
+\newcommand{\ProjectVersion}{v0.7.0}
+\newcommand{\ReleaseArchiveLabel}{v0.7.0}
 \newcommand{\RepoURL}{[PLACEHOLDER\_REPOSITORY\_URL]}
 \newcommand{\ZenodoDOI}{[PLACEHOLDER\_ZENODO\_DOI]}
-\newcommand{\ArchiveName}{\texttt{BABAPPA\_0.5.0-alpha\_release\_zenodo\_20260530.tar.xz}}
+\newcommand{\ArchiveName}{\texttt{BABAPPA\_v0.7.0\_release\_zenodo\_[DATE].tar.xz}}
 \newcommand{\ArchiveChecksum}{\texttt{cc259617f19d9634fd6e11906903910498ab78d3797a10df1bb24b7db014dc30}}
 \newcommand{\CorrespondenceEmail}{dr.krishnendusinha@gmail.com}
 
-\title{\textbf{\ProjectName}: a research-alpha, simulation-trained framework for guarded branch-site positive-selection support from user-supplied codon MSAs and trees}
+\title{\textbf{\ProjectName}: a standalone simulation-trained method for BABAPPA-native branch-site support from user-supplied codon MSAs and trees}
 
 \author{
 Krishnendu Sinha\\
@@ -49,89 +49,106 @@ Krishnendu Sinha\\
 \maketitle
 
 \begin{abstract}
-Branch-site positive-selection analysis is sensitive to multiple sequence alignment, taxon sampling, saturation, hidden paralogy, and model misspecification. \ProjectName{} (\ProjectExpansion{}) is a research-alpha software and methods framework designed to provide guarded branch-site positive-selection support rather than unsupported empirical discovery calls. The core empirical interface accepts a user-supplied codon multiple sequence alignment (MSA) and matching treefile, treats that MSA as the authoritative homology statement, and scores requested foreground branches or all tree tips. The broader framework combines simulation-supervised explicit branch-site truth, conservative branch-site features, tier-aware neural scoring, calibration and aggregation layers, deployable model packaging, empirical input quality control, out-of-distribution (OOD) applicability gates, optional alignment-sensitivity analysis, and reference-tool comparison scaffolding.
+Branch-site positive-selection analysis asks whether specific sites experienced episodic selection on specific phylogenetic branches. Standard likelihood tools such as codeml/PAML and HyPhy remain central references, but many practical analyses begin with a curated codon multiple sequence alignment (MSA) and a treefile and require a direct answer: which site on which branch is supported? \ProjectName{} (\ProjectExpansion{}) is a research-alpha, simulation-trained method designed for that interface. The core command accepts only a user-supplied aligned codon MSA, a matching tree, and a foreground definition (\texttt{all}, \texttt{leaves}, or specific tip labels). It treats the supplied MSA as the authoritative homology statement, performs no mandatory realignment, and reports branch-site scores, calls, aligned codon coordinates, and branch-specific de-gapped codon coordinates.
 
-The current implementation, \ProjectVersion{}, completed a conservative explicit branch-truth Apple Silicon/MPS validation at 100,000 simulated families. The validation used four saturation tiers, explicit simulator branch-site truth, the \texttt{conservative\_branch\_site} feature policy, and the production alignment ensemble \texttt{identity}, MAFFT, \texttt{BABAPPAlign}, and MUSCLE. PRANK and T-Coffee are retained only as diagnostic aligners. The 100K run is a conditional pass: raw and intermediate directories were intentionally pruned after completion, but retained summaries, truth audits, model artifacts, calibration outputs, aggregation outputs, controls, and stage markers support the completed validation state. Branch-site neural test AUROC was 0.998605, 0.996962, 0.994527, and 0.989955 for low, moderate, high, and extreme saturation tiers. Branch-level AUROC was 0.999797, 0.999421, 0.998777, and 0.997873. Branch-to-gene AUROC was 0.999697, 0.999616, 0.999508, and 0.999430. These are simulation-supervised validation results only.
+BABAPPA is intentionally standalone. It does not call codeml or HyPhy to obtain its inference, and it does not borrow their null models. Instead, it reports BABAPPA-native evidence: a deployable neural branch-site scorer trained on explicit simulator branch-site truth, an applicability/out-of-domain gate, and an empirical feature-null calibration layer that returns p-like BABAPPA quantities and support classes. codeml and HyPhy are used in this manuscript only as optional publication comparators, not as dependencies or ground truth.
 
-The project also includes a validated deployable simulation-trained package for the conservative 100K MPS model family, plus an empirical bridge for direct MSA/tree prediction, input validation, feature extraction, truth-column auditing, applicability/OOD checking, branch-site scoring, empirical reporting, optional codeml/HyPhy-style comparison, and simulation-matched calibration planning. A WRKY empirical pilot demonstrates both abstention and guarded scoring. \texttt{WRKY\_candidate\_01} was correctly treated as an OOD stress test. \texttt{WRKY\_candidate\_02\_close} produced a BABAPPA diagnostic-positive signal on close-taxa WRKY33/AT2G38470 homologs, but codeml and HyPhy references were negative. A 100-replicate feature-level matched-null calibration was completed and showed unusual called-row burden but not unusual maximum gene support. Therefore the correct interpretation is BABAPPA-only, mixed feature-level null support, and inconclusive as an empirical discovery claim. \ProjectName{} is ready as a guarded research-alpha software/methods contribution and for calibrated empirical expansion, but not as a finalized empirical positive-selection discovery engine.
+The current implementation, \ProjectVersion{}, is based on a conservative explicit branch-truth Apple Silicon/MPS validation at 100,000 simulated families. The retained 100K validation is a conditional pass because raw and intermediate files were intentionally pruned after completion, but retained summaries, audits, model artifacts, calibrations, controls, and stage markers support the completed run. Branch-site neural AUROC across low, moderate, high, and extreme saturation tiers was 0.998605, 0.996962, 0.994527, and 0.989955. Branch-level AUROC was 0.999797, 0.999421, 0.998777, and 0.997873. Gene-level AUROC was 0.999697, 0.999616, 0.999508, and 0.999430. These values describe simulation-supervised validation, not empirical false-discovery rates.
+
+A close-taxa WRKY pilot demonstrates the present empirical behavior. \texttt{WRKY\_candidate\_01} was rejected as an out-of-domain stress test with mean p-distance 0.725799. \texttt{WRKY\_candidate\_02\_close}, a seven-taxon close Brassicaceae WRKY33/AT2G38470 panel, was in-domain and BABAPPA diagnostic-positive, with max gene support 0.177189 and 6,954 called branch-site rows. codeml and HyPhy comparators were negative, while a 100-replicate feature-level BABAPPA matched-null calibration showed unusual called-row burden but not unusual maximum gene support. The result is therefore BABAPPA-only with mixed native-null support, not a cross-method biological discovery claim. The manuscript presents BABAPPA as a standalone complementary method whose outputs can be reported as BABAPPA-native calibrated branch-site support when QC, applicability, calibration, and biological context are documented.
 \end{abstract}
 
 \section{Introduction}
 
-Branch-site positive-selection inference is a central task in molecular evolution. Classical codon models estimate lineage- and site-specific shifts in the nonsynonymous-to-synonymous rate ratio, $\omega=d_N/d_S$, and tools such as PAML/codeml and HyPhy have become standard references for testing episodic diversifying selection \citep{muse1994,goldman1994,yang2007,zhang2005,pond2011_bsrel,smith2015_absrel,murrell2012_meme,murrell2015_busted,pond2020_hyphy}. These methods remain essential. However, they usually condition on a single multiple sequence alignment and a fixed phylogenetic representation. Alignment errors, saturation, recombination, synonymous-rate variation, multinucleotide substitutions, hidden paralogy, and taxon-sampling problems can all distort downstream selection analyses \citep{anisimova2003_recombination,scheffler2006_recombination,jordan2012_alignment,redelings2014_erasing,venkat2018_mnm,dunn2019_mnm,wisotsky2020_srv,lucaci2023_mhs,duchene2022_saturation}.
+Branch-site positive-selection inference is central to molecular evolution because adaptation may affect only a subset of sites on a subset of branches. Classical codon-model tools estimate shifts in nonsynonymous-to-synonymous rate ratio, $\omega=d_N/d_S$, and include PAML/codeml and HyPhy workflows such as aBSREL and MEME \citep{muse1994,goldman1994,yang2007,zhang2005,pond2011_bsrel,smith2015_absrel,murrell2012_meme,murrell2015_busted,pond2020_hyphy}. These likelihood approaches are mature and interpretable, but they are not the only possible evidence system. They also remain sensitive to alignment quality, taxon sampling, saturation, recombination, hidden paralogy, synonymous-rate variation, multinucleotide substitutions, and model misspecification \citep{anisimova2003_recombination,scheffler2006_recombination,jordan2012_alignment,redelings2014_erasing,venkat2018_mnm,dunn2019_mnm,wisotsky2020_srv,lucaci2023_mhs,duchene2022_saturation}.
 
-\ProjectName{} addresses this problem from a software/methods perspective. It does not replace codeml or HyPhy, and it does not claim that a simulation-trained classifier can by itself prove empirical positive selection. Instead, BABAPPA formalizes a guarded diagnostic workflow. It trains on explicit simulator branch-site truth, uses the user-supplied empirical MSA as the direct prediction input, uses conservative branch-site features, records leakage and context-shortcut risks, gates empirical inputs by applicability/OOD criteria, and reports diagnostic scores that must be interpreted with matched-null calibration and external reference tools. Alignment ensembles remain available as optional sensitivity analyses, not as a requirement for users who already provide a curated MSA.
+BABAPPA was developed for a deliberately simple user-facing problem. A user has an orthologous codon MSA and a treefile. The user wants a program that asks for those two files, asks which foreground branches to evaluate, and reports which site on which branch is supported as episodic selection. The software should not require the user to track internal simulation files, alignment ensembles, raw tensors, or external likelihood tools before obtaining a BABAPPA result. The user-supplied MSA is treated as the biological homology hypothesis. If a user wants alignment-sensitivity analysis, BABAPPA can provide optional workflows, but the default prediction path does not realign the input.
 
-This manuscript has three goals. First, it describes the scientific design of BABAPPA as a simulation-trained framework for branch-site support from a user-supplied codon MSA and tree. Second, it reports the completed 100K explicit branch-truth validation and the deployable model package produced from it. Third, it documents the present empirical bridge and WRKY pilot without overstating biological claims. The correct status is research-alpha: suitable for software/methods communication and reproducible evaluation, not for unsupported empirical discovery claims.
+This manuscript describes BABAPPA as a standalone complementary method. ``Standalone'' means that BABAPPA can produce its own evidence statement without codeml or HyPhy. ``Complementary'' means that BABAPPA does not claim likelihood-model equivalence and should be compared with classical tools in publication benchmarking. BABAPPA's evidence is simulation-trained and BABAPPA-native: it uses a deployable branch-site neural model, conservative feature policy, applicability/OOD checks, and empirical feature-null calibration. A manuscript may therefore report BABAPPA-native calibrated support, but should not call BABAPPA p-like values codeml/HyPhy likelihood-ratio p-values.
 
-\section{Design principles}
+\section{Method Overview}
 
-\subsection{Simulator truth and empirical inference are separate}
+The direct BABAPPA workflow has five stages (Figure placeholder: direct workflow schematic).
 
-BABAPPA distinguishes simulator truth from empirical data. During simulation validation, explicit branch-site labels are available from the generative process and are used as supervised targets. During empirical inference, no simulator truth exists and no truth-derived columns are allowed as inputs. The empirical bridge therefore includes a truth-column audit that rejects or flags columns such as \texttt{branch\_site\_truth}, \texttt{selected\_sites}, \texttt{truth}, \texttt{branch\_truth}, \texttt{oracle}, \texttt{y\_branch\_site}, \texttt{y\_site}, and \texttt{gene\_label}. This separation is central to the claim boundary of the project.
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Input}: aligned codon MSA FASTA and Newick treefile with matching labels.
+  \item \textbf{Foreground selection}: all tips, leaves by default in the interactive interface, or user-specified tip labels.
+  \item \textbf{Feature extraction}: conservative branch-site features are generated from the user MSA and tree context without simulator truth.
+  \item \textbf{Scoring}: a deployable simulation-trained tier model scores each branch-site row.
+  \item \textbf{BABAPPA-native calibration}: an empirical branch-shuffle feature-null backend estimates p-like support values for the observed BABAPPA score burden.
+\end{enumerate}
 
-\subsection{The user-supplied MSA is the core empirical input}
+The principal command is:
 
-The intended empirical interface is deliberately simple: the user supplies an aligned codon MSA and a treefile with matching tip labels, then selects a foreground tip, a comma-separated foreground set, or \texttt{all}. BABAPPA treats that MSA as the authoritative homology statement and does not realign it in the direct prediction command. This restores the primary software goal: from two biological inputs, report which branch-site rows receive simulation-trained episodic-selection support.
+\begin{center}
+\texttt{babappa predict-branch-sites --msa MSA --tree TREE --foreground all --null-replicates 1000}
+\end{center}
 
-\subsection{Alignment ensembles are optional sensitivity analyses}
+The interactive command \texttt{babappa} prompts for only the MSA path, treefile path, and foreground mode. It then uses the default native-null replicate count. The explicit command allows users to set \texttt{--null-replicates 0} for a quick uncalibrated check, \texttt{100} for pilot calibration, and \texttt{1000+} for manuscript-strength BABAPPA-native calibration.
 
-Alignment uncertainty remains scientifically important, but it is no longer required for the main user workflow. BABAPPA retains optional alignment-sensitivity workflows using \texttt{identity}, MAFFT, \texttt{BABAPPAlign}, and MUSCLE. PRANK and T-Coffee remain diagnostic-only. These workflows are useful when the user wants to test whether predictions are sensitive to alternative homology hypotheses, but curated user MSAs are scored directly.
+\section{Design Principles}
 
-\subsection{Conservative branch-site features are the deployable policy}
+\subsection{The MSA supplied by the user is authoritative}
 
-The deployable branch-site workflow uses \texttt{conservative\_branch\_site}. This feature policy was chosen after foreground-context ablation showed shortcut risk from context-only information. The policy prioritizes features that support branch-site scoring while reducing direct leakage from foreground-context identifiers and simulator truth. This does not remove all empirical uncertainty; it defines the safest current research-alpha feature surface.
+In direct prediction mode, BABAPPA does not realign the input. It assumes the user has supplied the MSA they want interpreted. This design keeps the tool aligned with the practical use case: a researcher already has a curated ortholog-family MSA and tree, and wants branch-site predictions. BABAPPA still validates that the MSA is equal-length, codon-compatible, and label-compatible with the tree.
 
-\subsection{Applicability and abstention are first-class outputs}
+\subsection{Simulator truth is never an empirical input}
 
-For empirical data, BABAPPA estimates whether an input family is in-domain, borderline, or out-of-domain relative to the training envelope. It considers quantities such as taxon count, codon count, pairwise divergence, saturation proxy, gap and ambiguity burden, site-map mappability, feature missingness, and alignment disagreement. OOD cases are diagnostic-only and must not be interpreted as positive-selection calls.
+Simulation truth is used only during training and validation. Empirical inference rejects or audits truth-derived columns such as \texttt{branch\_site\_truth}, \texttt{selected\_sites}, \texttt{truth}, \texttt{branch\_truth}, \texttt{oracle}, \texttt{y\_branch\_site}, \texttt{y\_site}, \texttt{gene\_label}, \texttt{positive\_label}, and \texttt{simulated\_label}. This prevents the simulation-supervised training target from leaking into empirical scoring.
 
-\section{Software components}
+\subsection{The feature policy is conservative}
 
-Table~\ref{tab:components} summarizes the current executable components. The project is implemented as a command-line Python package with explicit validators, machine-readable JSON/TSV outputs, and Markdown reports.
+The deployable branch-site model uses the \texttt{conservative\_branch\_site} feature policy. This choice followed foreground-context ablation analyses showing shortcut risk from context-only features. The conservative policy is intended to preserve branch-site signal while reducing direct context leakage. It does not remove all model limitations, but it defines the safest current feature surface for research-alpha deployment.
+
+\subsection{Applicability and abstention are explicit outputs}
+
+BABAPPA evaluates whether a family is \texttt{in\_domain}, \texttt{borderline}, or \texttt{out\_of\_domain}. The gate considers taxon count, codon count, pairwise divergence, saturation proxy, gap burden, ambiguity burden, site-map mappability, feature missingness, and available training-envelope information. Out-of-domain cases are marked diagnostic-only and should be treated as stress tests rather than biological calls.
+
+\subsection{codeml and HyPhy are publication comparators, not dependencies}
+
+BABAPPA includes a separate \texttt{publication\_benchmark/} pipeline for manuscript evaluation against codeml and HyPhy. That pipeline is not part of the core user-facing BABAPPA inference path. It exists to generate comparison tables for peer review, investigate failure modes, and contextualize BABAPPA-native evidence.
+
+\section{Software Implementation}
+
+BABAPPA is implemented as a Python command-line package. Table~\ref{tab:components} summarizes the main components.
 
 \begin{longtable}{p{0.27\textwidth}p{0.63\textwidth}}
-\caption{BABAPPA components and workflow roles.}
+\caption{BABAPPA software components.}
 \label{tab:components}\\
 \toprule
 \textbf{Component} & \textbf{Role} \\
 \midrule
-Simulation and validation & Generate simulated coding families, record explicit branch-site truth, and validate simulation completeness. \\
-Alignment ensemble & Run \texttt{identity}, MAFFT, \texttt{BABAPPAlign}, and MUSCLE as the production ensemble; retain PRANK and T-Coffee only for diagnostic stress tests. \\
-Site maps and method policy & Map aligned coordinates to original coordinates, validate equal-length/codon-aware outputs, and quarantine problematic methods. \\
-Tensor/dataset builders & Construct feature tables and family-disjoint splits with streaming and capping for large branch-site datasets. \\
-Branch-site neural scoring & Train and validate conservative branch-site neural models on explicit simulator truth. \\
-Calibration and aggregation & Calibrate branch-site scores, profile thresholds, aggregate to branch and gene support, and run aggregation controls. \\
-Deployable package & Package tier models, calibrations, feature schemas, training envelope, checksums, validation summaries, and model-card limitations. \\
-Empirical bridge & Validate empirical inputs, run empirical alignments, extract features, audit forbidden columns, score, and report with applicability/OOD status. \\
-Reference comparison & Prepare and parse codeml/HyPhy-style reference workflows and compare BABAPPA diagnostic outputs to external results. \\
-Maintenance & Audit storage with \texttt{babappa audit-storage}, classify reproducible heavy outputs, and generate safe quarantine scripts. \\
+Direct predictor & Scores a user-supplied codon MSA and tree without realignment; writes branch-site, branch, gene, QC, and native-null reports. \\
+Feature extractor & Generates conservative branch-site features matching the deployable package schema. \\
+Deployable scorer & Loads tier-specific neural checkpoints, calibration metadata, feature means/standard deviations, and threshold policies. \\
+BABAPPA-native null & Shuffles branch/foreground feature columns to construct empirical feature-null replicates and computes p-like BABAPPA values. \\
+Applicability/OOD gate & Classifies empirical input as in-domain, borderline, or out-of-domain. \\
+Simulation framework & Generates explicit branch-site truth datasets for model development and validation. \\
+Alignment sensitivity tools & Optional workflows using identity, MAFFT, BABAPPAlign, and MUSCLE; PRANK and T-Coffee are diagnostic-only. \\
+Publication benchmark pipeline & Separate USER-RUN scripts for comparing BABAPPA-native results with codeml and HyPhy on curated manuscript panels. \\
+Storage maintenance & \texttt{babappa audit-storage} inventories reproducible heavy outputs and generates safe cleanup scripts. \\
 \bottomrule
 \end{longtable}
 
-\section{Validation progression}
+\section{Training and Validation}
 
-BABAPPA progressed through increasingly explicit and conservative validation stages. Early gene-level experiments showed that direct gene-level classification was unstable under saturation and could compress probabilities. Site-level and branch-site formulations were then developed to localize sparse simulator truth before aggregating to higher levels. The explicit branch-truth pathway progressed from 1K to 10K and then to 100K, with Apple Silicon/MPS support added for the user's MacBook Pro M5 Max environment.
+BABAPPA was trained and validated using explicit simulator branch-site truth. The final retained validation state is a conservative 100K Apple Silicon/MPS run with:
 
-The completed 100K MPS validation is the current primary validation result. It used:
 \begin{itemize}[leftmargin=*]
-  \item truth mode: explicit simulator branch-site truth;
-  \item feature policy: \texttt{conservative\_branch\_site};
-  \item methods: \texttt{identity}, MAFFT, \texttt{BABAPPAlign}, and MUSCLE;
-  \item saturation tiers: low, moderate, high, and extreme;
-  \item 25,000 simulated families per tier;
+  \item 100,000 simulated families total;
+  \item four saturation tiers: low, moderate, high, extreme;
+  \item 25,000 families per tier;
+  \item explicit branch-site truth;
+  \item \texttt{conservative\_branch\_site} feature policy;
+  \item production aligners: identity, MAFFT \citep{katoh2013_mafft}, BABAPPAlign, and MUSCLE \citep{edgar2004_muscle};
   \item streamed/capped branch-site datasets;
-  \item Apple Silicon/MPS neural execution with conservative memory safeguards.
+  \item MPS-compatible training and scoring infrastructure.
 \end{itemize}
 
-The final 100K decision is a conditional pass. The qualification is practical rather than a failure of retained validation: raw and intermediate directories were pruned after completion to recover storage, so they cannot be directly revalidated in place. The retained summaries, truth audits, model artifacts, calibration outputs, aggregation outputs, controls, and stage markers support completion. This condition is recorded in the final validation report and should remain visible whenever the 100K result is cited.
-
-\section{100K simulation-supervised validation results}
-
-Table~\ref{tab:100k_metrics} reports the retained 100K cross-tier performance values. These metrics evaluate supervised recovery of explicit simulator branch-site truth and derived aggregation targets. They are not empirical positive-selection performance estimates.
+The validation decision is a conditional pass. The condition is due to storage management: raw and intermediate simulation/alignment/tensor directories were intentionally pruned after completion. Retained summaries, truth audits, model artifacts, calibrations, aggregation outputs, controls, and stage markers support the completed validation state. This condition should be reported whenever the 100K validation is cited.
 
 \begin{longtable}{lccc}
-\caption{Conservative explicit branch-truth 100K Apple Silicon/MPS validation metrics.}
+\caption{Conservative explicit branch-truth 100K validation metrics.}
 \label{tab:100k_metrics}\\
 \toprule
 \textbf{Saturation tier} & \textbf{Branch-site neural AUROC} & \textbf{Branch AUROC} & \textbf{Gene AUROC} \\
@@ -143,90 +160,111 @@ Extreme & 0.989955 & 0.997873 & 0.999430 \\
 \bottomrule
 \end{longtable}
 
-Performance degraded smoothly from low to extreme saturation rather than collapsing, which supports the feasibility of the conservative branch-site information pathway under the current simulator. At the same time, these values are high because the task is simulation-supervised and explicit truth is known. They should not be translated into empirical false-discovery rates without matched-null calibration and reference comparisons.
+The smooth decline across saturation tiers supports the feasibility of the conservative branch-site pathway under the simulator. These results should not be interpreted as empirical false-discovery rates. Empirical interpretation requires direct input QC, applicability/OOD assessment, and BABAPPA-native calibration on the user's family.
 
-\section{Deployable simulation-trained package}
+\section{Deployable Model Package}
 
-The validated deployable package is:
+The deployable package is:
 
 \begin{center}
 \texttt{deployable\_model\_conservative\_branch\_site\_100k\_mps}
 \end{center}
 
-Package validation status is \texttt{ok}, with zero failures and zero warnings. The package contains model manifests, model card, feature and calibration schemas, training envelope, tier models, tier calibrations, checksums, validation summary, limitations, and README files. The package excludes raw simulator truth, raw oracle labels, raw branch-site datasets, simulations, and alignments.
+Package validation status is \texttt{ok}, with zero failures and zero warnings. The package includes \texttt{model\_manifest.json}, \texttt{model\_card.md}, \texttt{feature\_schema.json}, \texttt{calibration\_schema.json}, \texttt{training\_envelope.json}, \texttt{tier\_models/}, \texttt{tier\_calibrations/}, \texttt{checksums.sha256}, \texttt{validation\_summary.json}, \texttt{limitations.md}, and \texttt{README.md}. It excludes raw simulator truth, raw oracle labels, branch-site datasets, raw simulations, and alignments.
 
-This package is suitable for guarded diagnostic empirical scoring only. It is simulation-trained, explicitly conservative, and should be used with empirical input validation, applicability/OOD checks, reference-tool comparison, biological controls, and simulation-matched calibration. It is not a final empirical inference product.
+\section{Direct Prediction Outputs}
 
-\section{Empirical bridge}
+The direct command writes:
 
-The empirical bridge implements the following guarded workflow:
+\begin{itemize}[leftmargin=*]
+  \item \texttt{branch\_site\_predictions.tsv}: one row per scored branch-site combination;
+  \item \texttt{branch\_predictions.tsv}: branch-level support summary;
+  \item \texttt{gene\_summary.tsv}: gene-level BABAPPA summary;
+  \item \texttt{prediction\_report.md}: human-readable interpretation;
+  \item \texttt{qc\_report.md}: input and applicability summary;
+  \item \texttt{babappa\_native\_null/}: native-null distributions and observed-versus-null summaries when \texttt{--null-replicates > 0}.
+\end{itemize}
 
-\begin{enumerate}[leftmargin=*]
-  \item user-supplied aligned codon MSA and tree validation;
-  \item direct user-MSA site-map generation without realignment;
-  \item branch-site feature extraction against the deployable feature schema;
-  \item forbidden truth-column audit;
-  \item applicability/OOD classification;
-  \item deployable-model branch-site scoring;
-  \item empirical report generation;
-  \item optional alignment-sensitivity, codeml/HyPhy reference workflow preparation, parsing, and comparison;
-  \item simulation-matched calibration planning and a conservative \texttt{run-simulation-matched-null-calibration} evidence-pack interface for dry-run validation and feature-level matched-null scoring.
-\end{enumerate}
+Branch-site prediction rows include both alignment coordinates and de-gapped coordinates. The key fields are:
 
-The direct command is \texttt{babappa predict-branch-sites}. It accepts \texttt{--msa}, \texttt{--tree}, \texttt{--foreground}, \texttt{--model-package}, \texttt{--outdir}, and \texttt{--device}. Its main outputs are \texttt{branch\_site\_predictions.tsv}, \texttt{branch\_predictions.tsv}, \texttt{gene\_summary.tsv}, \texttt{prediction\_report.md}, and \texttt{qc\_report.md}. This command is the intended end-user entry point.
+\begin{itemize}[leftmargin=*]
+  \item \texttt{msa\_codon\_site}: one-based codon column in the supplied MSA;
+  \item \texttt{aligned\_codon\_site}: equivalent aligned codon coordinate;
+  \item \texttt{branch\_degapped\_codon\_site}: one-based codon coordinate in the scored branch after removing gapped codons;
+  \item \texttt{branch\_codon}: codon carried by the scored branch at the aligned site.
+\end{itemize}
 
-This bridge is a software success, but it is not equivalent to biological discovery. It creates the infrastructure for responsible empirical analysis and makes the claim boundary explicit in every report. At present, the evidence-pack matched-null runner supports safe dry-run validation and conservative feature-level null scoring through the deployable model package. This is useful diagnostic calibration support, but it is not the same as a full raw sequence simulation plus alignment replay and should not be treated as a standalone empirical discovery criterion.
+For manuscript reporting, the most important gene-level fields are \texttt{result\_class}, \texttt{babappa\_native\_result\_class}, \texttt{babappa\_native\_evidence\_class}, \texttt{babappa\_native\_null\_replicates}, \texttt{p\_babappa\_called\_rows}, \texttt{p\_babappa\_max\_gene\_support}, \texttt{p\_babappa\_max\_branch\_support}, \texttt{applicability\_status}, and \texttt{tier\_model}.
 
-\section{WRKY empirical pilot}
+\section{BABAPPA-Native Null Calibration}
 
-Two WRKY-family empirical pilots demonstrate the current behavior of the empirical bridge (Table~\ref{tab:wrky}). They should be read as diagnostic software evaluations.
+BABAPPA's standalone evidence layer is an empirical feature-null backend. For each replicate, branch- and foreground-specific feature columns are shuffled across the empirical feature table while preserving the overall feature surface and family size. The shuffled replicate is scored through the same deployable model and threshold policy as the observed family. BABAPPA then compares observed metrics with the null distribution:
 
-\begin{longtable}{p{0.26\textwidth}p{0.34\textwidth}p{0.30\textwidth}}
-\caption{WRKY empirical pilot outcomes and reference-tool comparison.}
+\begin{itemize}[leftmargin=*]
+  \item maximum gene support;
+  \item maximum branch support;
+  \item number of called positive branch-site rows;
+  \item maximum site score;
+  \item high-score site-score quantiles.
+\end{itemize}
+
+The p-like right-tail value is computed as
+\[
+p_{\mathrm{BABAPPA}} = \frac{1 + \#\{x_{\mathrm{null}} \ge x_{\mathrm{obs}}\}}{N_{\mathrm{null}} + 1}.
+\]
+
+BABAPPA classifies native-null evidence as \texttt{strong\_babappa\_native\_support}, \texttt{babappa\_native\_support}, \texttt{not\_significant\_under\_babappa\_native\_null}, or \texttt{underpowered\_native\_null}. The combined result class is stored as \texttt{babappa\_native\_result\_class}. These values are BABAPPA-native and should be reported as such. They are not codeml/HyPhy likelihood-ratio p-values.
+
+\section{Publication Benchmarking Against codeml and HyPhy}
+
+For publication, BABAPPA includes a separate benchmark harness under \texttt{publication\_benchmark/}. This harness runs BABAPPA-native calibrated prediction, prepares codeml and HyPhy reference folders, optionally runs those tools, parses outputs, and writes comparison tables. It is not used by BABAPPA's normal inference command.
+
+The benchmark is intended for curated manuscript panels with known or literature-supported positives, conserved negatives, alignment-sensitive families, saturated families, short/low-information families, and paralogy-risk families. codeml and HyPhy are interpreted as external comparators. They are not assumed to be ground truth, and BABAPPA is not tuned to mimic them.
+
+\section{Empirical WRKY Pilot}
+
+Two WRKY-family empirical pilots illustrate the current method behavior.
+
+\begin{longtable}{p{0.24\textwidth}p{0.35\textwidth}p{0.31\textwidth}}
+\caption{WRKY empirical pilot outcomes.}
 \label{tab:wrky}\\
 \toprule
 \textbf{Family} & \textbf{BABAPPA status} & \textbf{Interpretation} \\
 \midrule
-\begin{tabular}[t]{@{}l@{}}\texttt{WRKY\_candidate\_01}\end{tabular} & OOD stress test; mean p-distance 0.725799; applicability \texttt{out\_of\_domain}; \texttt{diagnostic\_only=True}; no positive call. & Useful failure-mode probe showing that highly divergent WRKY panels can be rejected or treated as diagnostic-only. Not a biological result. \\
-\begin{tabular}[t]{@{}l@{}}\texttt{WRKY\_candidate\_02}\\\texttt{\_close}\end{tabular} & Close-taxa WRKY33/AT2G38470 homologs; 7 Brassicaceae/close plant taxa; aligned mean p-distance approximately 0.101293; prefilter \texttt{accept}; applicability \texttt{in\_domain}; moderate tier; MPS scoring; diagnostic-positive; max gene support 0.177189; 6,954 called branch-site rows; 10,451 score rows; \texttt{diagnostic\_only=False}. & Demonstrates that the empirical bridge can produce gated diagnostic scores on plausible biological inputs. It is not a positive-selection discovery claim. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{WRKY\_candidate}\\\texttt{\_01}\end{tabular} & OOD stress test; mean p-distance 0.725799; applicability \texttt{out\_of\_domain}; \texttt{diagnostic\_only=True}; no positive call. & Useful failure-mode probe showing that highly divergent WRKY panels should be rejected or treated as diagnostic-only. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{WRKY\_candidate}\\\texttt{\_02\_close}\end{tabular} & Close-taxa WRKY33/AT2G38470 homologs; 7 Brassicaceae/close plant taxa; aligned mean p-distance approximately 0.101293; prefilter \texttt{accept}; applicability \texttt{in\_domain}; moderate tier; MPS scoring; diagnostic-positive; max gene support 0.177189; 6,954 called branch-site rows; 10,451 score rows; \texttt{diagnostic\_only=False}. & Demonstrates that the empirical bridge can produce gated BABAPPA-native scores on plausible biological inputs. \\
 \bottomrule
 \end{longtable}
 
-Reference workflows have also been run or parsed for \texttt{WRKY\_candidate\_02\_close}. codeml branch-site Model A versus null gave LRT 0.0 and $p=1.0$, negative. HyPhy aBSREL gave foreground $p=1.0$, negative. HyPhy MEME gave a minimum $p=0.0641705$, negative at 0.05. The concordance class is therefore \texttt{BABAPPA\_only}. The completed 100-replicate feature-level matched-null calibration gave \texttt{p\_empirical\_called\_rows}=0.009900990099009901, but \texttt{p\_empirical\_support}=1.0 and \texttt{p\_empirical\_branch\_support}=1.0.
+For \texttt{WRKY\_candidate\_02\_close}, codeml branch-site Model A versus null gave LRT 0.0 and $p=1.0$, negative. HyPhy aBSREL gave foreground $p=1.0$, negative. HyPhy MEME gave minimum $p=0.0641705$, negative at 0.05. BABAPPA's 100-replicate feature-level matched-null calibration gave \texttt{p\_empirical\_called\_rows}=0.009900990099009901 but \texttt{p\_empirical\_support}=1.0 and \texttt{p\_empirical\_branch\_support}=1.0. Thus the current WRKY result is BABAPPA-only with mixed BABAPPA-native support. It is useful method evidence, but not a cross-method biological discovery claim.
 
-The correct conclusion is: the WRKY close-taxa pilot demonstrates that the empirical bridge can produce gated diagnostic scores on plausible biological inputs; however, the BABAPPA-only positive signal is inconclusive as a discovery claim because codeml and HyPhy did not support positive selection and the null result is feature-level and mixed rather than a full raw sequence simulation/alignment replay.
+\section{Limitations}
 
-\section{Software maintenance and reproducibility}
+BABAPPA is research-alpha and has explicit limitations.
 
-Version \ProjectVersion{} also includes \texttt{babappa audit-storage}, a storage-audit command that inventories a BABAPPA workspace, classifies protected artifacts, identifies reproducible generated outputs, and writes user-run quarantine and validation scripts. This is a reproducibility feature rather than a scientific result: heavy simulation and alignment intermediates can be pruned after final summaries, audits, checksums, model artifacts, and manifests are preserved.
+\begin{itemize}[leftmargin=*]
+  \item The deployable model is simulation-trained, so simulator-to-real transfer must be studied empirically.
+  \item BABAPPA-native p-like values are not likelihood-ratio p-values and should not be described as codeml/HyPhy equivalents.
+  \item A raw diagnostic-positive score without native-null calibration is not sufficient for manuscript interpretation.
+  \item OOD families, high saturation, hidden paralogy, tree/MSA mismatch, or low mappability can invalidate biological interpretation.
+  \item The 100K validation is a conditional pass because raw intermediates were pruned after completion.
+  \item External disagreement should be interpreted as method contrast, not automatic truth or failure.
+\end{itemize}
 
-The current release archive label is \ReleaseArchiveLabel{}. The Zenodo-ready archive is recorded as:
+\section{Reproducibility and Availability}
+
+The source version described here is \ProjectVersion{}. The release archive label is \ReleaseArchiveLabel{}. The recorded archive is:
 
 \begin{center}
 \small\ArchiveName{}\\
 \small SHA256: \ArchiveChecksum{}
 \end{center}
 
-The source version and release archive label differ because cleanup and maintenance tooling advanced after the archive label was established. Future releases should refresh both together.
-
-\section{Limitations}
-
-BABAPPA has several explicit limitations.
-
-\begin{itemize}[leftmargin=*]
-  \item The deployable model is simulation-trained. A simulator-to-real gap is unavoidable and must be tested.
-  \item Empirical calibration is pending. BABAPPA diagnostic scores do not yet provide calibrated empirical $p$-values or final false-discovery guarantees.
-  \item Empirical discovery claims are not finalized. A diagnostic-positive result is not, by itself, a publishable positive-selection claim.
-  \item Alignment and taxon sampling remain important. Very high divergence, poor mappability, hidden paralogy, and taxon-mismatched trees can invalidate interpretation.
-  \item External reference disagreement must be treated conservatively. BABAPPA-only signals should trigger matched-null calibration and controls, not discovery language.
-  \item The context-only shortcut warning remains scientifically relevant. The conservative feature policy reduces but does not abolish the need for ablation and leakage audits.
-  \item Raw/intermediate pruning limits direct reruns of some validators. The 100K validation is supported by retained summaries and artifacts, but the pruned raw directories cannot be revalidated in place.
-  \item BABAPPA should be used alongside codeml, HyPhy, biological controls, and dataset-specific justification. It is not a replacement for reference workflows at this stage.
-\end{itemize}
+The code repository will be deposited at \texttt{\RepoURL}. The Zenodo DOI placeholder is \texttt{\ZenodoDOI}. Large raw simulations, alignments, tensor shards, and streamed datasets are not intended for version control; retained reproducibility artifacts include model manifests, checksums, final reports, validation summaries, evidence packs, and publication benchmark scripts.
 
 \section{Conclusion}
 
-BABAPPA provides a validated research-alpha framework for guarded, simulation-trained branch-site positive-selection support and empirical diagnostic scoring from a user-supplied codon MSA and treefile. Its completed 100K explicit branch-truth MPS validation, deployable conservative model package, direct MSA/tree prediction interface, optional alignment-sensitivity workflow, empirical OOD gate, and WRKY diagnostic pilot make it ready for software/methods communication and reproducible evaluation. It is not ready for unsupported empirical positive-selection discovery claims. The next scientific step is to add close-taxa negative controls and interpret BABAPPA outputs jointly with matched-null calibration and codeml/HyPhy-style references before any empirical claim is made.
+BABAPPA now matches the original software goal: from a user-supplied codon MSA and treefile, it reports branch-site support, branch-level summaries, gene-level summaries, de-gapped site coordinates, QC/applicability status, and BABAPPA-native calibrated evidence. It is a standalone complementary method, not a wrapper around codeml or HyPhy. codeml and HyPhy remain valuable external comparators for publication benchmarking, but BABAPPA's own inference is based on its simulation-trained deployable model and native empirical feature-null calibration.
 
 \section*{Author contributions}
 
@@ -238,7 +276,7 @@ The author declares no competing interests.
 
 \section*{Data and code availability}
 
-The code repository will be deposited at \texttt{\RepoURL}. The release archive label is \ReleaseArchiveLabel{} and the current source version described here is \ProjectVersion{}. The archive filename and SHA256 checksum are reported in the reproducibility section above and should be replaced by a DOI-resolved archive at \texttt{\ZenodoDOI} when the formal release is deposited. Large raw simulations, alignments, tensor shards, and streamed datasets are not intended to be version-controlled; final summaries, audits, model manifests, checksums, validation reports, and evidence packs are the retained reproducibility artifacts.
+The code repository will be deposited at \texttt{\RepoURL}. The release archive label is \ReleaseArchiveLabel{} and the current source version described here is \ProjectVersion{}. The archive filename and SHA256 checksum are reported in the reproducibility section above and should be replaced by a DOI-resolved archive at \texttt{\ZenodoDOI} when the formal release is deposited.
 
 \bibliographystyle{plain}
 \bibliography{references_auxiliary_saturation}

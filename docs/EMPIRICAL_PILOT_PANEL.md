@@ -1,6 +1,6 @@
 # Empirical Pilot Panel
 
-BABAPPA `0.5.2-alpha` includes a small curated empirical pilot-panel framework. It is diagnostic benchmarking only, not final empirical inference.
+BABAPPA `v0.7.0` includes a small curated empirical pilot-panel framework. It is diagnostic benchmarking only, not final empirical inference.
 
 ## Manifest Schema
 

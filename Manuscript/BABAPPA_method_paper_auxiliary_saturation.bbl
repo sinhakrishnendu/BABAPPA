@@ -19,6 +19,12 @@ Katherine~A. Dunn, Toby Kenney, Hong Gu, and Joseph~P. Bielawski.
   and multiple nonsynonymous rates.
 \newblock {\em BMC Evolutionary Biology}, 19(1):22, 2019.
 
+\bibitem{edgar2004_muscle}
+Robert~C. Edgar.
+\newblock {MUSCLE}: multiple sequence alignment with high accuracy and high
+  throughput.
+\newblock {\em Nucleic Acids Research}, 32(5):1792--1797, 2004.
+
 \bibitem{goldman1994}
 Nick Goldman and Ziheng Yang.
 \newblock A codon-based model of nucleotide substitution for protein-coding dna
@@ -30,6 +36,12 @@ Gregory Jordan and Nick Goldman.
 \newblock The effects of alignment error and alignment filtering on the
   sitewise detection of positive selection.
 \newblock {\em Molecular Biology and Evolution}, 29(4):1125--1139, 2012.
+
+\bibitem{katoh2013_mafft}
+Kazutaka Katoh and Daron~M. Standley.
+\newblock {MAFFT} multiple sequence alignment software version 7: improvements
+  in performance and usability.
+\newblock {\em Molecular Biology and Evolution}, 30(4):772--780, 2013.
 
 \bibitem{pond2011_bsrel}
 Sergei~L. Kosakovsky~Pond, Ben Murrell, Mathieu Fourment, Simon D.~W. Frost,

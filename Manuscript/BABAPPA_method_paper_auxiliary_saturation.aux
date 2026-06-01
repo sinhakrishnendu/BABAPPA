@@ -5,57 +5,64 @@
 \citation{muse1994,goldman1994,yang2007,zhang2005,pond2011_bsrel,smith2015_absrel,murrell2012_meme,murrell2015_busted,pond2020_hyphy}
 \citation{anisimova2003_recombination,scheffler2006_recombination,jordan2012_alignment,redelings2014_erasing,venkat2018_mnm,dunn2019_mnm,wisotsky2020_srv,lucaci2023_mhs,duchene2022_saturation}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Design principles}{2}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Simulator truth and empirical inference are separate}{2}{subsection.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Alignment ensembles are a core design element}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Method Overview}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Design Principles}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The MSA supplied by the user is authoritative}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Simulator truth is never an empirical input}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}The feature policy is conservative}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Applicability and abstention are explicit outputs}{3}{subsection.3.4}\protected@file@percent }
 \gdef \LT@i {\LT@entry 
     {1}{134.30325pt}\LT@entry 
     {1}{297.37198pt}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Conservative branch-site features are the deployable policy}{3}{subsection.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Applicability and abstention are first-class outputs}{3}{subsection.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Software components}{3}{section.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{BABAPPA components and workflow roles.}}{3}{table.1}\protected@file@percent }
-\newlabel{tab:components}{{1}{3}{BABAPPA components and workflow roles}{table.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Validation progression}{4}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}100K simulation-supervised validation results}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}codeml and HyPhy are publication comparators, not dependencies}{4}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Software Implementation}{4}{section.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{BABAPPA software components.}}{4}{table.1}\protected@file@percent }
+\newlabel{tab:components}{{1}{4}{BABAPPA software components}{table.1}{}}
+\citation{katoh2013_mafft}
+\citation{edgar2004_muscle}
 \gdef \LT@ii {\LT@entry 
     {1}{93.55368pt}\LT@entry 
     {1}{164.30463pt}\LT@entry 
     {1}{102.20764pt}\LT@entry 
     {1}{91.14482pt}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{Conservative explicit branch-truth 100K Apple Silicon/MPS validation metrics.}}{5}{table.2}\protected@file@percent }
-\newlabel{tab:100k_metrics}{{2}{5}{Conservative explicit branch-truth 100K Apple Silicon/MPS validation metrics}{table.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Deployable simulation-trained package}{5}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Empirical bridge}{5}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Training and Validation}{5}{section.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{Conservative explicit branch-truth 100K validation metrics.}}{5}{table.2}\protected@file@percent }
+\newlabel{tab:100k_metrics}{{2}{5}{Conservative explicit branch-truth 100K validation metrics}{table.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Deployable Model Package}{5}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Direct Prediction Outputs}{6}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}BABAPPA-Native Null Calibration}{6}{section.8}\protected@file@percent }
 \gdef \LT@iii {\LT@entry 
-    {1}{129.76915pt}\LT@entry 
-    {1}{166.00742pt}\LT@entry 
-    {1}{147.89174pt}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}WRKY empirical pilot}{6}{section.8}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{WRKY empirical pilot outcomes and reference-tool comparison.}}{6}{table.3}\protected@file@percent }
-\newlabel{tab:wrky}{{3}{6}{WRKY empirical pilot outcomes and reference-tool comparison}{table.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Software maintenance and reproducibility}{7}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10}Limitations}{7}{section.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {11}Conclusion}{8}{section.11}\protected@file@percent }
+    {1}{120.71478pt}\LT@entry 
+    {1}{170.54152pt}\LT@entry 
+    {1}{152.41893pt}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Publication Benchmarking Against codeml and HyPhy}{7}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Empirical WRKY Pilot}{7}{section.10}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{WRKY empirical pilot outcomes.}}{7}{table.3}\protected@file@percent }
+\newlabel{tab:wrky}{{3}{7}{WRKY empirical pilot outcomes}{table.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {11}Limitations}{8}{section.11}\protected@file@percent }
 \bibstyle{plain}
 \bibdata{references_auxiliary_saturation}
 \bibcite{anisimova2003_recombination}{{1}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {12}Reproducibility and Availability}{9}{section.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {13}Conclusion}{9}{section.13}\protected@file@percent }
 \bibcite{duchene2022_saturation}{{2}{}{{}}{{}}}
 \bibcite{dunn2019_mnm}{{3}{}{{}}{{}}}
-\bibcite{goldman1994}{{4}{}{{}}{{}}}
-\bibcite{jordan2012_alignment}{{5}{}{{}}{{}}}
-\bibcite{pond2011_bsrel}{{6}{}{{}}{{}}}
-\bibcite{pond2020_hyphy}{{7}{}{{}}{{}}}
-\bibcite{lucaci2023_mhs}{{8}{}{{}}{{}}}
-\bibcite{murrell2015_busted}{{9}{}{{}}{{}}}
-\bibcite{murrell2012_meme}{{10}{}{{}}{{}}}
-\bibcite{muse1994}{{11}{}{{}}{{}}}
-\bibcite{redelings2014_erasing}{{12}{}{{}}{{}}}
-\bibcite{scheffler2006_recombination}{{13}{}{{}}{{}}}
-\bibcite{smith2015_absrel}{{14}{}{{}}{{}}}
-\bibcite{venkat2018_mnm}{{15}{}{{}}{{}}}
-\bibcite{wisotsky2020_srv}{{16}{}{{}}{{}}}
-\bibcite{yang2007}{{17}{}{{}}{{}}}
-\bibcite{zhang2005}{{18}{}{{}}{{}}}
+\bibcite{edgar2004_muscle}{{4}{}{{}}{{}}}
+\bibcite{goldman1994}{{5}{}{{}}{{}}}
+\bibcite{jordan2012_alignment}{{6}{}{{}}{{}}}
+\bibcite{katoh2013_mafft}{{7}{}{{}}{{}}}
+\bibcite{pond2011_bsrel}{{8}{}{{}}{{}}}
+\bibcite{pond2020_hyphy}{{9}{}{{}}{{}}}
+\bibcite{lucaci2023_mhs}{{10}{}{{}}{{}}}
+\bibcite{murrell2015_busted}{{11}{}{{}}{{}}}
+\bibcite{murrell2012_meme}{{12}{}{{}}{{}}}
+\bibcite{muse1994}{{13}{}{{}}{{}}}
+\bibcite{redelings2014_erasing}{{14}{}{{}}{{}}}
+\bibcite{scheffler2006_recombination}{{15}{}{{}}{{}}}
+\bibcite{smith2015_absrel}{{16}{}{{}}{{}}}
+\bibcite{venkat2018_mnm}{{17}{}{{}}{{}}}
+\bibcite{wisotsky2020_srv}{{18}{}{{}}{{}}}
+\bibcite{yang2007}{{19}{}{{}}{{}}}
+\bibcite{zhang2005}{{20}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\gdef \@abspage@last{10}
+\gdef \@abspage@last{11}

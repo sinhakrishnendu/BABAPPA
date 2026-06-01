@@ -654,6 +654,7 @@ def _run_interactive_direct_prediction() -> None:
                 outdir=str(outdir),
                 model_package="deployable_model_conservative_branch_site_100k_mps",
                 device="auto",
+                null_replicates=100,
             )
         )
     except (OSError, RuntimeError, ValueError) as exc:
@@ -6658,6 +6659,8 @@ def predict_branch_sites_command(
     allow_stop_codons: bool = typer.Option(False, "--allow-stop-codons"),
     min_taxa: int = typer.Option(3, "--min-taxa"),
     min_codons: int = typer.Option(3, "--min-codons"),
+    null_replicates: int = typer.Option(100, "--null-replicates", help="BABAPPA-native empirical null replicates. Use 0 to disable; use 1000+ for manuscript-strength calibration."),
+    null_seed: int = typer.Option(42, "--null-seed"),
     dry_run: bool = typer.Option(False, "--dry-run"),
 ) -> None:
     """Predict branch-site episodic selection directly from a user MSA and tree."""
@@ -6673,6 +6676,8 @@ def predict_branch_sites_command(
                 allow_stop_codons=allow_stop_codons,
                 min_taxa=min_taxa,
                 min_codons=min_codons,
+                null_replicates=null_replicates,
+                null_seed=null_seed,
                 dry_run=dry_run,
             )
         )

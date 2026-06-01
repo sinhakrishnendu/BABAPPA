@@ -465,3 +465,6 @@ def test_external_benchmark_planner_generates_templates(tmp_path: Path) -> None:
     assert result["status"] == "planned"
     assert (tmp_path / "benchmark" / "proposed_codeml_commands.sh").exists()
     assert (tmp_path / "benchmark" / "proposed_hyphy_commands.sh").exists()
+    babappa_script = (tmp_path / "benchmark" / "proposed_babappa_commands.sh").read_text()
+    assert "babappa predict-branch-sites" in babappa_script
+    assert "--null-replicates 1000" in babappa_script

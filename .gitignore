@@ -118,6 +118,11 @@ real_empirical_pilot/acquisition_plans/*/genomes/
 real_empirical_pilot/acquisition_plans/*/blastdb/
 real_empirical_pilot/acquisition_plans/*/hits/
 
+# Direct prediction and publication benchmark generated outputs
+babappa_prediction*/
+direct_predict_*/
+publication_benchmark/results/
+
 # Keep templates/docs but ignore generated biological data
 real_empirical_pilot/input/cds/*.fasta
 real_empirical_pilot/input/trees/*.treefile

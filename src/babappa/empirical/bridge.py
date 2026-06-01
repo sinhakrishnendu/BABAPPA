@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import random
 import re
 import shutil
 import subprocess
@@ -150,6 +151,8 @@ class DirectBranchSitePredictionConfig:
     min_taxa: int = 3
     min_codons: int = 3
     dry_run: bool = False
+    null_replicates: int = 100
+    null_seed: int = 42
 
 
 @dataclass(frozen=True)
@@ -161,6 +164,7 @@ class ExternalBenchmarkPanelPlanConfig:
     outdir: str
     methods: Sequence[str] | str = tuple(METHODS)
     classical_tools: Sequence[str] | str = ("codeml", "hyphy")
+    null_replicates: int = 1000
 
 
 def validate_empirical_input(config: EmpiricalInputValidationConfig) -> Dict[str, Any]:
@@ -589,52 +593,14 @@ def score_empirical_branch_sites(config: EmpiricalBranchSiteScoringConfig) -> Di
 
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
-    torch, error = safe_import_torch()
-    if torch is None:
-        payload = {
-            "status": "fail",
-            "reason": f"torch_unavailable:{error}",
-            "message": "PyTorch is required for empirical scoring; metadata-only scoring is not allowed.",
-        }
-        _write_json(outdir / "empirical_scoring_manifest.json", payload)
-        (outdir / "empirical_scoring_report.md").write_text(_render_scoring_failure_md(payload), encoding="utf-8")
-        raise RuntimeError(payload["message"] + " " + payload["reason"])
     package_dir = _resolve_deployable_package_path(config.deployable_model_package)
-    manifest = _read_json(package_dir / "model_manifest.json")
-    feature_schema = _read_json(package_dir / "feature_schema.json")
     applicability = _read_json(Path(config.applicability_dir) / "empirical_applicability.json")
     rows = read_tsv(Path(config.features))
     if not rows:
         raise ValueError("empirical feature table has no rows")
-    feature_columns = [str(column) for column in feature_schema.get("expected_feature_columns", [])]
-    tier = str(applicability.get("recommended_tier") or "low")
-    if tier not in TIERS:
-        tier = "low"
-    device = resolve_torch_device(torch, config.device)
-    model_info = manifest["tier_models"][tier]
-    calibration = manifest["calibration_thresholds_by_tier"][tier]
-    from babappa.site.neural_model import SiteMLPClassifier
-
-    checkpoint = _torch_load(torch, package_dir / model_info["checkpoint"])
-    model = SiteMLPClassifier(
-        input_dim=len(feature_columns),
-        hidden_dim=int(model_info.get("hidden_dim") or 64),
-        dropout=0.0,
-    )
-    model.load_state_dict(checkpoint["model_state_dict"])
-    model.to(device)
-    model.eval()
-    X = np.array([[_as_float(row.get(column), 0.0) or 0.0 for column in feature_columns] for row in rows], dtype=np.float32)
-    mean = np.asarray(checkpoint.get("feature_mean", np.zeros(len(feature_columns))), dtype=np.float32)
-    std = np.asarray(checkpoint.get("feature_std", np.ones(len(feature_columns))), dtype=np.float32)
-    std = np.where(std == 0, 1.0, std)
-    X = ((X - mean) / std).astype(np.float32)
-    with torch.no_grad():
-        tensor = torch.from_numpy(X).to(device)
-        logits = model(tensor)
-        temperature = float(calibration.get("temperature") or 1.0)
-        probs = torch.sigmoid(logits / max(temperature, 1e-6)).detach().cpu().numpy()
-    threshold = float(calibration.get("selected_threshold") or 0.5)
+    scorer = _load_deployable_scorer(package_dir, applicability, config.device, outdir)
+    probs = _score_feature_rows_with_loaded_model(scorer, rows)
+    threshold = float(scorer["calibration"].get("selected_threshold") or 0.5)
     diagnostic_only = applicability.get("applicability_status") == "out_of_domain"
     score_rows: List[Dict[str, Any]] = []
     for row, prob in zip(rows, probs):
@@ -647,7 +613,7 @@ def score_empirical_branch_sites(config: EmpiricalBranchSiteScoringConfig) -> Di
             "original_site_index_zero": row.get("original_site_index_zero", ""),
             "prob_positive": float(prob),
             "called_positive": int(float(prob) >= threshold),
-            "tier_model": tier,
+            "tier_model": scorer["tier"],
             "calibrated_threshold": threshold,
             "diagnostic_only": diagnostic_only,
         })
@@ -659,12 +625,12 @@ def score_empirical_branch_sites(config: EmpiricalBranchSiteScoringConfig) -> Di
     payload = {
         "empirical_scoring_version": __version__,
         "status": "ok",
-        "device": str(device),
-        "tier_model": tier,
+        "device": str(scorer["device"]),
+        "tier_model": scorer["tier"],
         "n_rows": len(score_rows),
         "diagnostic_only": diagnostic_only,
         "applicability_status": applicability.get("applicability_status"),
-        "calibration": calibration,
+        "calibration": scorer["calibration"],
         "outputs": {
             "branch_site_scores": str(outdir / "empirical_branch_site_scores.tsv"),
             "branch_scores": str(outdir / "empirical_branch_scores.tsv"),
@@ -676,8 +642,8 @@ def score_empirical_branch_sites(config: EmpiricalBranchSiteScoringConfig) -> Di
     return {
         "status": "ok",
         "outdir": str(outdir),
-        "device": str(device),
-        "tier_model": tier,
+        "device": str(scorer["device"]),
+        "tier_model": scorer["tier"],
         "diagnostic_only": diagnostic_only,
         "n_rows": len(score_rows),
     }
@@ -835,6 +801,17 @@ def predict_branch_sites(config: DirectBranchSitePredictionConfig) -> Dict[str, 
             )
         )
         _write_direct_prediction_outputs(outdir, scores_dir, applicability_dir)
+        if config.null_replicates > 0:
+            _run_babappa_native_null_calibration(
+                outdir=outdir,
+                feature_dir=feature_dir,
+                scores_dir=scores_dir,
+                applicability_dir=applicability_dir,
+                package_dir=package_dir,
+                device=config.device,
+                n_replicates=config.null_replicates,
+                seed=config.null_seed,
+            )
 
     manifest = _direct_prediction_manifest(
         config=config,
@@ -882,6 +859,8 @@ def plan_external_benchmark_panel(config: ExternalBenchmarkPanelPlanConfig) -> D
         "deployable_model_package": config.deployable_model_package,
         "methods": methods,
         "classical_tools": classical_tools,
+        "benchmark_mode": "BABAPPA-native direct MSA/tree evidence versus optional codeml/HyPhy reference results",
+        "babappa_null_replicates": int(config.null_replicates),
         "panel_categories": [
             "known positives",
             "likely negatives",
@@ -1761,6 +1740,290 @@ def _write_direct_prediction_outputs(outdir: Path, scores_dir: Path, applicabili
     write_tsv(outdir / "gene_summary.tsv", summary_rows, list(summary_rows[0]))
 
 
+def _run_babappa_native_null_calibration(
+    outdir: Path,
+    feature_dir: Path,
+    scores_dir: Path,
+    applicability_dir: Path,
+    package_dir: Path,
+    device: str,
+    n_replicates: int,
+    seed: int,
+) -> Dict[str, Any]:
+    if n_replicates <= 0:
+        return {}
+    null_dir = outdir / "babappa_native_null"
+    null_dir.mkdir(parents=True, exist_ok=True)
+    feature_rows = read_tsv(feature_dir / "empirical_branch_site_features.tsv")
+    score_rows = read_tsv(scores_dir / "empirical_branch_site_scores.tsv")
+    applicability = _read_json(applicability_dir / "empirical_applicability.json")
+    scorer = _load_deployable_scorer(package_dir, applicability, device, null_dir)
+    threshold = float(scorer["calibration"].get("selected_threshold") or 0.5)
+    observed = _direct_score_metrics(score_rows)
+    rng = random.Random(seed)
+    null_rows: List[Dict[str, Any]] = []
+    for replicate in range(1, n_replicates + 1):
+        null_features = _branch_shuffle_null_features(feature_rows, rng)
+        probs = _score_feature_rows_with_loaded_model(scorer, null_features)
+        null_score_rows = []
+        for feature, prob in zip(null_features, probs):
+            null_score_rows.append({
+                "branch_id": feature.get("branch_id", ""),
+                "prob_positive": float(prob),
+                "called_positive": int(float(prob) >= threshold),
+            })
+        metrics = _direct_score_metrics(null_score_rows)
+        null_rows.append({
+            "replicate": replicate,
+            "seed": seed + replicate - 1,
+            "status": "scored",
+            "max_gene_support": metrics["max_gene_support"],
+            "max_branch_support": metrics["max_branch_support"],
+            "called_branch_site_rows": metrics["called_branch_site_rows"],
+            "max_site_score": metrics["max_site_score"],
+            "q95_site_score": metrics["q95_site_score"],
+            "q99_site_score": metrics["q99_site_score"],
+        })
+    write_tsv(
+        null_dir / "babappa_native_null_scores.tsv",
+        null_rows,
+        ["replicate", "seed", "status", "max_gene_support", "max_branch_support", "called_branch_site_rows", "max_site_score", "q95_site_score", "q99_site_score"],
+    )
+    p_values = {
+        "p_babappa_max_gene_support": _right_tail_empirical_p_value(observed["max_gene_support"], [row["max_gene_support"] for row in null_rows]),
+        "p_babappa_called_rows": _right_tail_empirical_p_value(observed["called_branch_site_rows"], [row["called_branch_site_rows"] for row in null_rows]),
+        "p_babappa_max_branch_support": _right_tail_empirical_p_value(observed["max_branch_support"], [row["max_branch_support"] for row in null_rows]),
+        "p_babappa_max_site_score": _right_tail_empirical_p_value(observed["max_site_score"], [row["max_site_score"] for row in null_rows]),
+    }
+    evidence_class = _babappa_native_evidence_class(p_values, n_replicates)
+    summary = {
+        "babappa_native_null_version": __version__,
+        "status": "ok",
+        "calibration_backend": "babappa_native_branch_shuffle_feature_null",
+        "calibration_scope": "BABAPPA-native empirical feature null; standalone BABAPPA calibration, complementary to codeml/HyPhy rather than dependent on them.",
+        "n_replicates_requested": n_replicates,
+        "n_replicates_completed": len(null_rows),
+        "seed": seed,
+        "device": str(scorer["device"]),
+        "tier_model": scorer["tier"],
+        "observed": observed,
+        "p_values": p_values,
+        "evidence_class": evidence_class,
+        "null_tail_quantiles": {
+            "max_gene_support_q95": _quantile_local([row["max_gene_support"] for row in null_rows], 0.95),
+            "max_gene_support_q99": _quantile_local([row["max_gene_support"] for row in null_rows], 0.99),
+            "called_rows_q95": _quantile_local([row["called_branch_site_rows"] for row in null_rows], 0.95),
+            "called_rows_q99": _quantile_local([row["called_branch_site_rows"] for row in null_rows], 0.99),
+            "max_site_score_q95": _quantile_local([row["max_site_score"] for row in null_rows], 0.95),
+            "max_site_score_q99": _quantile_local([row["max_site_score"] for row in null_rows], 0.99),
+        },
+        "null_results_fabricated": False,
+        "external_reference_required": False,
+        "interpretation_boundary": "This is a BABAPPA-native calibrated diagnostic result. It is designed to be usable as standalone BABAPPA evidence, while remaining scientifically complementary to likelihood-based codeml/HyPhy tests.",
+    }
+    _write_json(null_dir / "babappa_native_null_summary.json", summary)
+    write_tsv(
+        null_dir / "babappa_native_null_summary.tsv",
+        [{
+            "status": "ok",
+            "n_replicates_completed": len(null_rows),
+            "evidence_class": evidence_class,
+            **p_values,
+        }],
+        ["status", "n_replicates_completed", "evidence_class", "p_babappa_max_gene_support", "p_babappa_called_rows", "p_babappa_max_branch_support", "p_babappa_max_site_score"],
+    )
+    (null_dir / "babappa_native_null_report.md").write_text(_render_babappa_native_null_report(summary), encoding="utf-8")
+    _write_json(null_dir / "observed_vs_babappa_null.json", {"status": "ok", "observed": observed, "p_values": p_values, "evidence_class": evidence_class})
+    (null_dir / "observed_vs_babappa_null.md").write_text(_render_observed_vs_babappa_null_md(summary), encoding="utf-8")
+    _update_direct_gene_summary_with_null(outdir, summary)
+    return summary
+
+
+def _load_deployable_scorer(package_dir: Path, applicability: Dict[str, Any], device_request: str, failure_outdir: Path) -> Dict[str, Any]:
+    torch, error = safe_import_torch()
+    if torch is None:
+        payload = {
+            "status": "fail",
+            "reason": f"torch_unavailable:{error}",
+            "message": "PyTorch is required for empirical scoring; metadata-only scoring is not allowed.",
+        }
+        _write_json(failure_outdir / "empirical_scoring_manifest.json", payload)
+        (failure_outdir / "empirical_scoring_report.md").write_text(_render_scoring_failure_md(payload), encoding="utf-8")
+        raise RuntimeError(payload["message"] + " " + payload["reason"])
+    manifest = _read_json(package_dir / "model_manifest.json")
+    feature_schema = _read_json(package_dir / "feature_schema.json")
+    feature_columns = [str(column) for column in feature_schema.get("expected_feature_columns", [])]
+    tier = str(applicability.get("recommended_tier") or "low")
+    if tier not in TIERS:
+        tier = "low"
+    device = resolve_torch_device(torch, device_request)
+    model_info = manifest["tier_models"][tier]
+    calibration = manifest["calibration_thresholds_by_tier"][tier]
+    from babappa.site.neural_model import SiteMLPClassifier
+
+    checkpoint = _torch_load(torch, package_dir / model_info["checkpoint"])
+    model = SiteMLPClassifier(
+        input_dim=len(feature_columns),
+        hidden_dim=int(model_info.get("hidden_dim") or 64),
+        dropout=0.0,
+    )
+    model.load_state_dict(checkpoint["model_state_dict"])
+    model.to(device)
+    model.eval()
+    mean = np.asarray(checkpoint.get("feature_mean", np.zeros(len(feature_columns))), dtype=np.float32)
+    std = np.asarray(checkpoint.get("feature_std", np.ones(len(feature_columns))), dtype=np.float32)
+    std = np.where(std == 0, 1.0, std)
+    return {
+        "torch": torch,
+        "model": model,
+        "feature_columns": feature_columns,
+        "tier": tier,
+        "device": device,
+        "mean": mean,
+        "std": std,
+        "calibration": calibration,
+    }
+
+
+def _score_feature_rows_with_loaded_model(scorer: Dict[str, Any], rows: List[Dict[str, Any]]) -> np.ndarray:
+    torch = scorer["torch"]
+    feature_columns = scorer["feature_columns"]
+    X = np.array([[_as_float(row.get(column), 0.0) or 0.0 for column in feature_columns] for row in rows], dtype=np.float32)
+    X = ((X - scorer["mean"]) / scorer["std"]).astype(np.float32)
+    probs_chunks: List[Any] = []
+    with torch.no_grad():
+        for start in range(0, len(X), 65536):
+            tensor = torch.from_numpy(X[start:start + 65536]).to(scorer["device"])
+            logits = scorer["model"](tensor)
+            temperature = float(scorer["calibration"].get("temperature") or 1.0)
+            probs_chunks.append(torch.sigmoid(logits / max(temperature, 1e-6)).detach().cpu().numpy())
+    return np.concatenate(probs_chunks) if probs_chunks else np.asarray([], dtype=np.float32)
+
+
+def _branch_shuffle_null_features(rows: List[Dict[str, Any]], rng: random.Random) -> List[Dict[str, Any]]:
+    null_rows = [dict(row) for row in rows]
+    shuffle_columns = [
+        "branch_codon_id",
+        "branch_gap",
+        "branch_background_codon_delta",
+        "foreground_codon_id",
+        "foreground_gap",
+        "foreground_background_codon_delta",
+    ]
+    for column in shuffle_columns:
+        values = [row.get(column, "") for row in rows]
+        rng.shuffle(values)
+        for row, value in zip(null_rows, values):
+            row[column] = value
+    return null_rows
+
+
+def _direct_score_metrics(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    probs = [_as_float(row.get("prob_positive"), 0.0) or 0.0 for row in rows]
+    branch_max: Dict[str, float] = {}
+    for row, prob in zip(rows, probs):
+        branch = str(row.get("branch_id", ""))
+        branch_max[branch] = max(branch_max.get(branch, 0.0), prob)
+    return {
+        "max_gene_support": max(probs) if probs else 0.0,
+        "max_branch_support": max(branch_max.values()) if branch_max else 0.0,
+        "called_branch_site_rows": sum(int(_as_float(row.get("called_positive"), 0.0) or 0.0) for row in rows),
+        "max_site_score": max(probs) if probs else 0.0,
+        "q95_site_score": _quantile_local(probs, 0.95),
+        "q99_site_score": _quantile_local(probs, 0.99),
+    }
+
+
+def _right_tail_empirical_p_value(observed: Any, null_values: Iterable[Any]) -> Optional[float]:
+    obs = _as_float(observed)
+    values = [_as_float(value) for value in null_values]
+    values = [value for value in values if value is not None]
+    if obs is None or not values:
+        return None
+    return (1 + sum(1 for value in values if value >= obs)) / (len(values) + 1)
+
+
+def _quantile_local(values: Iterable[Any], q: float) -> float:
+    vals = sorted(float(value) for value in values if _as_float(value) is not None)
+    if not vals:
+        return 0.0
+    index = min(len(vals) - 1, max(0, int(round(q * (len(vals) - 1)))))
+    return vals[index]
+
+
+def _babappa_native_evidence_class(p_values: Dict[str, Optional[float]], n_replicates: int) -> str:
+    finite = [value for value in p_values.values() if value is not None]
+    if n_replicates < 100:
+        return "underpowered_native_null"
+    if any(value <= 0.01 for value in finite):
+        return "strong_babappa_native_support"
+    if any(value <= 0.05 for value in finite):
+        return "babappa_native_support"
+    return "not_significant_under_babappa_native_null"
+
+
+def _update_direct_gene_summary_with_null(outdir: Path, null_summary: Dict[str, Any]) -> None:
+    path = outdir / "gene_summary.tsv"
+    rows = read_tsv(path) if path.exists() else []
+    if not rows:
+        return
+    p_values = null_summary.get("p_values", {})
+    for row in rows:
+        row["babappa_native_null_replicates"] = null_summary.get("n_replicates_completed", "")
+        row["babappa_native_evidence_class"] = null_summary.get("evidence_class", "")
+        row["babappa_native_result_class"] = _babappa_native_result_class(
+            result_class=str(row.get("result_class", "")),
+            evidence_class=str(null_summary.get("evidence_class", "")),
+        )
+        row["p_babappa_max_gene_support"] = p_values.get("p_babappa_max_gene_support")
+        row["p_babappa_called_rows"] = p_values.get("p_babappa_called_rows")
+        row["p_babappa_max_branch_support"] = p_values.get("p_babappa_max_branch_support")
+        row["p_babappa_max_site_score"] = p_values.get("p_babappa_max_site_score")
+    write_tsv(path, rows, list(rows[0]))
+
+
+def _babappa_native_result_class(result_class: str, evidence_class: str) -> str:
+    if result_class != "diagnostic_positive":
+        return "babappa_native_negative"
+    if evidence_class in {"strong_babappa_native_support", "babappa_native_support"}:
+        return "babappa_native_calibrated_support"
+    if evidence_class == "underpowered_native_null":
+        return "babappa_native_calibration_underpowered"
+    if evidence_class == "not_significant_under_babappa_native_null":
+        return "diagnostic_positive_not_supported_by_babappa_native_null"
+    return "babappa_native_calibration_not_run"
+
+
+def _render_babappa_native_null_report(summary: Dict[str, Any]) -> str:
+    p_values = summary.get("p_values", {})
+    return "\n".join([
+        "# BABAPPA-Native Null Calibration",
+        "",
+        f"- status: `{summary['status']}`",
+        f"- backend: `{summary['calibration_backend']}`",
+        f"- replicates completed: `{summary['n_replicates_completed']}`",
+        f"- evidence class: `{summary['evidence_class']}`",
+        f"- p_babappa_max_gene_support: `{p_values.get('p_babappa_max_gene_support')}`",
+        f"- p_babappa_called_rows: `{p_values.get('p_babappa_called_rows')}`",
+        f"- p_babappa_max_branch_support: `{p_values.get('p_babappa_max_branch_support')}`",
+        "",
+        summary["interpretation_boundary"],
+        "",
+    ])
+
+
+def _render_observed_vs_babappa_null_md(summary: Dict[str, Any]) -> str:
+    lines = ["# Observed Versus BABAPPA Native Null", ""]
+    lines.extend(["## Observed", ""])
+    for key, value in summary.get("observed", {}).items():
+        lines.append(f"- {key}: `{value}`")
+    lines.extend(["", "## P-like Values", ""])
+    for key, value in summary.get("p_values", {}).items():
+        lines.append(f"- {key}: `{value}`")
+    lines.extend(["", f"- evidence class: `{summary.get('evidence_class')}`", ""])
+    return "\n".join(lines)
+
+
 def _degapped_codon_site(sequence: str, aligned_site_zero: int) -> str:
     if not sequence:
         return ""
@@ -1795,8 +2058,10 @@ def _direct_prediction_manifest(
 ) -> Dict[str, Any]:
     gene_summary_path = outdir / "gene_summary.tsv"
     branch_site_path = outdir / "branch_site_predictions.tsv"
+    null_summary_path = outdir / "babappa_native_null" / "babappa_native_null_summary.json"
     gene_summary_rows = read_tsv(gene_summary_path) if gene_summary_path.exists() else []
     prediction_rows = read_tsv(branch_site_path) if branch_site_path.exists() else []
+    null_summary = _read_optional_json(null_summary_path)
     return {
         "direct_prediction_version": __version__,
         "status": status,
@@ -1816,11 +2081,13 @@ def _direct_prediction_manifest(
         "applicability_reasons": applicability_summary.get("reasons"),
         "scoring": scoring_summary,
         "summary": gene_summary_rows[0] if gene_summary_rows else {},
+        "babappa_native_null": null_summary,
         "n_prediction_rows": len(prediction_rows),
         "outputs": {
             "branch_site_predictions": str(branch_site_path) if branch_site_path.exists() else "",
             "branch_predictions": str(outdir / "branch_predictions.tsv") if (outdir / "branch_predictions.tsv").exists() else "",
             "gene_summary": str(gene_summary_path) if gene_summary_path.exists() else "",
+            "babappa_native_null_summary": str(null_summary_path) if null_summary_path.exists() else "",
             "prediction_report": str(outdir / "prediction_report.md"),
             "qc_report": str(outdir / "qc_report.md"),
         },
@@ -1861,16 +2128,21 @@ def _render_direct_prediction_report(manifest: Dict[str, Any], outdir: Path) -> 
         f"- called positive branch-site rows: `{summary.get('n_called_positive', 'not_scored')}`",
         f"- max gene support: `{summary.get('max_gene_support', 'not_scored')}`",
         f"- result class: `{summary.get('result_class', manifest['status'])}`",
+        f"- BABAPPA-native evidence class: `{summary.get('babappa_native_evidence_class', 'not_run')}`",
+        f"- BABAPPA-native result class: `{summary.get('babappa_native_result_class', 'not_run')}`",
+        f"- p_BABAPPA called rows: `{summary.get('p_babappa_called_rows', 'not_run')}`",
+        f"- p_BABAPPA max gene support: `{summary.get('p_babappa_max_gene_support', 'not_run')}`",
         "",
         "## Main Outputs",
         "",
         f"- branch-site predictions: `{outdir / 'branch_site_predictions.tsv'}`",
         f"- branch summaries: `{outdir / 'branch_predictions.tsv'}`",
         f"- gene summary: `{outdir / 'gene_summary.tsv'}`",
+        f"- BABAPPA-native null calibration: `{outdir / 'babappa_native_null' / 'babappa_native_null_report.md'}`",
         "",
         "## Interpretation Boundary",
         "",
-        "A BABAPPA diagnostic-positive result is not, by itself, a publishable empirical positive-selection claim. Interpret scores with dataset-specific QC, matched-null calibration, biological controls, and reference-tool comparison when making manuscript claims.",
+        "BABAPPA can now report standalone BABAPPA-native calibrated evidence using its own branch-shuffle feature null. This is designed to be a complementary evidence system, not a codeml/HyPhy dependency. For manuscript use, report the BABAPPA-native null backend, replicate count, p-like values, OOD status, and biological context.",
         "",
     ]
     return "\n".join(lines)
@@ -1905,12 +2177,16 @@ def _comparison_schema() -> Dict[str, Any]:
             "category",
             "babappa_applicability",
             "babappa_gene_support",
+            "babappa_native_result_class",
+            "babappa_native_evidence_class",
+            "p_babappa_called_rows",
+            "p_babappa_max_gene_support",
             "codeml_lrt_pvalue",
             "hyphy_pvalue",
             "concordance_class",
             "notes",
         ],
-        "claim_boundary": "benchmark comparison only; not automatic empirical truth",
+        "claim_boundary": "Benchmark comparison only. BABAPPA-native evidence is standalone BABAPPA evidence; codeml/HyPhy are optional external comparators, not ground truth.",
     }
 
 
@@ -1920,6 +2196,8 @@ def _render_benchmark_plan_md(payload: Dict[str, Any], rows: List[Dict[str, str]
         "",
         f"- status: `{payload['status']}`",
         f"- panel entries: `{len(rows)}`",
+        f"- benchmark mode: `{payload.get('benchmark_mode')}`",
+        f"- BABAPPA null replicates: `{payload.get('babappa_null_replicates')}`",
         f"- classical tools: `{','.join(payload['classical_tools'])}`",
         "- USER-RUN ONLY command templates are generated but not executed.",
         "",
@@ -1929,11 +2207,16 @@ def _render_benchmark_plan_md(payload: Dict[str, Any], rows: List[Dict[str, str]
 def _render_benchmark_babappa_commands(rows: List[Dict[str, str]], config: ExternalBenchmarkPanelPlanConfig, methods: List[str]) -> str:
     lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'", ""]
     for row in rows:
+        family_id = _benchmark_row_id(row)
+        cds_fasta = _benchmark_cds(row)
+        tree = _benchmark_tree(row)
+        foreground = _benchmark_foreground(row)
         lines.append(
-            "# babappa plan-empirical-scoring "
-            f"--cds-fasta {row['cds_fasta']} --tree {row['tree']} --foreground {row['foreground']} "
-            f"--deployable-model-package {config.deployable_model_package} "
-            f"--outdir empirical_scoring_plan_{row['family_id']} --methods {','.join(methods)} --device auto"
+            "babappa predict-branch-sites "
+            f"--msa {cds_fasta} --tree {tree} --foreground {foreground} "
+            f"--model-package {config.deployable_model_package} "
+            f"--outdir babappa_benchmark_{family_id} --device auto "
+            f"--null-replicates {int(config.null_replicates)}"
         )
     lines.append("")
     return "\n".join(lines)
@@ -1942,9 +2225,33 @@ def _render_benchmark_babappa_commands(rows: List[Dict[str, str]], config: Exter
 def _render_classical_commands(rows: List[Dict[str, str]], tool: str) -> str:
     lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'", ""]
     for row in rows:
+        family_id = _benchmark_row_id(row)
+        cds_fasta = _benchmark_cds(row)
+        tree = _benchmark_tree(row)
+        foreground = _benchmark_foreground(row)
         if tool == "codeml":
-            lines.append(f"# codeml {row['family_id']}.branch_site.ctl")
+            lines.append(f"# Prepare codeml Model A/null for {family_id}:")
+            lines.append(f"babappa prepare-codeml-reference --cds-fasta {cds_fasta} --tree {tree} --foreground {foreground} --outdir codeml_reference_{family_id}")
+            lines.append(f"# cd codeml_reference_{family_id} && bash run_codeml_modelA.sh && bash run_codeml_null.sh")
         else:
-            lines.append(f"# hyphy absrel --alignment {row['cds_fasta']} --tree {row['tree']}")
+            lines.append(f"# Prepare HyPhy aBSREL/MEME for {family_id}:")
+            lines.append(f"babappa prepare-hyphy-reference --cds-fasta {cds_fasta} --tree {tree} --foreground {foreground} --outdir hyphy_reference_{family_id}")
+            lines.append(f"# cd hyphy_reference_{family_id} && bash run_absrel.sh && bash run_meme.sh")
     lines.append("")
     return "\n".join(lines)
+
+
+def _benchmark_row_id(row: Dict[str, str]) -> str:
+    return str(row.get("family_id") or row.get("panel_id") or "family")
+
+
+def _benchmark_cds(row: Dict[str, str]) -> str:
+    return str(row.get("cds_fasta") or row.get("msa") or row.get("alignment") or "")
+
+
+def _benchmark_tree(row: Dict[str, str]) -> str:
+    return str(row.get("tree") or row.get("tree_file") or "")
+
+
+def _benchmark_foreground(row: Dict[str, str]) -> str:
+    return str(row.get("foreground") or "all")

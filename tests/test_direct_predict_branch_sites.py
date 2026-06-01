@@ -1,4 +1,5 @@
 import json
+import random
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,11 @@ from babappa.cli import app
 from babappa.datasets.index import read_tsv, write_tsv
 from babappa.empirical.bridge import (
     DirectBranchSitePredictionConfig,
+    _babappa_native_evidence_class,
+    _babappa_native_result_class,
+    _branch_shuffle_null_features,
+    _right_tail_empirical_p_value,
+    _update_direct_gene_summary_with_null,
     _write_direct_prediction_outputs,
     predict_branch_sites,
 )
@@ -142,6 +148,7 @@ def test_predict_branch_sites_cli_help_includes_direct_command() -> None:
     assert "--msa" in result.output
     assert "--tree" in result.output
     assert "--foreground" in result.output
+    assert "--null-replicates" in result.output
 
 
 def test_interactive_default_launches_direct_prediction(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
@@ -168,6 +175,7 @@ def test_interactive_default_launches_direct_prediction(monkeypatch: pytest.Monk
 
     assert result.exit_code == 0
     assert captured["config"].foreground == "all"
+    assert captured["config"].null_replicates == 100
     assert captured["config"].outdir.endswith("babappa_prediction_x")
     assert "BABAPPA direct branch-site predictor" in result.output
 
@@ -243,3 +251,52 @@ def test_direct_prediction_outputs_include_degapped_branch_site_number(tmp_path:
     assert by_branch["taxon1"]["branch_degapped_codon_site"] == ""
     assert by_branch["taxon1"]["branch_codon"] == "---"
     assert by_branch["taxon2"]["branch_degapped_codon_site"] == "2"
+
+
+def test_babappa_native_null_helpers_compute_standalone_evidence(tmp_path: Path) -> None:
+    p_value = _right_tail_empirical_p_value(10.0, [1.0, 2.0, 10.0, 12.0])
+    assert p_value == pytest.approx(3 / 5)
+    assert _babappa_native_evidence_class({"p_babappa_called_rows": 0.009}, 100) == "strong_babappa_native_support"
+    assert _babappa_native_evidence_class({"p_babappa_called_rows": 0.03}, 100) == "babappa_native_support"
+    assert _babappa_native_evidence_class({"p_babappa_called_rows": 0.2}, 100) == "not_significant_under_babappa_native_null"
+    assert _babappa_native_evidence_class({"p_babappa_called_rows": 0.001}, 3) == "underpowered_native_null"
+    assert _babappa_native_result_class("diagnostic_positive", "babappa_native_support") == "babappa_native_calibrated_support"
+    assert (
+        _babappa_native_result_class("diagnostic_positive", "not_significant_under_babappa_native_null")
+        == "diagnostic_positive_not_supported_by_babappa_native_null"
+    )
+    assert _babappa_native_result_class("diagnostic_negative", "babappa_native_support") == "babappa_native_negative"
+
+    rows = [
+        {"branch_id": "a", "branch_codon_id": "1", "foreground_codon_id": "2", "site_index_zero": "0"},
+        {"branch_id": "b", "branch_codon_id": "3", "foreground_codon_id": "4", "site_index_zero": "1"},
+    ]
+    shuffled = _branch_shuffle_null_features(rows, random.Random(7))
+    assert shuffled is not rows
+    assert {row["branch_id"] for row in shuffled} == {"a", "b"}
+    assert sorted(row["branch_codon_id"] for row in shuffled) == ["1", "3"]
+
+    outdir = tmp_path / "prediction"
+    outdir.mkdir()
+    write_tsv(
+        outdir / "gene_summary.tsv",
+        [{"family_id": "empirical", "result_class": "diagnostic_positive"}],
+        ["family_id", "result_class"],
+    )
+    _update_direct_gene_summary_with_null(
+        outdir,
+        {
+            "n_replicates_completed": 100,
+            "evidence_class": "babappa_native_support",
+            "p_values": {
+                "p_babappa_max_gene_support": 0.04,
+                "p_babappa_called_rows": 0.02,
+                "p_babappa_max_branch_support": 0.05,
+                "p_babappa_max_site_score": 0.1,
+            },
+        },
+    )
+    updated = read_tsv(outdir / "gene_summary.tsv")[0]
+    assert updated["babappa_native_evidence_class"] == "babappa_native_support"
+    assert updated["babappa_native_result_class"] == "babappa_native_calibrated_support"
+    assert updated["p_babappa_called_rows"] == "0.02"

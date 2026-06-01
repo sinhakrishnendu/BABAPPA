@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.30)  31 MAY 2026 09:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.30)  1 JUN 2026 10:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -512,121 +512,227 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 5
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 61.
- [1
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+[]\T1/lmr/m/n/10 A close-taxa WRKY pi-lot demon-strates the present em-pir-i-ca
+l be-hav-ior.
+ []
+
+
+Underfull \hbox (badness 3158) in paragraph at lines 58--59
+\T1/lmtt/m/n/10 WRKY_candidate_01 \T1/lmr/m/n/10 was re-jected as an out-of-dom
+ain stress test with mean p-
+ []
+
+
+Underfull \hbox (badness 3713) in paragraph at lines 58--59
+\T1/lmr/m/n/10 distance 0.725799. \T1/lmtt/m/n/10 WRKY_candidate_02_close\T1/lm
+r/m/n/10 , a seven-taxon close Bras-si-caceae
+ []
+
+[1
 
 {/Users/krishnendu/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/
 pdftex.map}{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.en
-c}] [2{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
-}{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-Underfull \hbox (badness 1762) in paragraph at lines 97--97
-[]|\T1/lmr/m/n/10.95 Site maps and method
+c}]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 63.
+ [2{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/
+usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+Underfull \hbox (badness 2781) in paragraph at lines 97--98
+\T1/lmr/m/n/10.95 jects or au-dits truth-derived columns such as \T1/lmtt/m/n/1
+0.95 branch_site_truth\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95 selected_sites\T1/
+lmr/m/n/10.95 ,
+ []
+
+[3]
+Underfull \hbox (badness 5403) in paragraph at lines 124--125
+\T1/lmr/m/n/10.95 em-pir-i-cal feature-null repli-cates and com-putes p-like
  []
 
 
-Underfull \hbox (badness 1122) in paragraph at lines 99--99
-[]|\T1/lmr/m/n/10.95 Branch-site neu-ral scor-
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+[]|\T1/lmr/m/n/10.95 Alignment sen-si-tiv-ity
  []
 
 
-ignored: Infinite glue shrinkage found in box being split [3]
+Underfull \hbox (badness 10000) in paragraph at lines 128--128
+[]|\T1/lmr/m/n/10.95 Publication bench-mark
+ []
+
+
+Underfull \hbox (badness 4739) in paragraph at lines 128--129
+\T1/lmr/m/n/10.95 native re-sults with codeml and Hy-Phy on cu-rated
+ []
+
+
+Underfull \hbox (badness 2245) in paragraph at lines 129--130
+[]|\T1/lmtt/m/n/10.95 babappa audit-storage \T1/lmr/m/n/10.95 in-ven-to-ries re
+-pro-ducible heavy
+ []
+
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-13.
- (/usr/local/texlive/2026basic/texmf-dist/tex/latex/lm/ts1lmr.fd
+37.
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [4{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [5
-]
-Underfull \hbox (badness 10000) in paragraph at lines 170--171
-[]\T1/lmr/m/n/10.95 simulation-matched cal-i-bra-tion plan-ning and a con-ser-v
-a-tive
+) [4]
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
+\T1/lmtt/m/n/10.95 training_envelope.json\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95
+ tier_models/\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95 tier_calibrations/\T1/lmr/m
+/n/10.95 , \T1/lmtt/m/n/10.95 checksums.sha256\T1/lmr/m/n/10.95 ,
+ []
+
+[5{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
+[]\T1/lmr/m/n/10.95 For manuscript re-port-ing, the most im-por-tant gene-level
+ fields are
  []
 
 
-Underfull \hbox (badness 1603) in paragraph at lines 170--171
-\T1/lmtt/m/n/10.95 run-simulation-matched-null-calibration \T1/lmr/m/n/10.95 ev
-idence-pack in-ter-face for dry-run val-
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
+\T1/lmtt/m/n/10.95 result_class\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95 babappa_n
+ative_result_class\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95 babappa_native_evidenc
+e_class\T1/lmr/m/n/10.95 ,
  []
 
 
-Underfull \hbox (badness 5696) in paragraph at lines 185--185
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
+\T1/lmtt/m/n/10.95 babappa_native_null_replicates\T1/lmr/m/n/10.95 , \T1/lmtt/m
+/n/10.95 p_babappa_called_rows\T1/lmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 1448) in paragraph at lines 197--198
+\T1/lmtt/m/n/10.95 p_babappa_max_gene_support\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/1
+0.95 p_babappa_max_branch_support\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95 applica
+bility_status\T1/lmr/m/n/10.95 ,
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 216--217
+[]\T1/lmr/m/n/10.95 BABAPPA clas-si-fies native-null ev-i-dence as \T1/lmtt/m/n
+/10.95 strong_babappa_native_support\T1/lmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 216--217
+\T1/lmtt/m/n/10.95 babappa_native_support\T1/lmr/m/n/10.95 , \T1/lmtt/m/n/10.95
+ not_significant_under_babappa_native_null\T1/lmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 216--217
+\T1/lmr/m/n/10.95 or \T1/lmtt/m/n/10.95 underpowered_native_null\T1/lmr/m/n/10.
+95 . The com-bined re-sult class is stored as
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 220--221
+\T1/lmr/m/n/10.95 For pub-li-ca-tion, BABAPPA in-cludes a sep-a-rate bench-mark
+ har-ness un-der
+ []
+
+
+Underfull \hbox (badness 1648) in paragraph at lines 220--221
+\T1/lmtt/m/n/10.95 publication_benchmark/\T1/lmr/m/n/10.95 . This har-ness runs
+ BABAPPA-native cal-i-brated pre-dic-tion,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 234--234
 []|\T1/lmr/m/n/10.95 OOD stress test; mean p-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 185--185
+Underfull \hbox (badness 10000) in paragraph at lines 234--234
 \T1/lmr/m/n/10.95 distance 0.725799; ap-pli-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 185--185
+Underfull \hbox (badness 10000) in paragraph at lines 234--234
 \T1/lmr/m/n/10.95 ca-bil-ity \T1/lmtt/m/n/10.95 out_of_domain\T1/lmr/m/n/10.95 
 ;
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 185--185
+Underfull \hbox (badness 10000) in paragraph at lines 234--234
 \T1/lmtt/m/n/10.95 diagnostic_only=True\T1/lmr/m/n/10.95 ; no
  []
 
 
-Underfull \hbox (badness 3525) in paragraph at lines 185--186
+Underfull \hbox (badness 10000) in paragraph at lines 234--235
 []|\T1/lmr/m/n/10.95 Useful failure-mode probe
  []
 
 
-Underfull \hbox (badness 6691) in paragraph at lines 185--186
-\T1/lmr/m/n/10.95 gent WRKY pan-els can
+Underfull \hbox (badness 1817) in paragraph at lines 234--235
+\T1/lmr/m/n/10.95 show-ing that highly di-ver-
  []
 
 
-Underfull \hbox (badness 1742) in paragraph at lines 185--186
+Underfull \hbox (badness 1077) in paragraph at lines 234--235
+\T1/lmr/m/n/10.95 gent WRKY pan-els should
+ []
+
+
+Underfull \hbox (badness 3312) in paragraph at lines 234--235
 \T1/lmr/m/n/10.95 be re-jected or treated as
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 235--235
 []|\T1/lmr/m/n/10.95 Close-taxa
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 235--235
 \T1/lmr/m/n/10.95 WRKY33/AT2G38470 ho-
  []
 
 
-Underfull \hbox (badness 5741) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 235--235
 \T1/lmr/m/n/10.95 mologs; 7 Bras-si-caceae/close
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
-\T1/lmr/m/n/10.95 plant taxa; aligned mean
+Underfull \hbox (badness 3138) in paragraph at lines 235--235
+\T1/lmr/m/n/10.95 plant taxa; aligned mean p-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
-\T1/lmr/m/n/10.95 p-distance ap-prox-i-mately
+Underfull \hbox (badness 5091) in paragraph at lines 235--235
+\T1/lmr/m/n/10.95 pre-filter \T1/lmtt/m/n/10.95 accept\T1/lmr/m/n/10.95 ; ap-pl
+i-ca-bil-ity
  []
 
 
-Underfull \hbox (badness 5696) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 235--235
+\T1/lmtt/m/n/10.95 in_domain\T1/lmr/m/n/10.95 ; mod-er-ate tier;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--235
+\T1/lmr/m/n/10.95 MPS scor-ing; diagnostic-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--235
 \T1/lmr/m/n/10.95 positive; max gene sup-port
  []
 
 
-Underfull \hbox (badness 1281) in paragraph at lines 186--186
+Underfull \hbox (badness 1199) in paragraph at lines 235--235
+\T1/lmr/m/n/10.95 0.177189; 6,954 called branch-
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 235--235
 \T1/lmr/m/n/10.95 site rows; 10,451 score rows;
  []
 
 
-Underfull \hbox (badness 1320) in paragraph at lines 186--187
-\T1/lmr/m/n/10.95 plau-si-ble bi-o-log-i-cal in-puts.
- []
-
-
-ignored: Infinite glue shrinkage found in box being split [6] [7] [8] (./BABAPPA_method_
-paper_auxiliary_saturation.bbl [9]) [10]
+ignored: Infinite glue shrinkage found in box being split [7{/usr/local/texlive/2026basi
+c/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+[8] (./BABAPPA_method_paper_auxiliary_saturation.bbl [9] [10]) [11]
 (./BABAPPA_method_paper_auxiliary_saturation.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -634,16 +740,16 @@ L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `BABAPPA_method_paper_auxiliary_saturation.ou
 t' has not changed.
-(rerunfilecheck)             Checksum: EE1F018D08553B7D38E81B67CED40ACC;3105.
+(rerunfilecheck)             Checksum: B74EB27B938D6C374E23BE5C84B55829;3629.
  ) 
 Here is how much of TeX's memory you used:
- 11396 strings out of 469006
- 174195 string characters out of 5454813
- 590904 words of memory out of 5000000
- 39873 multiletter control sequences out of 15000+600000
+ 11409 strings out of 469006
+ 174502 string characters out of 5454813
+ 589853 words of memory out of 5000000
+ 39884 multiletter control sequences out of 15000+600000
  680306 words of font info for 77 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,11n,79p,1255b,582s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,1045b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></u
 sr/local/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/lo
 cal/texlive/2026basic/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/t
@@ -651,13 +757,15 @@ exlive/2026basic/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive
 /2026basic/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2026b
 asic/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2026basic/t
 exmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2026basic/texmf-d
-ist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2026basic/texmf-dist/f
-onts/type1/public/lm/lmtt10.pfb>
-Output written on BABAPPA_method_paper_auxiliary_saturation.pdf (10 pages, 2285
-60 bytes).
+ist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2026basic/texmf-dist/fon
+ts/type1/public/lm/lmri10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/ty
+pe1/public/lm/lmsy10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/p
+ublic/lm/lmtt10.pfb>
+Output written on BABAPPA_method_paper_auxiliary_saturation.pdf (11 pages, 2626
+32 bytes).
 PDF statistics:
- 236 PDF objects out of 1000 (max. 8388607)
- 201 compressed objects within 3 object streams
- 61 named destinations out of 1000 (max. 500000)
- 121 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 260 PDF objects out of 1000 (max. 8388607)
+ 220 compressed objects within 3 object streams
+ 62 named destinations out of 1000 (max. 500000)
+ 145 words of extra memory for PDF output out of 10000 (max. 10000000)
 

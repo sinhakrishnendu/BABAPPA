@@ -2,13 +2,13 @@
 
 BABAPPA is the **Branch-site Alignment-Bias-Aware Probabilistic Positive-selection Analyzer**.
 
-Current source version: `0.5.2-alpha`  
-Release archive label: `0.5.0-alpha`  
-Status: research-alpha, simulation-trained, guarded empirical diagnostic workflow
+Current source version: `v0.7.0`  
+Release archive label: `v0.7.0`  
+Status: research-alpha, simulation-trained, standalone BABAPPA-native calibrated evidence workflow
 
-BABAPPA supports branch-site positive-selection investigation from a user-supplied codon MSA and treefile. The main user-facing command treats the supplied MSA as the authoritative alignment, scores requested foreground branches, and reports candidate branch-site episodic-selection support using a deployable simulation-trained model. Alignment ensembles, codeml/HyPhy comparison, and matched-null calibration are optional diagnostic layers for deeper evaluation.
+BABAPPA supports branch-site positive-selection investigation from a user-supplied codon MSA and treefile. The main user-facing command treats the supplied MSA as the authoritative alignment, scores requested foreground branches, and reports candidate branch-site episodic-selection support using a deployable simulation-trained model plus a BABAPPA-native empirical null calibration. Alignment ensembles and codeml/HyPhy comparison are optional diagnostic comparators, not dependencies for BABAPPA to issue its own calibrated evidence statement.
 
-BABAPPA is **not** a finalized empirical positive-selection discovery engine. Empirical positive-selection claims remain blocked until simulation-matched null calibration, reference-tool comparison, biological controls, and dataset-specific interpretation are complete.
+BABAPPA is intended to become a standalone complementary software system beside codeml and HyPhy. It does **not** claim likelihood-model equivalence to those tools, and it does not use their null models internally. Instead, BABAPPA reports BABAPPA-native calibrated support classes from its own simulation-trained scoring model and empirical feature-null calibration. For publication, users should report the BABAPPA evidence class, native null replicate count, p-like values, OOD/applicability status, and biological context.
 
 ## Contents
 
@@ -43,13 +43,13 @@ The deployable package validates successfully:
 
 The empirical bridge can process small real empirical diagnostic pilots, but BABAPPA scores are not final discovery claims.
 
-Historical validation note: Branch-conditioned 10K streamed validation completed before the final 100K MPS run. Branch-conditioned labels may be proxy-derived in older or non-explicit workflows, so BABAPPA now distinguishes those cases from explicit branch-site simulator truth. A previous gate stated, "Final 100K is deferred until explicit branch-truth validation passes"; that gate has now been satisfied with a conditional-pass 100K explicit-truth validation, while empirical discovery claims remain blocked.
+Historical validation note: Branch-conditioned 10K streamed validation completed before the final 100K MPS run. Branch-conditioned labels may be proxy-derived in older or non-explicit workflows, so BABAPPA now distinguishes those cases from explicit branch-site simulator truth. A previous gate stated, "Final 100K is deferred until explicit branch-truth validation passes"; that gate has now been satisfied with a conditional-pass 100K explicit-truth validation. Unsupported empirical discovery language remains blocked; BABAPPA-native calibrated support can be reported when the native null and QC outputs support it.
 
 The simulation phase is oracle-supervised because simulator truth is known during validation. That oracle-supervised evidence is never supplied as an empirical inference input.
 
 > **Empirical interpretation warning**
 >
-> A BABAPPA diagnostic-positive result is not, by itself, a publishable empirical positive-selection claim. It must be interpreted with matched-null calibration, reference-tool comparison, biological controls, and dataset-specific justification.
+> A raw BABAPPA diagnostic-positive score is not, by itself, a publishable empirical positive-selection claim. A manuscript-ready BABAPPA result should include BABAPPA-native null calibration, input QC/applicability status, biological controls or rationale, and the exact BABAPPA version/model package. codeml/HyPhy can be used as external comparators, but BABAPPA does not depend on them to report BABAPPA-native evidence.
 
 ## What BABAPPA Does
 
@@ -63,22 +63,24 @@ BABAPPA can:
 - extract conservative empirical branch-site features;
 - audit empirical feature tables for forbidden truth-derived columns;
 - score branch-site rows using a packaged simulation-trained model;
+- run BABAPPA-native empirical null calibration for direct MSA/tree predictions;
+- report BABAPPA-native p-like values and calibrated support classes;
 - classify empirical inputs as `in_domain`, `borderline`, or `out_of_domain`;
 - mark OOD cases as `diagnostic_only`;
 - produce guarded diagnostic reports;
-- prepare and parse codeml/HyPhy-style reference workflows;
-- plan simulation-matched empirical calibration;
+- prepare and parse codeml/HyPhy-style reference workflows as optional comparators;
+- plan and run conservative feature-level matched empirical calibration;
 - audit storage and generate safe cleanup scripts for large reproducible outputs.
 
-BABAPPA helps decide whether a dataset is suitable for deeper positive-selection analysis. It is a diagnostic decision-support framework, not an automatic discovery machine.
+BABAPPA helps decide whether a dataset is suitable for branch-site positive-selection interpretation and provides a standalone BABAPPA evidence system. It remains research-alpha software: results should be reported as BABAPPA-native calibrated support, not as a classical likelihood-ratio test.
 
 ## What BABAPPA Does Not Do
 
 BABAPPA does not:
 
-- prove positive selection by itself;
-- replace codeml, HyPhy, biological controls, or expert interpretation;
-- make final empirical discovery claims without calibration and controls;
+- provide codeml/HyPhy-equivalent likelihood-ratio tests;
+- use codeml or HyPhy internally as a required null model;
+- make strong empirical claims from uncalibrated raw scores;
 - use simulator truth during empirical inference;
 - silently accept out-of-domain empirical inputs as positive-selection calls;
 - serve as a clinical, agricultural, regulatory, or policy decision tool.
@@ -211,7 +213,7 @@ BABAPPA will ask for:
 2. treefile path
 3. foreground mode: `leaves`/`all`/`specific`
 
-`leaves` is the default and scores every tree tip. `specific` asks for comma-separated tree-tip labels.
+`leaves` is the default and scores every tree tip. `specific` asks for comma-separated tree-tip labels. Interactive mode uses the default 100 BABAPPA-native null replicates. Use the explicit `predict-branch-sites` command with `--null-replicates` when you want quick uncalibrated scoring (`0`) or manuscript-strength calibration (`1000+`).
 
 ### Main End-User Command: MSA + Tree To Branch-Site Calls
 
@@ -224,7 +226,8 @@ babappa predict-branch-sites \
   --foreground all \
   --model-package deployable_model_conservative_branch_site_100k_mps \
   --outdir my_gene_babappa_prediction \
-  --device auto
+  --device auto \
+  --null-replicates 1000
 ```
 
 To score only selected tree tips as foreground branches:
@@ -236,16 +239,20 @@ babappa predict-branch-sites \
   --foreground Arabidopsis_thaliana,Arabidopsis_lyrata \
   --model-package deployable_model_conservative_branch_site_100k_mps \
   --outdir my_gene_babappa_prediction \
-  --device mps
+  --device mps \
+  --null-replicates 1000
 ```
 
 BABAPPA does not realign input for this command. The user-supplied MSA is the alignment used for prediction. The prediction table reports both `msa_codon_site`/`aligned_codon_site` and `branch_degapped_codon_site`, so users can locate a call in the alignment column and in the de-gapped sequence coordinate of the scored branch.
+
+The `--null-replicates` option is the standalone BABAPPA evidence layer. It runs a BABAPPA-native branch-shuffle feature null for the same empirical MSA/tree feature table and reports p-like values such as `p_babappa_called_rows` and `p_babappa_max_gene_support`. Use `--null-replicates 0` only for quick checking; use `100` for a pilot; use `1000` or more when you want a BABAPPA-native result that can be reported in a paper as BABAPPA evidence.
 
 Main outputs:
 
 - `branch_site_predictions.tsv`: site-by-branch scores and calls
 - `branch_predictions.tsv`: branch-level support summary
 - `gene_summary.tsv`: gene-level diagnostic summary
+- `babappa_native_null/`: BABAPPA-native empirical null scores, summary, and observed-vs-null report when `--null-replicates > 0`
 - `prediction_report.md`: human-readable report
 - `qc_report.md`: input/applicability summary
 
@@ -259,6 +266,36 @@ babappa predict-branch-sites \
   --outdir my_gene_babappa_dryrun \
   --dry-run
 ```
+
+### Standalone BABAPPA-Native Evidence For Papers
+
+For a paper, the recommended BABAPPA-native command is:
+
+```bash
+babappa predict-branch-sites \
+  --msa my_gene.codon_aligned.fasta \
+  --tree my_gene.treefile \
+  --foreground all \
+  --outdir my_gene_babappa_prediction_paper \
+  --device auto \
+  --null-replicates 1000
+```
+
+Report these fields from `gene_summary.tsv` and `prediction_report.md`:
+
+- `result_class`
+- `babappa_native_result_class`
+- `babappa_native_evidence_class`
+- `babappa_native_null_replicates`
+- `p_babappa_called_rows`
+- `p_babappa_max_gene_support`
+- `p_babappa_max_branch_support`
+- `applicability_status`
+- `tier_model`
+
+Suggested wording:
+
+> BABAPPA identified BABAPPA-native calibrated branch-site support using the supplied codon MSA and tree as authoritative inputs. The result was calibrated against BABAPPA's branch-shuffle empirical feature null with N replicates. This is a BABAPPA-native evidence statement and is complementary to, but not mathematically identical with, codeml/HyPhy likelihood-ratio tests.
 
 ### Internal Pipeline Commands
 
@@ -590,7 +627,7 @@ babappa run-simulation-matched-null-calibration \
   --device mps
 ```
 
-Current implementation note: the evidence-pack command is operational for safe dry-run/planning and for conservative feature-level matched-null scoring through the deployable model package. This is diagnostic calibration support, not a full raw sequence simulation plus alignment replay. Do not interpret staged or dry-run files as completed calibration, and do not treat feature-level null support as a standalone empirical discovery claim.
+Current implementation note: the evidence-pack command is operational for safe dry-run/planning and for conservative feature-level matched-null scoring through the deployable model package. This is a BABAPPA-native calibration backend, not a codeml/HyPhy likelihood-ratio null and not a full raw sequence simulation plus alignment replay. Do not interpret staged or dry-run files as completed calibration. Completed feature-level null support may be reported as BABAPPA-native evidence, with the backend and limitations stated explicitly.
 
 ### 7. Classical Reference Workflow Planning
 
@@ -639,6 +676,28 @@ babappa compare-empirical-reference-results \
   --reference-results real_empirical_pilot/reference_results/WRKY_candidate_02_close/reference_results.tsv \
   --outdir real_empirical_pilot/comparison/WRKY_candidate_02_close
 ```
+
+### 8. Publication Benchmark Pipeline
+
+The repository also includes a separate manuscript-only benchmarking harness:
+
+```text
+publication_benchmark/
+```
+
+This is not required for normal BABAPPA use. It exists to compare BABAPPA-native calibrated evidence with codeml and HyPhy on a curated publication panel.
+
+Typical user-run sequence:
+
+```bash
+bash publication_benchmark/scripts/01_run_babappa_native.sh publication_benchmark/panel_template.tsv publication_benchmark/results
+bash publication_benchmark/scripts/02_prepare_codeml_hyphy.sh publication_benchmark/panel_template.tsv publication_benchmark/results
+bash publication_benchmark/scripts/03_run_codeml_hyphy_user.sh publication_benchmark/results
+bash publication_benchmark/scripts/04_parse_and_compare.sh publication_benchmark/panel_template.tsv publication_benchmark/results
+bash publication_benchmark/scripts/05_make_publication_tables.sh publication_benchmark/panel_template.tsv publication_benchmark/results
+```
+
+Use this for manuscript benchmark tables only. It should not be confused with the normal end-user command, and it does not make BABAPPA dependent on codeml or HyPhy.
 
 ## Input Requirements
 
@@ -703,25 +762,29 @@ Alignment ensemble robustness matters only when the user wants to test sensitivi
 
 Common terms:
 
-- `diagnostic-positive`: BABAPPA scored support above its current diagnostic threshold. This is not a discovery claim.
+- `diagnostic-positive`: BABAPPA scored support above its current diagnostic threshold before native-null interpretation.
+- `babappa_native_calibrated_support`: BABAPPA is diagnostic-positive and the observed result is unusual under the BABAPPA-native empirical feature null. This is the primary standalone BABAPPA evidence class.
+- `strong_babappa_native_support`: stronger native-null support, typically when at least one p-like BABAPPA metric is at or below 0.01 with sufficient replicates.
+- `not_significant_under_babappa_native_null`: raw BABAPPA scores were not unusual under the BABAPPA-native null; do not present as BABAPPA-supported selection.
+- `underpowered_native_null`: too few null replicates were run for manuscript interpretation.
 - `diagnostic_only`: output may be useful for stress testing or triage but should not be interpreted as positive selection.
 - `in_domain`: empirical input appears compatible with the training envelope.
 - `borderline`: empirical input has warnings and should be interpreted cautiously.
 - `out_of_domain`: empirical input falls outside the current training envelope; abstain from biological interpretation.
-- `BABAPPA_only`: BABAPPA is positive but reference tools are negative or pending; treat as inconclusive until calibration and controls.
-- `concordant_positive`: BABAPPA and at least one reference workflow support compatible evidence, subject to calibration and controls.
+- `BABAPPA_only`: BABAPPA-native evidence is present but codeml/HyPhy comparators are negative or absent. This is reportable as BABAPPA evidence, not as cross-method consensus.
+- `concordant_positive`: BABAPPA-native evidence and at least one external reference workflow support compatible evidence.
 - `reference_only`: reference tool positive but BABAPPA not supportive; inspect alignment, OOD, and model limitations.
-- `calibration_pending`: matched-null empirical calibration has not completed; do not report calibrated empirical significance.
-- `feature_matched_calibration_complete`: feature-level matched null scoring has completed; interpret as diagnostic calibration support, not as a full raw sequence simulation/alignment replay.
+- `calibration_pending`: BABAPPA-native null calibration has not completed; do not report calibrated BABAPPA support.
+- `feature_matched_calibration_complete`: feature-level matched null scoring has completed. Report the backend explicitly; it is BABAPPA-native evidence, not a codeml/HyPhy likelihood-ratio p-value.
 
 Responsible reporting language:
 
 - use "diagnostic support" or "guarded empirical score";
+- for standalone BABAPPA claims, prefer "BABAPPA-native calibrated support" and report `babappa_native_result_class`;
 - report applicability/OOD status;
-- report aligner/method-policy status;
-- report codeml/HyPhy comparison;
-- state whether simulation-matched calibration is pending or complete;
-- avoid "BABAPPA discovered positive selection" unless future calibration/reference/control criteria are met.
+- report `--null-replicates`, native-null backend, and all p-like `p_babappa_*` values;
+- report codeml/HyPhy only when used as optional external comparators;
+- avoid saying BABAPPA is a codeml/HyPhy replacement or that BABAPPA p-like values are likelihood-ratio p-values.
 
 ## Reproducibility
 
@@ -737,7 +800,7 @@ Important retained artifacts:
 Existing Zenodo-ready archive:
 
 ```text
-BABAPPA_0.5.0-alpha_release_zenodo_20260530.tar.xz
+BABAPPA_v0.7.0_release_zenodo_YYYYMMDD.tar.xz
 ```
 
 Checksum:
@@ -941,4 +1004,4 @@ Commit and archive:
 
 ## Scientific Bottom Line
 
-BABAPPA is ready for guarded research-alpha software/methods communication and reproducible evaluation. It is not ready for unsupported empirical positive-selection discovery claims. The next empirical step is to add close-taxa negative controls and interpret BABAPPA outputs jointly with codeml/HyPhy references, biological controls, and any future full raw sequence matched-null calibration.
+BABAPPA is now oriented around the original end-user goal: supply an aligned codon MSA and treefile, choose foreground branches, and receive branch-site calls with de-gapped site coordinates and BABAPPA-native calibrated evidence. codeml and HyPhy remain valuable external comparators, but BABAPPA is not dependent on them to report its own standalone evidence class. The correct manuscript language is "BABAPPA-native calibrated branch-site support" with full QC, OOD, null-replicate, model-package, and biological-context reporting.

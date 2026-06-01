@@ -1,0 +1,3 @@
+panel_id	gene_family	cds_msa	tree_file	foreground	expected_category	notes
+WRKY_candidate_02_close	WRKY33_close	real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/inputs/WRKY_candidate_02_close.cds.fasta	real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/inputs/WRKY_candidate_02_close.treefile	Arabidopsis_thaliana	likely_positive	First in-domain WRKY diagnostic pilot; keep as benchmark development case.
+conserved_control_01	CONSERVE_CONTROL	PATH/TO/control.codon_msa.fasta	PATH/TO/control.treefile	foreground_taxon	likely_negative	User-filled conserved negative control.
