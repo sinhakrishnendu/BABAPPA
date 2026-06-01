@@ -2,13 +2,15 @@
 
 BABAPPA is the **Branch-site Alignment-Bias-Aware Probabilistic Positive-selection Analyzer**.
 
-Current source version: `v0.7.0`  
-Release archive label: `v0.7.0`  
+Current source version: `v0.8.0`  
+Release archive label: `v0.8.0`  
 Status: research-alpha, simulation-trained, standalone BABAPPA-native calibrated evidence workflow
 
 BABAPPA supports branch-site positive-selection investigation from a user-supplied codon MSA and treefile. The main user-facing command treats the supplied MSA as the authoritative alignment, scores requested foreground branches, and reports candidate branch-site episodic-selection support using a deployable simulation-trained model plus a BABAPPA-native empirical null calibration. Alignment ensembles and codeml/HyPhy comparison are optional diagnostic comparators, not dependencies for BABAPPA to issue its own calibrated evidence statement.
 
 BABAPPA is intended to become a standalone complementary software system beside codeml and HyPhy. It does **not** claim likelihood-model equivalence to those tools, and it does not use their null models internally. Instead, BABAPPA reports BABAPPA-native calibrated support classes from its own simulation-trained scoring model and empirical feature-null calibration. For publication, users should report the BABAPPA evidence class, native null replicate count, p-like values, OOD/applicability status, and biological context.
+
+Version `v0.8.0` makes the direct end-user workflow the central interface: supply an aligned codon MSA, supply a matching treefile, choose foreground branches, and receive branch-site predictions with aligned and de-gapped codon coordinates. It also makes CDS integrity stricter and clearer: terminal stop codons are accepted with warnings, while internal stops, frame errors, missing ATG starts, duplicate IDs, and tree/MSA label mismatches stop execution before scoring.
 
 ## Contents
 
@@ -119,17 +121,19 @@ Check the installed version:
 babappa --version
 ```
 
+Expected for this release:
+
+```text
+0.8.0
+```
+
 Run tests:
 
 ```bash
 python -m pytest -q
 ```
 
-Current expected test state from the handoff:
-
-```text
-351 passed, 58 skipped
-```
+The full test count may change as tests are added. A release candidate should pass the full local suite before publishing.
 
 ## External Dependencies
 
@@ -201,6 +205,40 @@ Inspect commands:
 babappa --help
 ```
 
+### The Simplest Use Case
+
+If you have exactly what BABAPPA expects, an aligned codon MSA and a matching treefile, run:
+
+```bash
+babappa predict-branch-sites \
+  --msa aligned_gene.cds.fasta \
+  --tree aligned_gene.treefile \
+  --foreground leaves \
+  --outdir aligned_gene_babappa \
+  --device auto \
+  --null-replicates 1000
+```
+
+This does the core job:
+
+1. validates that the MSA is a plausible CDS alignment;
+2. validates that tree tips and MSA IDs match;
+3. scores every tree leaf as a foreground branch;
+4. writes branch-site predictions;
+5. writes de-gapped branch coordinates for easier biological interpretation;
+6. runs BABAPPA-native null calibration when `--null-replicates` is greater than zero.
+
+For a quick check before a long run:
+
+```bash
+babappa predict-branch-sites \
+  --msa aligned_gene.cds.fasta \
+  --tree aligned_gene.treefile \
+  --foreground leaves \
+  --outdir aligned_gene_babappa_dryrun \
+  --dry-run
+```
+
 Launch the interactive predictor:
 
 ```bash
@@ -213,7 +251,7 @@ BABAPPA will ask for:
 2. treefile path
 3. foreground mode: `leaves`/`all`/`specific`
 
-`leaves` is the default and scores every tree tip. `specific` asks for comma-separated tree-tip labels. Interactive mode uses the default 100 BABAPPA-native null replicates. Use the explicit `predict-branch-sites` command with `--null-replicates` when you want quick uncalibrated scoring (`0`) or manuscript-strength calibration (`1000+`).
+`leaves` is the default and scores every tree tip. `all` is accepted as the same thing for direct tip-branch scoring. `specific` asks for comma-separated tree-tip labels. Interactive mode uses the default 100 BABAPPA-native null replicates. Use the explicit `predict-branch-sites` command with `--null-replicates` when you want quick uncalibrated scoring (`0`) or manuscript-strength calibration (`1000+`).
 
 ### Main End-User Command: MSA + Tree To Branch-Site Calls
 
@@ -223,7 +261,7 @@ If you already have a codon MSA and a tree whose tip labels match the MSA IDs, t
 babappa predict-branch-sites \
   --msa my_gene.codon_aligned.fasta \
   --tree my_gene.treefile \
-  --foreground all \
+  --foreground leaves \
   --model-package deployable_model_conservative_branch_site_100k_mps \
   --outdir my_gene_babappa_prediction \
   --device auto \
@@ -256,13 +294,40 @@ Main outputs:
 - `prediction_report.md`: human-readable report
 - `qc_report.md`: input/applicability summary
 
+### How To Read The Main Output Files
+
+`branch_site_predictions.tsv` is the file most users will inspect first. Important columns include:
+
+- `branch_id`: foreground branch/tip being scored;
+- `msa_codon_site`: one-based codon column in the supplied MSA;
+- `aligned_codon_site`: aligned codon coordinate, retained for compatibility with older workflows;
+- `branch_degapped_codon_site`: one-based codon coordinate in the foreground sequence after removing gapped codons;
+- `branch_codon`: foreground codon at that alignment position;
+- `score`: BABAPPA branch-site score;
+- `called_positive`: whether the row crossed the selected BABAPPA threshold.
+
+`branch_predictions.tsv` summarizes each scored foreground branch. Use it to see whether support is concentrated on one branch or spread across many branches.
+
+`gene_summary.tsv` summarizes the family. It records:
+
+- input size and tier model;
+- applicability/OOD status;
+- diagnostic result class;
+- maximum gene support;
+- number of called branch-site rows;
+- BABAPPA-native null replicate count;
+- p-like native-null values;
+- final BABAPPA-native result class.
+
+`prediction_report.md` is the readable report to start from when writing notes or a manuscript methods/results paragraph.
+
 Dry-run mode validates the MSA/tree and builds the feature table without model scoring:
 
 ```bash
 babappa predict-branch-sites \
   --msa my_gene.codon_aligned.fasta \
   --tree my_gene.treefile \
-  --foreground all \
+  --foreground leaves \
   --outdir my_gene_babappa_dryrun \
   --dry-run
 ```
@@ -275,7 +340,7 @@ For a paper, the recommended BABAPPA-native command is:
 babappa predict-branch-sites \
   --msa my_gene.codon_aligned.fasta \
   --tree my_gene.treefile \
-  --foreground all \
+  --foreground leaves \
   --outdir my_gene_babappa_prediction_paper \
   --device auto \
   --null-replicates 1000
@@ -711,11 +776,53 @@ Empirical inputs should include:
 - at least 6 taxa preferred;
 - at least 100 codons preferred.
 
+### CDS Integrity Gate
+
+BABAPPA checks that the supplied alignment is biologically plausible CDS before it scores anything. This gate is intentionally strict because a deep-learning score on a broken CDS alignment is not meaningful.
+
+By default, BABAPPA stops with an explicit failure if it finds:
+
+- sequence length not divisible by 3;
+- unequal MSA sequence lengths;
+- duplicate FASTA IDs;
+- tree tips that do not match FASTA IDs;
+- missing requested foreground label;
+- first non-gap codon is not `ATG`;
+- true internal stop codon;
+- too few taxa or too few codons.
+
+BABAPPA continues with explicit warnings for:
+
+- terminal stop codons at the natural CDS end;
+- ambiguous bases;
+- gaps;
+- high gap fraction;
+- high pairwise p-distance or saturation warnings.
+
+Terminal stop codons are common in real CDS exports. They are not treated as internal stops and do not block execution. The warning exists so the final report is transparent.
+
+If your MSA starts after the biological start codon because you intentionally aligned a CDS fragment, use the diagnostic override:
+
+```bash
+babappa predict-branch-sites \
+  --msa fragment.codon_aligned.fasta \
+  --tree fragment.treefile \
+  --foreground leaves \
+  --allow-missing-start-codon \
+  --outdir fragment_babappa
+```
+
+Use this only when you are sure the input is a valid in-frame CDS fragment. The report will still record the missing-start condition.
+
+Internal stop codons should normally be fixed at the data-curation stage. `--allow-stop-codons` is a diagnostic override only; terminal stops do not need it.
+
 Input checks include:
 
 - duplicate sequence IDs;
 - CDS length divisibility by 3;
+- first non-gap codon is `ATG` by default;
 - internal stop codons;
+- terminal stop codons, which are accepted as normal CDS endings but reported as warnings;
 - ambiguous base fraction;
 - gap fraction;
 - pairwise p-distance;
@@ -741,7 +848,7 @@ Do not provide simulator truth or oracle labels during empirical inference. Forb
 For the main command, BABAPPA does not run aligners. The supplied codon MSA is the authoritative input:
 
 ```bash
-babappa predict-branch-sites --msa aligned.codon.fasta --tree treefile --foreground all --outdir prediction
+babappa predict-branch-sites --msa aligned.codon.fasta --tree treefile --foreground leaves --outdir prediction
 ```
 
 Optional diagnostic alignment/sensitivity workflows can use:
@@ -800,13 +907,13 @@ Important retained artifacts:
 Existing Zenodo-ready archive:
 
 ```text
-BABAPPA_v0.7.0_release_zenodo_YYYYMMDD.tar.xz
+BABAPPA_v0.8.0_release_zenodo_YYYYMMDD.tar.xz
 ```
 
 Checksum:
 
 ```text
-cc259617f19d9634fd6e11906903910498ab78d3797a10df1bb24b7db014dc30
+pending for the v0.8.0 release archive
 ```
 
 Validate package:
@@ -1005,3 +1112,17 @@ Commit and archive:
 ## Scientific Bottom Line
 
 BABAPPA is now oriented around the original end-user goal: supply an aligned codon MSA and treefile, choose foreground branches, and receive branch-site calls with de-gapped site coordinates and BABAPPA-native calibrated evidence. codeml and HyPhy remain valuable external comparators, but BABAPPA is not dependent on them to report its own standalone evidence class. The correct manuscript language is "BABAPPA-native calibrated branch-site support" with full QC, OOD, null-replicate, model-package, and biological-context reporting.
+
+## Minimal End-User Checklist
+
+Before trusting a BABAPPA run, check:
+
+- your FASTA is an aligned codon MSA;
+- every sequence length is equal and divisible by 3;
+- sequence IDs match tree tip labels exactly;
+- every sequence is a plausible CDS or intentional in-frame CDS fragment;
+- terminal stop codons are acceptable and recorded as warnings;
+- no internal stop codons are present;
+- `gene_summary.tsv` reports `in_domain` or a defensible `borderline` status;
+- native-null calibration has enough replicates for the claim you want to make;
+- the final wording says BABAPPA-native support, not codeml/HyPhy p-value.

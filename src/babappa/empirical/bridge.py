@@ -30,6 +30,7 @@ from babappa.training.neural_env import resolve_torch_device, safe_import_torch
 TIERS = ["low", "moderate", "high", "extreme"]
 METHODS = ["identity", "mafft", "babappalign", "muscle"]
 STOP_CODONS = {"TAA", "TAG", "TGA"}
+START_CODONS = {"ATG"}
 FEATURE_OUTPUT_FIELDS = [
     "family_id",
     "method",
@@ -63,6 +64,7 @@ class EmpiricalInputValidationConfig:
     foreground: str
     outdir: str
     allow_stop_codons: bool = False
+    require_start_codon: bool = True
     min_taxa: int = 3
     min_codons: int = 3
 
@@ -148,6 +150,7 @@ class DirectBranchSitePredictionConfig:
     model_package: str = "deployable_model_conservative_branch_site_100k_mps"
     device: str = "auto"
     allow_stop_codons: bool = False
+    require_start_codon: bool = True
     min_taxa: int = 3
     min_codons: int = 3
     dry_run: bool = False
@@ -208,12 +211,21 @@ def validate_empirical_input(config: EmpiricalInputValidationConfig) -> Dict[str
         codons = _codons(sequence)
         if len(codons) < config.min_codons:
             failures.append(f"too_few_codons:{taxon}:{len(codons)}<{config.min_codons}")
-        stops = [
-            index for index, codon in enumerate(codons[:-1])
-            if codon.upper().replace("U", "T") in STOP_CODONS
-        ]
-        if stops and not config.allow_stop_codons:
-            failures.append(f"premature_stop_codon:{taxon}:{','.join(str(i) for i in stops)}")
+        start_index, start_codon = _first_non_gap_codon(codons)
+        if config.require_start_codon:
+            if start_codon is None:
+                failures.append(f"missing_start_codon:{taxon}:no_non_gap_codons")
+            elif start_codon not in START_CODONS:
+                failures.append(f"missing_start_codon:{taxon}:{start_index}:{start_codon}")
+        elif start_codon is not None and start_codon not in START_CODONS:
+            warnings.append(f"missing_start_codon_allowed:{taxon}:{start_index}:{start_codon}")
+        internal_stops, terminal_stops = _classify_stop_codons(codons)
+        if internal_stops and not config.allow_stop_codons:
+            failures.append(f"internal_stop_codon:{taxon}:{','.join(str(i) for i in internal_stops)}")
+        elif internal_stops:
+            warnings.append(f"internal_stop_codon_allowed:{taxon}:{','.join(str(i) for i in internal_stops)}")
+        if terminal_stops:
+            warnings.append(f"terminal_stop_codon:{taxon}:{','.join(str(i) for i in terminal_stops)}")
 
     n_taxa = len(records)
     n_codons = min((len(seq) // 3 for seq in records.values()), default=0)
@@ -246,6 +258,8 @@ def validate_empirical_input(config: EmpiricalInputValidationConfig) -> Dict[str
         "saturation_proxy": saturation_proxy,
         "foreground_taxon": config.foreground,
         "tree_shape_summary": _tree_shape_summary(tree_text, tree_tips),
+        "required_start_codons": sorted(START_CODONS) if config.require_start_codon else [],
+        "terminal_stop_codons_allowed": True,
         "failures": failures,
         "warnings": warnings,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -742,6 +756,7 @@ def predict_branch_sites(config: DirectBranchSitePredictionConfig) -> Dict[str, 
             foreground=validation_foreground,
             outdir=str(input_dir),
             allow_stop_codons=config.allow_stop_codons,
+            require_start_codon=config.require_start_codon,
             min_taxa=config.min_taxa,
             min_codons=config.min_codons,
         )
@@ -1109,6 +1124,34 @@ def _codons(sequence: str) -> List[str]:
     return [sequence[index:index + 3].upper().replace("U", "T") for index in range(0, len(sequence), 3) if len(sequence[index:index + 3]) == 3]
 
 
+def _classify_stop_codons(codons: Sequence[str]) -> Tuple[List[int], List[int]]:
+    internal: List[int] = []
+    terminal: List[int] = []
+    normalized = [codon.upper().replace("U", "T") for codon in codons]
+    for index, codon in enumerate(normalized):
+        if codon not in STOP_CODONS:
+            continue
+        later = normalized[index + 1:]
+        if not later or all(_gap_only_codon(item) for item in later):
+            terminal.append(index + 1)
+        else:
+            internal.append(index + 1)
+    return internal, terminal
+
+
+def _first_non_gap_codon(codons: Sequence[str]) -> Tuple[Optional[int], Optional[str]]:
+    for index, codon in enumerate(codons, start=1):
+        normalized = codon.upper().replace("U", "T")
+        if _gap_only_codon(normalized):
+            continue
+        return index, normalized
+    return None, None
+
+
+def _gap_only_codon(codon: str) -> bool:
+    return bool(codon) and all(base in {"-", "."} for base in codon)
+
+
 def _site_codon(sequence: str, site: int) -> str:
     start = site * 3
     codon = sequence[start:start + 3].upper().replace("U", "T")
@@ -1459,7 +1502,7 @@ def _validate_direct_msa(records: Dict[str, str], tree_tips: set[str], min_taxa:
 
 def _resolve_direct_foregrounds(foreground: str, records: Dict[str, str], tree_tips: set[str]) -> List[str]:
     requested = str(foreground or "all").strip()
-    if requested.lower() == "all":
+    if requested.lower() in {"all", "leaf", "leaves"}:
         return [record_id for record_id in records if record_id in tree_tips]
     foregrounds = [item.strip() for item in requested.split(",") if item.strip()]
     if not foregrounds:

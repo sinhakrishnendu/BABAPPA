@@ -26,6 +26,11 @@ ENV/
 .idea/
 .vscode/
 
+# Manuscript files are kept local and out of the Git repository
+Manuscript/
+manuscript/
+paper/
+
 # manuscript build products
 *.aux
 *.blg
@@ -143,5 +148,3 @@ BABAPPA_0.5.1-alpha_release_zenodo_SHA256SUMS.txt
 !tests/data/**
 !examples/**
 !docs/**
-!Manuscript/**
-!manuscript/**

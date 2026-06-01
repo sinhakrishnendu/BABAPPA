@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from babappa.datasets.index import read_tsv, write_tsv
 from babappa.empirical.pilot_panel import (
     EmpiricalReferenceComparisonConfig,
@@ -109,6 +111,24 @@ def test_codeml_planner_writes_model_templates_and_foreground_tree(tmp_path: Pat
     assert "model = 2" in (tmp_path / "codeml" / "codeml_modelA.ctl").read_text()
     assert "taxon1#1" in (tmp_path / "codeml" / "tree_foreground.nwk").read_text()
     assert "USER-RUN ONLY" in (tmp_path / "codeml" / "run_codeml_modelA.sh").read_text()
+    safety = json.loads((tmp_path / "codeml" / "codeml_alignment_safety.json").read_text())
+    assert safety["stop_codons_replaced_with_NNN"] >= 1
+    assert "TAA" not in (tmp_path / "codeml" / "alignment.phy").read_text()
+    assert "NNN" in (tmp_path / "codeml" / "alignment.phy").read_text()
+
+
+def test_codeml_planner_rejects_internal_stop_codons(tmp_path: Path) -> None:
+    cds = tmp_path / "bad_internal_stop.cds.fasta"
+    tree = tmp_path / "bad_internal_stop.treefile"
+    cds.write_text(
+        ">taxon1\nATGTAAGCTGCT\n>taxon2\nATGGCTGCTGCT\n",
+        encoding="utf-8",
+    )
+    tree.write_text("(taxon1:0.1,taxon2:0.1);\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="internal stop codons detected"):
+        prepare_codeml_reference(
+            CodemlReferencePrepConfig(str(cds), str(tree), "taxon1", str(tmp_path / "codeml"))
+        )
 
 
 def test_hyphy_planner_writes_absrel_meme_templates(tmp_path: Path) -> None:

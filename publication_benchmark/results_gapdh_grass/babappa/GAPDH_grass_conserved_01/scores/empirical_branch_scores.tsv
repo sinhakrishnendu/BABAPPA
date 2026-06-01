@@ -1,0 +1,2 @@
+family_id	method	branch_id	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	user_msa	LOC_Os02g07490_LOC_Os02g07490.1	419	0.0	0.0	0	False

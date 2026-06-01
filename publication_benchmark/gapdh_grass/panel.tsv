@@ -1,0 +1,3 @@
+panel_id	gene_family	cds_msa	tree_file	foreground	expected_category	notes
+GAPDH_grass_conserved_01	GAPDH_grass	real_empirical_pilot/input/msas/GAPDH_grass_conserved_01.codon.aln.fasta	real_empirical_pilot/input/trees/GAPDH_grass_conserved_01.treefile	LOC_Os02g07490_LOC_Os02g07490.1	likely_negative	Grass GAPDH conserved-control benchmark.
+DGAPDH_candidate_02_purified	DGAPDH_like	gapdh_grass/dgapdh.codon.aln.fasta	gapdh_grass/dgapdh.protein.aln.fasta.treefile	SMAR006602-PA	likely_negative	Purified dGAPDH control benchmark.

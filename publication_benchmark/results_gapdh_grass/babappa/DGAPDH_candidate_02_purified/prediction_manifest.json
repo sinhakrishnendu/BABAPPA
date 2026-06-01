@@ -1,0 +1,95 @@
+{
+  "applicability_reasons": [
+    "high_p_distance:0.324778"
+  ],
+  "applicability_status": "borderline",
+  "babappa_native_null": {
+    "babappa_native_null_version": "0.7.0",
+    "calibration_backend": "babappa_native_branch_shuffle_feature_null",
+    "calibration_scope": "BABAPPA-native empirical feature null; standalone BABAPPA calibration, complementary to codeml/HyPhy rather than dependent on them.",
+    "device": "mps",
+    "evidence_class": "not_significant_under_babappa_native_null",
+    "external_reference_required": false,
+    "interpretation_boundary": "This is a BABAPPA-native calibrated diagnostic result. It is designed to be usable as standalone BABAPPA evidence, while remaining scientifically complementary to likelihood-based codeml/HyPhy tests.",
+    "n_replicates_completed": 1000,
+    "n_replicates_requested": 1000,
+    "null_results_fabricated": false,
+    "null_tail_quantiles": {
+      "called_rows_q95": 0.0,
+      "called_rows_q99": 0.0,
+      "max_gene_support_q95": 0.0,
+      "max_gene_support_q99": 0.0,
+      "max_site_score_q95": 0.0,
+      "max_site_score_q99": 0.0
+    },
+    "observed": {
+      "called_branch_site_rows": 0,
+      "max_branch_support": 0.0,
+      "max_gene_support": 0.0,
+      "max_site_score": 0.0,
+      "q95_site_score": 0.0,
+      "q99_site_score": 0.0
+    },
+    "p_values": {
+      "p_babappa_called_rows": 1.0,
+      "p_babappa_max_branch_support": 1.0,
+      "p_babappa_max_gene_support": 1.0,
+      "p_babappa_max_site_score": 1.0
+    },
+    "seed": 20260530,
+    "status": "ok",
+    "tier_model": "extreme"
+  },
+  "direct_prediction_version": "0.7.0",
+  "foreground_requested": "SMAR006602-PA",
+  "foregrounds_scored": [
+    "SMAR006602-PA"
+  ],
+  "generated_at": "2026-06-01T11:13:26.996175+00:00",
+  "model_package": "deployable_model_conservative_branch_site_100k_mps",
+  "msa": "gapdh_grass/dgapdh.codon.aln.fasta",
+  "n_codons": 347,
+  "n_prediction_rows": 347,
+  "n_taxa": 7,
+  "no_simulator_truth_used": true,
+  "outputs": {
+    "babappa_native_null_summary": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/babappa_native_null/babappa_native_null_summary.json",
+    "branch_predictions": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/branch_predictions.tsv",
+    "branch_site_predictions": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/branch_site_predictions.tsv",
+    "gene_summary": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/gene_summary.tsv",
+    "prediction_report": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/prediction_report.md",
+    "qc_report": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/qc_report.md"
+  },
+  "realignment_performed": false,
+  "scoring": {
+    "device": "mps",
+    "diagnostic_only": false,
+    "n_rows": 347,
+    "outdir": "publication_benchmark/results_gapdh_grass/babappa/DGAPDH_candidate_02_purified/scores",
+    "status": "ok",
+    "tier_model": "extreme"
+  },
+  "status": "ok",
+  "summary": {
+    "applicability_status": "borderline",
+    "babappa_native_evidence_class": "not_significant_under_babappa_native_null",
+    "babappa_native_null_replicates": "1000",
+    "babappa_native_result_class": "babappa_native_negative",
+    "diagnostic_only": "False",
+    "family_id": "empirical",
+    "max_gene_support": "0.0",
+    "n_branch_site_rows": "347",
+    "n_branches_scored": "1",
+    "n_called_positive": "0",
+    "p_babappa_called_rows": "1.0",
+    "p_babappa_max_branch_support": "1.0",
+    "p_babappa_max_gene_support": "1.0",
+    "p_babappa_max_site_score": "1.0",
+    "result_class": "diagnostic_negative",
+    "tier_model": "extreme"
+  },
+  "tree": "gapdh_grass/dgapdh.protein.aln.fasta.treefile",
+  "truth_derived_inputs_excluded": true,
+  "user_msa_is_authoritative": true,
+  "validation_status": "warning"
+}

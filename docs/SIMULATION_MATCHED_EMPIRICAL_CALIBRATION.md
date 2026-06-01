@@ -1,6 +1,6 @@
 # Simulation-Matched Empirical Calibration
 
-BABAPPA empirical calibration is a research-alpha scaffold in `v0.7.0`. It plans and validates simulation-matched calibration workflows for empirical diagnostic results, but completed calibration is still required before any final empirical branch-site inference claim.
+BABAPPA empirical calibration is a research-alpha scaffold in `v0.8.0`. It plans and validates simulation-matched calibration workflows for empirical diagnostic results, but completed calibration is still required before any final empirical branch-site inference claim.
 
 ## Why Calibration Is Required
 

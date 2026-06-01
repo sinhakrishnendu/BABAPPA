@@ -38,6 +38,7 @@ VALID_EXPECTED_CATEGORIES = {
 }
 VALID_REFERENCE_STATUS = {"codeml_available", "hyphy_available", "both_available", "unavailable", "planned"}
 STOP_CODONS = {"TAA", "TAG", "TGA"}
+START_CODONS = {"ATG"}
 ALLOWED_DNA = set("ACGTURYSWKMBDHVN-.?")
 USER_RUN_ONLY = "USER-RUN ONLY - DO NOT EXECUTE IN CODEX"
 
@@ -349,6 +350,11 @@ def sanitize_cds_fasta(config: CdsFastaSanitizeConfig) -> Dict[str, Any]:
         if len(seq) % 3 != 0:
             failures.append(f"length_not_divisible_by_3:{clean_header}:{len(seq)}")
         codons = [seq[i:i + 3] for i in range(0, len(seq), 3)]
+        start_codon = next((codon for codon in codons if not _gap_only_codon(codon)), None)
+        if start_codon is None:
+            failures.append(f"missing_start_codon:{clean_header}:no_non_gap_codons")
+        elif start_codon not in START_CODONS:
+            failures.append(f"missing_start_codon:{clean_header}:{start_codon}")
         internal_stops = [str(i) for i, codon in enumerate(codons[:-1]) if codon in STOP_CODONS]
         if internal_stops:
             failures.append(f"internal_stop_codon:{clean_header}:{','.join(internal_stops)}")
@@ -921,6 +927,10 @@ def _render_discovery_md(payload: Dict[str, Any]) -> str:
         "- manifest modified: `False`",
         "",
     ])
+
+
+def _gap_only_codon(codon: str) -> bool:
+    return bool(codon) and all(base in {"-", "."} for base in codon)
 
 
 def shlex_quote(value: str) -> str:

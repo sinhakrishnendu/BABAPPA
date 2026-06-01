@@ -1,0 +1,11 @@
+{
+  "method": "user_msa",
+  "realignment_performed": false,
+  "reason": "user_supplied_authoritative_codon_msa",
+  "status": "ok",
+  "validation": {
+    "failures": [],
+    "n_taxa": 9,
+    "status": "ok"
+  }
+}

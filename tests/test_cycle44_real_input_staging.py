@@ -135,6 +135,14 @@ def test_sanitize_cds_fasta_detects_internal_stop_codons(tmp_path: Path) -> None
     assert any(item.startswith("internal_stop_codon") for item in result["failures"])
 
 
+def test_sanitize_cds_fasta_detects_missing_start_codon(tmp_path: Path) -> None:
+    bad = tmp_path / "bad_start.fasta"
+    bad.write_text(">taxon1\nGCTGCTTAA\n>taxon2\nATGGCTTAA\n>taxon3\nATGGCTTAA\n", encoding="utf-8")
+    result = sanitize_cds_fasta(CdsFastaSanitizeConfig(str(bad), str(tmp_path / "out.fasta"), str(tmp_path / "report.json"), "strict"))
+    assert result["status"] == "fail"
+    assert any(item.startswith("missing_start_codon") for item in result["failures"])
+
+
 def test_list_foreground_candidates_reports_matching_taxa(tmp_path: Path) -> None:
     cds = tmp_path / "fam.cds.fasta"
     tree = tmp_path / "fam.treefile"

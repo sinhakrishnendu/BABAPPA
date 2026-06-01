@@ -457,7 +457,10 @@ def prepare_codeml_reference(config: CodemlReferencePrepConfig) -> Dict[str, Any
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     records = _read_fasta(Path(config.cds_fasta))
-    _write_phylip(outdir / "alignment.phy", records)
+    safe_records, safety = _codeml_safe_codon_records(records)
+    _write_fasta(outdir / "alignment.codeml_safe.fasta", safe_records)
+    _write_phylip(outdir / "alignment.phy", safe_records)
+    _write_json(outdir / "codeml_alignment_safety.json", safety)
     tree_text = Path(config.tree).read_text(encoding="utf-8")
     (outdir / "tree_foreground.nwk").write_text(_mark_paml_foreground(tree_text, config.foreground), encoding="utf-8")
     _write_codeml_ctl(outdir / "codeml_modelA.ctl", "modelA")
@@ -465,8 +468,8 @@ def prepare_codeml_reference(config: CodemlReferencePrepConfig) -> Dict[str, Any
     _write_script(outdir / "run_codeml_modelA.sh", ["codeml codeml_modelA.ctl"])
     _write_script(outdir / "run_codeml_null.sh", ["codeml codeml_null.ctl"])
     _write_script(outdir / "parse_codeml_lrt.sh", ["babappa parse-codeml-reference --codeml-dir . --outdir ../codeml_parsed"])
-    (outdir / "README.md").write_text(_render_codeml_readme(config), encoding="utf-8")
-    return {"status": "prepared", "outdir": str(outdir), "executed": False, "modelA": str(outdir / "codeml_modelA.ctl"), "null": str(outdir / "codeml_null.ctl")}
+    (outdir / "README.md").write_text(_render_codeml_readme(config, safety), encoding="utf-8")
+    return {"status": "prepared", "outdir": str(outdir), "executed": False, "modelA": str(outdir / "codeml_modelA.ctl"), "null": str(outdir / "codeml_null.ctl"), "alignment_safety": safety}
 
 
 def prepare_hyphy_reference(config: HyphyReferencePrepConfig) -> Dict[str, Any]:
@@ -1947,22 +1950,66 @@ def _read_fasta(path: Path) -> Dict[str, str]:
 
 def _write_hyphy_safe_codon_fasta(source: Path, dest: Path) -> Dict[str, Any]:
     records = _read_fasta(source)
-    stops = {"TAA", "TAG", "TGA"}
-    replaced = 0
+    safe_records, safety = _codeml_safe_codon_records(records)
     lines: List[str] = []
+    for name, sequence in safe_records.items():
+        lines.extend([f">{name}", sequence])
+    dest.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return {"source": str(source), "dest": str(dest), "stop_codons_replaced_with_NNN": safety["stop_codons_replaced_with_NNN"], "internal_stop_codons": safety["internal_stop_codons"]}
+
+
+def _codeml_safe_codon_records(records: Dict[str, str]) -> Tuple[Dict[str, str], Dict[str, Any]]:
+    stops = {"TAA", "TAG", "TGA"}
+    internal_stops: List[Dict[str, Any]] = []
+    terminal_stops: List[Dict[str, Any]] = []
+    safe_records: Dict[str, str] = {}
     for name, sequence in records.items():
-        upper = sequence.upper()
-        codons = [upper[i:i + 3] for i in range(0, len(upper), 3)]
-        safe_codons = []
-        for codon in codons:
-            if len(codon) == 3 and codon.replace("-", "N") in stops:
-                safe_codons.append("NNN")
-                replaced += 1
+        upper = sequence.upper().replace("U", "T")
+        codons = [upper[index:index + 3] for index in range(0, len(upper), 3)]
+        safe_codons: List[str] = []
+        for index, codon in enumerate(codons):
+            if len(codon) == 3 and codon.replace("-", "N").replace("?", "N") in stops:
+                entry = {"sequence_id": name, "codon_index_1based": index + 1, "nucleotide_start_1based": index * 3 + 1, "original_codon": codon}
+                if _is_terminal_stop_codon(codons, index):
+                    safe_codons.append("NNN")
+                    terminal_stops.append(entry)
+                else:
+                    safe_codons.append(codon)
+                    internal_stops.append(entry)
             else:
                 safe_codons.append(codon)
-        lines.extend([f">{name}", "".join(safe_codons)])
-    dest.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return {"source": str(source), "dest": str(dest), "stop_codons_replaced_with_NNN": replaced}
+        safe_records[name] = "".join(safe_codons)
+    if internal_stops:
+        detail = ";".join(f"{item['sequence_id']}:{item['codon_index_1based']}:{item['original_codon']}" for item in internal_stops)
+        raise ValueError(f"internal stop codons detected; reference workflow input is illegitimate until curated: {detail}")
+    lengths = sorted({len(seq) for seq in safe_records.values()})
+    return safe_records, {
+        "codeml_safe_alignment": True,
+        "stop_codons_replaced_with_NNN": len(terminal_stops),
+        "terminal_stop_codons": terminal_stops,
+        "internal_stop_codons": internal_stops,
+        "n_sequences": len(safe_records),
+        "alignment_lengths": lengths,
+        "original_inputs_modified": False,
+        "reason": "PAML/codeml can prompt or fail on terminal stop codons; BABAPPA writes a derived reference-only alignment that replaces terminal stops with NNN. Internal stops are not sanitized and cause failure.",
+    }
+
+
+def _is_terminal_stop_codon(codons: Sequence[str], index: int) -> bool:
+    later = codons[index + 1:]
+    return not later or all(_gap_only_codon(codon) for codon in later)
+
+
+def _gap_only_codon(codon: str) -> bool:
+    return bool(codon) and all(base in {"-", "."} for base in codon)
+
+
+def _write_fasta(path: Path, records: Dict[str, str]) -> None:
+    lines: List[str] = []
+    for name, sequence in records.items():
+        lines.append(f">{name}")
+        lines.append(sequence)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def _parse_newick_tips(text: str) -> set[str]:
@@ -2015,8 +2062,20 @@ def _write_script(path: Path, commands: Sequence[str]) -> None:
     path.chmod(0o755)
 
 
-def _render_codeml_readme(config: CodemlReferencePrepConfig) -> str:
-    return f"# codeml reference for {Path(config.outdir).name}\n\nForeground branch is marked as `{config.foreground}#1` in `tree_foreground.nwk`.\nScripts are USER-RUN ONLY.\n"
+def _render_codeml_readme(config: CodemlReferencePrepConfig, safety: Optional[Dict[str, Any]] = None) -> str:
+    n_replaced = (safety or {}).get("stop_codons_replaced_with_NNN", 0)
+    return "\n".join([
+        f"# codeml reference for {Path(config.outdir).name}",
+        "",
+        f"Foreground branch is marked as `{config.foreground}#1` in `tree_foreground.nwk`.",
+        "",
+        "`alignment.phy` is a derived codeml-safe copy of the user MSA. BABAPPA does not modify the original input alignment.",
+        f"Stop codons replaced with `NNN` in this derived codeml copy: `{n_replaced}`.",
+        "See `codeml_alignment_safety.json` for exact replacement positions.",
+        "",
+        "Scripts are USER-RUN ONLY.",
+        "",
+    ])
 
 
 def _render_hyphy_readme(config: HyphyReferencePrepConfig) -> str:

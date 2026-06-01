@@ -1,0 +1,13 @@
+seqfile = alignment.phy
+treefile = tree_foreground.nwk
+outfile = modelA.out
+noisy = 9
+verbose = 1
+runmode = 0
+seqtype = 1
+CodonFreq = 2
+model = 2
+NSsites = 2
+fix_omega = 0
+omega = 1.5
+cleandata = 0

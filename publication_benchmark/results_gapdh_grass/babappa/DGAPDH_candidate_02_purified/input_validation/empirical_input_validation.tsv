@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+warning	SMAR006602-PA	7	347	0.0	0.03499382461918485	0.32477801702562087	extreme		high_pairwise_p_distance:0.324778

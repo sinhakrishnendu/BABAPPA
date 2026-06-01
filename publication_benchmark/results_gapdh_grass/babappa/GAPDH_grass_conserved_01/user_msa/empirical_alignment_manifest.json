@@ -1,0 +1,59 @@
+{
+  "cds_fasta": "real_empirical_pilot/input/msas/GAPDH_grass_conserved_01.codon.aln.fasta",
+  "created_files": {
+    "user_msa": {
+      "codon_fasta": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "qc": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/methods/user_msa/empirical.user_msa.qc.json",
+      "site_map": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/site_map/user_msa.site_map.tsv"
+    }
+  },
+  "empirical_alignment_version": "0.7.0",
+  "failures": [],
+  "foreground": "LOC_Os02g07490_LOC_Os02g07490.1",
+  "foregrounds_resolved": [
+    "LOC_Os02g07490_LOC_Os02g07490.1"
+  ],
+  "method_policy": {
+    "methods": [
+      {
+        "attempted_families": 1,
+        "failed_families": 0,
+        "failure_fraction": "0",
+        "method": "user_msa",
+        "reason": "user_msa_is_authoritative_input",
+        "recommendation": "usable",
+        "site_map_conflict_fraction": "0",
+        "site_map_frame_error_fraction": "0",
+        "site_map_unique_fraction": "1",
+        "successful_families": 1
+      }
+    ],
+    "quarantined_methods": [],
+    "usable_methods": [
+      "user_msa"
+    ]
+  },
+  "method_policy_dir": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/method_policy",
+  "method_rows": [
+    {
+      "aligned_fasta": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "method": "user_msa",
+      "reason": "user_supplied_authoritative_codon_msa",
+      "runtime_seconds": "0",
+      "site_map": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/site_map/user_msa.site_map.tsv",
+      "status": "ok"
+    }
+  ],
+  "methods_requested": [
+    "user_msa"
+  ],
+  "methods_run": [
+    "user_msa"
+  ],
+  "realignment_performed": false,
+  "site_map_dir": "publication_benchmark/results_gapdh_grass/babappa/GAPDH_grass_conserved_01/user_msa/site_map",
+  "status": "ok",
+  "tree": "real_empirical_pilot/input/trees/GAPDH_grass_conserved_01.treefile",
+  "user_msa_is_authoritative": true,
+  "warnings": []
+}

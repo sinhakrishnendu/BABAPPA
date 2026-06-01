@@ -1,0 +1,13 @@
+{
+  "executed": false,
+  "expected_outputs": [
+    "absrel.json",
+    "meme.json"
+  ],
+  "hyphy_safe_alignment": {
+    "dest": "publication_benchmark/results_gapdh_grass/reference_runs/DGAPDH_candidate_02_purified/hyphy/alignment.fasta",
+    "internal_stop_codons": [],
+    "source": "gapdh_grass/dgapdh.codon.aln.fasta",
+    "stop_codons_replaced_with_NNN": 6
+  }
+}

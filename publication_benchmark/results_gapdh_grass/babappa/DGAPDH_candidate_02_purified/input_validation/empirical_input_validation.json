@@ -1,0 +1,39 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "gapdh_grass/dgapdh.codon.aln.fasta",
+  "empirical_input_validation_version": "0.7.0",
+  "empirical_validation_status": "warning",
+  "failures": [],
+  "fasta_ids": [
+    "EDO40842",
+    "EJD75047.1",
+    "EJD75049.1",
+    "HMIM003864-PA",
+    "SMAR000460-PA",
+    "SMAR006602-PA",
+    "TriadP64020"
+  ],
+  "foreground": "SMAR006602-PA",
+  "foreground_taxon": "SMAR006602-PA",
+  "gap_fraction": 0.03499382461918485,
+  "generated_at": "2026-06-01T11:13:25.175694+00:00",
+  "mean_pairwise_p_distance": 0.32477801702562087,
+  "n_codons": 347,
+  "n_taxa": 7,
+  "saturation_proxy": "extreme",
+  "status": "warning",
+  "tree": "gapdh_grass/dgapdh.protein.aln.fasta.treefile",
+  "tree_shape_summary": "n_tips=7;n_internal_commas=6",
+  "tree_tips": [
+    "EDO40842",
+    "EJD75047.1",
+    "EJD75049.1",
+    "HMIM003864-PA",
+    "SMAR000460-PA",
+    "SMAR006602-PA",
+    "TriadP64020"
+  ],
+  "warnings": [
+    "high_pairwise_p_distance:0.324778"
+  ]
+}

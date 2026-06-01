@@ -122,6 +122,88 @@ def test_direct_prediction_foreground_list_limits_scored_branches(tmp_path: Path
     assert {row["foreground_taxon"] for row in features} == {"taxon1", "taxon3"}
 
 
+def test_direct_prediction_leaves_alias_scores_all_tips(tmp_path: Path) -> None:
+    fasta, tree = _tiny_inputs(tmp_path)
+    package = _minimal_package(tmp_path)
+    predict_branch_sites(
+        DirectBranchSitePredictionConfig(
+            msa=str(fasta),
+            tree=str(tree),
+            foreground="leaves",
+            model_package=str(package),
+            outdir=str(tmp_path / "prediction"),
+            dry_run=True,
+        )
+    )
+    features = read_tsv(tmp_path / "prediction" / "features" / "empirical_branch_site_features.tsv")
+    assert {row["branch_id"] for row in features} == {"taxon1", "taxon2", "taxon3"}
+
+
+def test_direct_prediction_warns_on_terminal_stop_codons(tmp_path: Path) -> None:
+    fasta, tree = _tiny_inputs(tmp_path)
+    package = _minimal_package(tmp_path)
+    predict_branch_sites(
+        DirectBranchSitePredictionConfig(
+            msa=str(fasta),
+            tree=str(tree),
+            foreground="taxon1",
+            model_package=str(package),
+            outdir=str(tmp_path / "prediction"),
+            dry_run=True,
+        )
+    )
+    validation = json.loads((tmp_path / "prediction" / "input_validation" / "empirical_input_validation.json").read_text())
+    assert validation["status"] == "warning"
+    assert any(item.startswith("terminal_stop_codon") for item in validation["warnings"])
+    assert not any("internal_stop_codon" in item for item in validation["failures"])
+
+
+def test_direct_prediction_rejects_internal_stop_codons(tmp_path: Path) -> None:
+    fasta = tmp_path / "bad_internal_stop.fasta"
+    tree = tmp_path / "bad_internal_stop.tree"
+    fasta.write_text(
+        ">taxon1\nATGTAAGCTGCT\n>taxon2\nATGGCTGCTGCT\n>taxon3\nATGGCTGCTGCC\n",
+        encoding="utf-8",
+    )
+    tree.write_text("(taxon1:0.1,(taxon2:0.1,taxon3:0.1):0.1);\n", encoding="utf-8")
+    package = _minimal_package(tmp_path)
+
+    with pytest.raises(ValueError, match="internal_stop_codon"):
+        predict_branch_sites(
+            DirectBranchSitePredictionConfig(
+                msa=str(fasta),
+                tree=str(tree),
+                foreground="taxon1",
+                model_package=str(package),
+                outdir=str(tmp_path / "prediction"),
+                dry_run=True,
+            )
+        )
+
+
+def test_direct_prediction_rejects_missing_start_codon(tmp_path: Path) -> None:
+    fasta = tmp_path / "bad_start.fasta"
+    tree = tmp_path / "bad_start.tree"
+    fasta.write_text(
+        ">taxon1\nGCTGCTGCTTAA\n>taxon2\nATGGCTGCTTAA\n>taxon3\nATGGCTGCCTAA\n",
+        encoding="utf-8",
+    )
+    tree.write_text("(taxon1:0.1,(taxon2:0.1,taxon3:0.1):0.1);\n", encoding="utf-8")
+    package = _minimal_package(tmp_path)
+
+    with pytest.raises(ValueError, match="missing_start_codon"):
+        predict_branch_sites(
+            DirectBranchSitePredictionConfig(
+                msa=str(fasta),
+                tree=str(tree),
+                foreground="taxon1",
+                model_package=str(package),
+                outdir=str(tmp_path / "prediction"),
+                dry_run=True,
+            )
+        )
+
+
 def test_direct_prediction_rejects_unequal_length_msa(tmp_path: Path) -> None:
     fasta = tmp_path / "bad.fasta"
     tree = tmp_path / "bad.tree"
