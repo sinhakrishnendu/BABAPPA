@@ -8,6 +8,7 @@ __pycache__/
 .eggs/
 build/
 dist/
+dist_pypi*/
 pip-wheel-metadata/
 .pytest_cache/
 .mypy_cache/
