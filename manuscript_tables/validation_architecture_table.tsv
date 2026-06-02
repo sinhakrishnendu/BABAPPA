@@ -1,6 +1,0 @@
-Validation layer	Purpose	Output	Current interpretation
-Explicit simulation benchmark	Known-truth performance under simulator-controlled branch-site labels	AUROC, AUPRC, FDR, calibration, leakage audits	Primary evidence that BABAPPA learns explicit branch-site signal in simulation; not empirical proof.
-Drosophila empirical benchmark	External comparator behavior on heterogeneous single-copy orthologs	Concordance/discordance with HyPhy aBSREL and OOD abstention	Supports conservative complementary behavior, especially zero native-supported calls in true OOD families.
-WRKY empirical pilot	In-domain biological case study	BABAPPA-only diagnostic signal pending calibration/reference interpretation	Useful case study, not a discovery claim.
-Negative controls	Empirical false-positive probe on conserved families	Expected negative or abstained/no-call outcomes	Needed before stronger empirical claims.
-Matched-null calibration	BABAPPA-native empirical test for a supplied family	Empirical p-like support under native null replicates	Required for manuscript-ready BABAPPA-native empirical support.

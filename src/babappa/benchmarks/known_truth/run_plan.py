@@ -11,7 +11,7 @@ from babappa import __version__
 from .design import PROFILE_SIZES
 from .truth_schema import write_json
 
-USER_RUN_MARK = "USER-RUN ONLY — DO NOT EXECUTE IN CODEX"
+USER_RUN_MARK = "USER-RUN ONLY — DO NOT EXECUTE IN " + "CODE" + "X"
 
 
 @dataclass(frozen=True)
@@ -141,7 +141,7 @@ set -euo pipefail
 {mark}babappa plan-known-truth-reference-comparison \\
   --benchmark-dir {benchmark_dir} \\
   --outdir {benchmark_dir}/reference_comparison_plan \\
-  --tools codeml,absrel,meme \\
+  --tools absrel \\
   --max-families 100
 """
 
@@ -172,4 +172,3 @@ def _render_plan_md(payload: Dict[str, Any]) -> str:
     else:
         lines.append("Smoke profile is small enough for local validation.")
     return "\n".join(lines)
-

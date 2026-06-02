@@ -1,8 +1,0 @@
-decision	value	reason
-ready_as_simulation_validated_framework	True	explicit simulation validation and/or known-truth simulation benchmark layer
-ready_as_conservative_complementary_method	True	simulation validation plus Drosophila comparator/OOD behavior
-not_ready_as_likelihood_replacement	True	BABAPPA is not designed to reproduce codeml/HyPhy likelihood decisions
-not_ready_as_replacement	True	low positive overlap with HyPhy aBSREL
-not_ready_for_empirical_discovery	True	empirical controls and final calibration remain incomplete
-needs_negative_controls	True	empirical false-positive behavior needs additional controls
-needs_matched_null_calibration	True	native empirical support needs broader matched-null validation

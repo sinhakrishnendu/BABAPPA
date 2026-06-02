@@ -1,9 +1,0 @@
-{
-  "alignments": "known_truth_benchmark_pilot/alignments",
-  "babappa_scores": "known_truth_benchmark_pilot/babappa_scores",
-  "calibration_evaluation": "known_truth_benchmark_pilot/calibration_evaluation",
-  "evaluation": "known_truth_benchmark_pilot/evaluation",
-  "report": "known_truth_benchmark_pilot/report",
-  "simulated_families": "known_truth_benchmark_pilot/simulated_families",
-  "truth_manifest": "known_truth_benchmark_pilot/simulated_families/benchmark_truth_manifest.tsv"
-}

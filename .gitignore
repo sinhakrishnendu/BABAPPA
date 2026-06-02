@@ -30,6 +30,17 @@ ENV/
 Manuscript/
 manuscript/
 paper/
+MANUSCRIPT_RESCUE_VERDICT.md
+*_RESCUE_VERDICT.md
+*_rescue_verdict.md
+
+# Local prompt transcripts, handoff notes, and scratch artifacts
+*[Cc][Oo][Dd][Ee][Xx]*
+*[Cc][Hh][Aa][Tt][Gg][Pp][Tt]*
+*handoff*
+*Handoff*
+pasted-text.txt
+pasted_text.txt
 
 # manuscript build products
 *.aux
@@ -127,6 +138,16 @@ real_empirical_pilot/acquisition_plans/*/hits/
 # Direct prediction and publication benchmark generated outputs
 babappa_prediction*/
 direct_predict_*/
+known_truth_benchmark*/
+known_truth_absrel_subset*/
+known_truth_absrel_comparison*/
+known_truth_absrel_results*/
+known_truth_babappa_absrel_comparison*/
+known_truth_benchmark_plan*/
+known_truth_benchmark_*_intake/
+known_truth_benchmark_*_decision/
+method_claim_readiness/
+manuscript_tables/
 publication_benchmark/results/
 publication_benchmark/results*/
 publication_benchmark/*results*/

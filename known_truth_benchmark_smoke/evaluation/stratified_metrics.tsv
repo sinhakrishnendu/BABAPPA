@@ -1,8 +1,0 @@
-stratum_type	stratum	n	auroc	auprc	precision	recall	specificity	fdr
-saturation_tier	extreme	1	nan	nan	0.0	0.0	1.0	0.0
-saturation_tier	high	2	nan	nan	0.0	0.0	1.0	0.0
-saturation_tier	low	1	nan	nan	0.0	0.0	1.0	0.0
-saturation_tier	moderate	8	1.0	1.0	1.0	1.0	1.0	0.0
-applicability	borderline	4	nan	nan	0.0	0.0	1.0	0.0
-applicability	in_domain	6	1.0	1.0	1.0	1.0	1.0	0.0
-applicability	out_of_domain	2	nan	nan	0.0	0.0	1.0	0.0

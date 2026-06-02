@@ -17,7 +17,7 @@ from .truth_schema import write_json
 class KnownTruthReferenceComparisonPlanConfig:
     benchmark_dir: str
     outdir: str
-    tools: str = "codeml,absrel,meme"
+    tools: str = "absrel"
     max_families: int = 100
 
 
@@ -34,9 +34,7 @@ def plan_known_truth_reference_comparison(config: KnownTruthReferenceComparisonP
     outdir.mkdir(parents=True, exist_ok=True)
     tools = [part.strip() for part in config.tools.split(",") if part.strip()]
     scripts = {
-        "run_codeml_known_truth.sh": _script("codeml", config),
         "run_hyphy_absrel_known_truth.sh": _script("hyphy_absrel", config),
-        "run_hyphy_meme_known_truth.sh": _script("hyphy_meme", config),
         "parse_reference_results.sh": _parse_script(config),
         "compare_babappa_reference_truth.sh": _compare_script(config),
     }
@@ -47,7 +45,7 @@ def plan_known_truth_reference_comparison(config: KnownTruthReferenceComparisonP
     schema_rows = [
         {
             "family_id": "",
-            "tool": "codeml|absrel|meme",
+            "tool": "absrel",
             "test_name": "",
             "p_value": "",
             "q_value": "",
@@ -89,9 +87,9 @@ def compare_methods_known_truth(config: KnownTruthMethodComparisonConfig) -> Dic
         {"method": "BABAPPA", "status": "evaluated", "reference_results": "not_required", "notes": "See BABAPPA evaluation summary."}
     ]
     if reference_present:
-        rows.append({"method": "codeml/HyPhy", "status": "ready_for_truth_comparison", "reference_results": config.reference_results, "notes": "External method calls should be evaluated against the same truth manifest."})
+        rows.append({"method": "aBSREL", "status": "ready_for_truth_comparison", "reference_results": config.reference_results, "notes": "External comparator calls should be evaluated against the same truth manifest."})
     else:
-        rows.append({"method": "codeml/HyPhy", "status": "pending", "reference_results": "", "notes": "Reference outputs absent."})
+        rows.append({"method": "aBSREL", "status": "pending", "reference_results": "", "notes": "aBSREL outputs absent."})
     write_json(outdir / "method_comparison.json", payload)
     write_tsv(outdir / "method_comparison.tsv", rows, ["method", "status", "reference_results", "notes"])
     (outdir / "method_comparison.md").write_text(_render_compare_md(payload), encoding="utf-8")
@@ -113,7 +111,7 @@ def _parse_script(config: KnownTruthReferenceComparisonPlanConfig) -> str:
     return f"""#!/usr/bin/env bash
 set -euo pipefail
 echo '{USER_RUN_MARK}'
-echo 'Parse codeml/HyPhy outputs into reference_results.tsv for {config.benchmark_dir}.'
+echo 'Parse aBSREL outputs into reference_results.tsv for {config.benchmark_dir}.'
 """
 
 
@@ -124,7 +122,7 @@ echo '{USER_RUN_MARK}'
 babappa compare-methods-known-truth \\
   --truth {config.benchmark_dir}/simulated_families/benchmark_truth_manifest.tsv \\
   --babappa-evaluation {config.benchmark_dir}/evaluation \\
-  --reference-results {config.benchmark_dir}/reference_results/reference_results.tsv \\
+  --reference-results {config.benchmark_dir}/absrel_results/absrel_results.tsv \\
   --outdir {config.benchmark_dir}/method_comparison
 """
 
@@ -135,7 +133,7 @@ def _render_reference_plan_md(config: KnownTruthReferenceComparisonPlanConfig, t
         f"{USER_RUN_MARK}\n\n"
         f"Benchmark: `{config.benchmark_dir}`\n\n"
         f"Tools: {', '.join(tools)}\n\n"
-        "codeml/HyPhy are compared against the same explicit truth labels. They are not treated as truth.\n"
+        "aBSREL is compared against the same explicit truth labels. It is not treated as truth.\n"
     )
 
 
@@ -145,4 +143,3 @@ def _render_compare_md(payload: Dict[str, Any]) -> str:
         f"Status: `{payload['status']}`\n\n"
         f"{payload['claim_boundary']}\n"
     )
-

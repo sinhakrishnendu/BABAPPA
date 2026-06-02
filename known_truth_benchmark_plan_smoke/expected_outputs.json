@@ -1,9 +1,0 @@
-{
-  "alignments": "known_truth_benchmark_smoke/alignments",
-  "babappa_scores": "known_truth_benchmark_smoke/babappa_scores",
-  "calibration_evaluation": "known_truth_benchmark_smoke/calibration_evaluation",
-  "evaluation": "known_truth_benchmark_smoke/evaluation",
-  "report": "known_truth_benchmark_smoke/report",
-  "simulated_families": "known_truth_benchmark_smoke/simulated_families",
-  "truth_manifest": "known_truth_benchmark_smoke/simulated_families/benchmark_truth_manifest.tsv"
-}

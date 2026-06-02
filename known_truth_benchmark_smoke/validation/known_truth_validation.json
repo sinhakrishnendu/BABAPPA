@@ -1,9 +1,0 @@
-{
-  "failures": [],
-  "known_truth_schema_version": "0.8.7",
-  "known_truth_validation_version": "0.8.7",
-  "n_families": 12,
-  "status": "ok",
-  "truth_boundary": "Known-truth files are for benchmark evaluation only. They must never be used as empirical inference inputs or as features for BABAPPA scoring.",
-  "warnings": []
-}

@@ -30,9 +30,18 @@ from babappa.benchmarks import (
     ExternalExtremeRecoveryPlanConfig,
     FastExternal10kPlanConfig,
     KnownTruthAlignmentConfig,
+    KnownTruthAbsrelParseConfig,
+    KnownTruthAbsrelPlanConfig,
+    KnownTruthAbsrelSubsetConfig,
+    KnownTruthBabappaAbsrelComparisonConfig,
+    KnownTruthBabappaAbsrelDecisionConfig,
     KnownTruthBenchmarkDesignConfig,
+    KnownTruthBenchmarkIntakeConfig,
     KnownTruthBenchmarkPlanConfig,
+    KnownTruthBenchmarkPlanValidationConfig,
     KnownTruthBenchmarkReportConfig,
+    KnownTruthBenchmarkRunConfig,
+    KnownTruthBenchmarkSuitePlanConfig,
     KnownTruthCalibrationEvaluationConfig,
     KnownTruthEvaluationConfig,
     KnownTruthMethodComparisonConfig,
@@ -44,24 +53,33 @@ from babappa.benchmarks import (
     SaturationPanelConfig,
     StabilityBenchmarkConfig,
     build_saturation_panel,
+    compare_known_truth_babappa_absrel,
     compare_methods_known_truth,
     design_known_truth_benchmark,
     evaluate_known_truth_benchmark,
     evaluate_known_truth_calibration,
+    intake_known_truth_benchmark_results,
+    make_known_truth_babappa_absrel_decision_report,
     make_known_truth_benchmark_report,
     plan_complete_external_tier_reports,
     plan_external_extreme_recovery,
     plan_external_aligner_validation,
     plan_fast_external_10k,
     plan_large_run,
+    parse_known_truth_absrel_results,
+    plan_known_truth_absrel_comparison,
     plan_known_truth_benchmark,
+    plan_known_truth_benchmark_suite,
     plan_known_truth_reference_comparison,
     run_known_truth_alignments,
+    run_known_truth_benchmark,
     run_stability_benchmark,
     score_known_truth_benchmark,
+    select_known_truth_absrel_subset,
     simulate_known_truth_benchmark,
     validate_large_run_plan_dir,
     validate_known_truth_benchmark,
+    validate_known_truth_benchmark_plan,
     validate_saturation_panel_dir,
     validate_stability_benchmark_dir,
 )
@@ -632,6 +650,7 @@ AVAILABLE_COMMANDS = [
     "audit-babappa-only-result",
     "plan-close-taxa-control-family",
     "design-known-truth-benchmark",
+    "run-known-truth-benchmark",
     "plan-known-truth-benchmark",
     "simulate-known-truth-benchmark",
     "run-known-truth-alignments",
@@ -642,6 +661,14 @@ AVAILABLE_COMMANDS = [
     "compare-methods-known-truth",
     "make-known-truth-benchmark-report",
     "validate-known-truth-benchmark",
+    "select-known-truth-absrel-subset",
+    "plan-known-truth-absrel-comparison",
+    "parse-known-truth-absrel-results",
+    "compare-known-truth-babappa-absrel",
+    "plan-known-truth-benchmark-suite",
+    "validate-known-truth-benchmark-plan",
+    "intake-known-truth-benchmark-results",
+    "make-known-truth-babappa-absrel-decision-report",
     "compare-models",
     "validate-model-comparison",
     "compare-ablations",
@@ -8197,6 +8224,33 @@ def design_known_truth_benchmark_command(
     _print_summary_table("BABAPPA Known-Truth Benchmark Design", summary, ["status", "benchmark_name", "n_regimes", "profiles", "outdir"])
 
 
+@app.command("run-known-truth-benchmark")
+def run_known_truth_benchmark_command(
+    profile: str = typer.Option(..., "--profile"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    deployable_model_package: Path = typer.Option("deployable_model_conservative_branch_site_100k_mps", "--deployable-model-package"),
+    methods: str = typer.Option("identity,mafft,babappalign,muscle", "--methods"),
+    device: str = typer.Option("auto", "--device"),
+    seed: int = typer.Option(42, "--seed"),
+) -> None:
+    """Run the smoke known-truth benchmark or create a user-run plan for larger profiles."""
+    try:
+        summary = run_known_truth_benchmark(
+            KnownTruthBenchmarkRunConfig(
+                profile=profile,
+                outdir=str(outdir),
+                deployable_model_package=str(deployable_model_package),
+                methods=methods,
+                device=device,
+                seed=seed,
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not run known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Benchmark", summary, ["status", "profile", "n_families", "report", "plan_dir", "outdir"])
+
+
 @app.command("plan-known-truth-benchmark")
 def plan_known_truth_benchmark_command(
     profile: str = typer.Option(..., "--profile"),
@@ -8326,10 +8380,10 @@ def evaluate_known_truth_calibration_command(
 def plan_known_truth_reference_comparison_command(
     benchmark_dir: Path = typer.Option(..., "--benchmark-dir"),
     outdir: Path = typer.Option(..., "--outdir"),
-    tools: str = typer.Option("codeml,absrel,meme", "--tools"),
+    tools: str = typer.Option("absrel", "--tools"),
     max_families: int = typer.Option(100, "--max-families"),
 ) -> None:
-    """Plan codeml/HyPhy comparisons against the same simulation truth."""
+    """Plan aBSREL comparison against the same simulation truth."""
     try:
         summary = plan_known_truth_reference_comparison(
             KnownTruthReferenceComparisonPlanConfig(benchmark_dir=str(benchmark_dir), outdir=str(outdir), tools=tools, max_families=max_families)
@@ -8393,6 +8447,173 @@ def validate_known_truth_benchmark_command(
     _print_summary_table("BABAPPA Known-Truth Validation", summary, ["status", "n_families", "n_failures", "outdir"])
     if summary.get("status") == "fail":
         raise typer.Exit(code=1)
+
+
+@app.command("select-known-truth-absrel-subset")
+def select_known_truth_absrel_subset_command(
+    benchmark_dir: Path = typer.Option(..., "--benchmark-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    max_families: int = typer.Option(12, "--max-families"),
+    stratify_by: str = typer.Option("regime,truth_class,ood_status,saturation_tier", "--stratify-by"),
+) -> None:
+    """Select a stratified aBSREL comparator subset from a known-truth benchmark."""
+    try:
+        summary = select_known_truth_absrel_subset(
+            KnownTruthAbsrelSubsetConfig(
+                benchmark_dir=str(benchmark_dir),
+                outdir=str(outdir),
+                max_families=max_families,
+                stratify_by=stratify_by,
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not select aBSREL subset: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth aBSREL Subset", summary, ["status", "n_selected", "subset", "outdir"])
+
+
+@app.command("plan-known-truth-absrel-comparison")
+def plan_known_truth_absrel_comparison_command(
+    subset: Path = typer.Option(..., "--subset"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    alignment_source: str = typer.Option("mafft_codon", "--alignment-source"),
+    user_run_only: str = typer.Option("true", "--user-run-only"),
+) -> None:
+    """Plan HyPhy aBSREL comparison against known simulator truth."""
+    try:
+        summary = plan_known_truth_absrel_comparison(
+            KnownTruthAbsrelPlanConfig(
+                subset=str(subset),
+                outdir=str(outdir),
+                alignment_source=alignment_source,
+                user_run_only=str(user_run_only).lower() in {"1", "true", "yes", "y"},
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not plan aBSREL comparator: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth aBSREL Plan", summary, ["status", "scripts", "codeml_included", "meme_included", "outdir"])
+
+
+@app.command("parse-known-truth-absrel-results")
+def parse_known_truth_absrel_results_command(
+    absrel_run_dir: Path = typer.Option(..., "--absrel-run-dir"),
+    truth_dir: Path = typer.Option(..., "--truth-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Parse known-truth aBSREL outputs, preserving pending/failed family statuses."""
+    try:
+        summary = parse_known_truth_absrel_results(
+            KnownTruthAbsrelParseConfig(absrel_run_dir=str(absrel_run_dir), truth_dir=str(truth_dir), outdir=str(outdir))
+        )
+    except OSError as exc:
+        console.print(f"Error: could not parse aBSREL results: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth aBSREL Parse", summary, ["status", "rows", "pending", "outdir"])
+
+
+@app.command("compare-known-truth-babappa-absrel")
+def compare_known_truth_babappa_absrel_command(
+    babappa_report: Path = typer.Option(..., "--babappa-report"),
+    absrel_results: Path = typer.Option(..., "--absrel-results"),
+    truth_dir: Path = typer.Option(..., "--truth-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Compare BABAPPA and aBSREL against the same known simulator truth."""
+    try:
+        summary = compare_known_truth_babappa_absrel(
+            KnownTruthBabappaAbsrelComparisonConfig(
+                babappa_report=str(babappa_report),
+                absrel_results=str(absrel_results),
+                truth_dir=str(truth_dir),
+                outdir=str(outdir),
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not compare BABAPPA/aBSREL: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth BABAPPA/aBSREL Comparison", summary, ["status", "methods", "simulated_truth_ground_truth", "outdir"])
+
+
+@app.command("plan-known-truth-benchmark-suite")
+def plan_known_truth_benchmark_suite_command(
+    profile: str = typer.Option(..., "--profile"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    deployable_model_package: Path = typer.Option("deployable_model_conservative_branch_site_100k_mps", "--deployable-model-package"),
+    include_absrel: str = typer.Option("true", "--include-absrel"),
+    absrel_max_families: int = typer.Option(300, "--absrel-max-families"),
+    device: str = typer.Option("auto", "--device"),
+    conda_env: str = typer.Option("molevo", "--conda-env"),
+) -> None:
+    """Generate a full user-run known-truth BABAPPA plus aBSREL benchmark suite."""
+    try:
+        summary = plan_known_truth_benchmark_suite(
+            KnownTruthBenchmarkSuitePlanConfig(
+                profile=profile,
+                outdir=str(outdir),
+                deployable_model_package=str(deployable_model_package),
+                include_absrel=str(include_absrel).lower() in {"1", "true", "yes", "y"},
+                absrel_max_families=absrel_max_families,
+                device=device,
+                conda_env=conda_env,
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not plan known-truth benchmark suite: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Benchmark Suite Plan", summary, ["status", "profile", "absrel_included", "codeml_included", "meme_included", "outdir"])
+
+
+@app.command("validate-known-truth-benchmark-plan")
+def validate_known_truth_benchmark_plan_command(
+    plan_dir: Path = typer.Option(..., "--plan-dir"),
+) -> None:
+    """Validate known-truth benchmark suite scripts before a long user-run job."""
+    try:
+        summary = validate_known_truth_benchmark_plan(KnownTruthBenchmarkPlanValidationConfig(plan_dir=str(plan_dir)))
+    except OSError as exc:
+        console.print(f"Error: could not validate benchmark plan: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Plan Validation", summary, ["status", "n_failures", "outdir"])
+    if summary.get("status") == "fail":
+        raise typer.Exit(code=1)
+
+
+@app.command("intake-known-truth-benchmark-results")
+def intake_known_truth_benchmark_results_command(
+    benchmark_dir: Path = typer.Option(..., "--benchmark-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Summarize which expected known-truth benchmark outputs are present."""
+    try:
+        summary = intake_known_truth_benchmark_results(KnownTruthBenchmarkIntakeConfig(benchmark_dir=str(benchmark_dir), outdir=str(outdir)))
+    except OSError as exc:
+        console.print(f"Error: could not intake benchmark results: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Benchmark Intake", summary, ["status", "outdir"])
+
+
+@app.command("make-known-truth-babappa-absrel-decision-report")
+def make_known_truth_babappa_absrel_decision_report_command(
+    babappa_report: Path = typer.Option(..., "--babappa-report"),
+    absrel_results: Path = typer.Option(..., "--absrel-results"),
+    comparison_dir: Path = typer.Option(..., "--comparison-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Make a pilot/paper scaling decision from BABAPPA and aBSREL known-truth outputs."""
+    try:
+        summary = make_known_truth_babappa_absrel_decision_report(
+            KnownTruthBabappaAbsrelDecisionConfig(
+                babappa_report=str(babappa_report),
+                absrel_results=str(absrel_results),
+                comparison_dir=str(comparison_dir),
+                outdir=str(outdir),
+            )
+        )
+    except OSError as exc:
+        console.print(f"Error: could not make benchmark decision report: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Decision Report", summary, ["status", "decision", "outdir"])
 
 
 @app.command("compare-site-calibrations")

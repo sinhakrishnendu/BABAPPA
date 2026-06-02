@@ -792,6 +792,40 @@ babappa plan-known-truth-benchmark \
 
 The known-truth benchmark reports AUROC, AUPRC, FDR, power, calibration, OOD abstention, and false-call suppression against simulation truth. Truth files are benchmark labels only and must never be used as empirical inference inputs.
 
+Select and plan the aBSREL comparator subset against the same truth:
+
+```bash
+babappa select-known-truth-absrel-subset \
+  --benchmark-dir known_truth_benchmark_smoke \
+  --outdir known_truth_absrel_subset_smoke \
+  --max-families 12 \
+  --stratify-by regime,truth_class,ood_status,saturation_tier
+
+babappa plan-known-truth-absrel-comparison \
+  --subset known_truth_absrel_subset_smoke/absrel_subset.tsv \
+  --outdir known_truth_absrel_comparison_plan_smoke \
+  --alignment-source mafft_codon \
+  --user-run-only true
+```
+
+The aBSREL layer is a comparator against simulated truth. It is not ground truth, and BABAPPA is not presented as a likelihood-method replacement.
+
+For long profiles, generate the suite plan first:
+
+```bash
+babappa plan-known-truth-benchmark-suite \
+  --profile pilot \
+  --outdir known_truth_benchmark_plan_pilot \
+  --deployable-model-package deployable_model_conservative_branch_site_100k_mps \
+  --include-absrel true \
+  --absrel-max-families 300 \
+  --device auto \
+  --conda-env molevo
+
+babappa validate-known-truth-benchmark-plan \
+  --plan-dir known_truth_benchmark_plan_pilot
+```
+
 ### 9. Publication Benchmark Pipeline
 
 The repository also includes a separate manuscript-only benchmarking harness:
