@@ -1,0 +1,20 @@
+{
+  "methods": [
+    {
+      "attempted_families": 1,
+      "failed_families": 0,
+      "failure_fraction": "0",
+      "method": "user_msa",
+      "reason": "user_msa_is_authoritative_input",
+      "recommendation": "usable",
+      "site_map_conflict_fraction": "0",
+      "site_map_frame_error_fraction": "0",
+      "site_map_unique_fraction": "1",
+      "successful_families": 1
+    }
+  ],
+  "quarantined_methods": [],
+  "usable_methods": [
+    "user_msa"
+  ]
+}

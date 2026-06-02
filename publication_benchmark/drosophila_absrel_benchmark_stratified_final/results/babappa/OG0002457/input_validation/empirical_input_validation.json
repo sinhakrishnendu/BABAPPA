@@ -1,0 +1,51 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002457.codon.aln.fasta",
+  "empirical_input_validation_version": "0.8.0",
+  "empirical_validation_status": "pass",
+  "failures": [],
+  "fasta_ids": [
+    "Drosophila_ananassae_Drosophila_ananassae__LOC6493807__XP_014764542.1",
+    "Drosophila_biarmipes_Drosophila_biarmipes__LOC108030823__XP_016959429.1",
+    "Drosophila_mauritiana_Drosophila_mauritiana__LOC117140134__XP_033158791.1",
+    "Drosophila_melanogaster_Drosophila_melanogaster__Act79B__NP_524210.1",
+    "Drosophila_pseudoobscura_Drosophila_pseudoobscura__Act79B__XP_001352883.1",
+    "Drosophila_sechellia_Drosophila_sechellia__Act79B__XP_002040890.1",
+    "Drosophila_simulans_Drosophila_simulans__LOC6739089__XP_016032930.1",
+    "Drosophila_subobscura_Drosophila_subobscura__LOC117893424__XP_034655932.1",
+    "Drosophila_suzukii_Drosophila_suzukii__Act79B__XP_016927008.1",
+    "Drosophila_virilis_Drosophila_virilis__Act79B__XP_002048319.1",
+    "Drosophila_willistoni_Drosophila_willistoni__LOC6645495__XP_002068049.1",
+    "Drosophila_yakuba_Drosophila_yakuba__LOC6535129__XP_039230803.1"
+  ],
+  "foreground": "Drosophila_ananassae_Drosophila_ananassae__LOC6493807__XP_014764542.1",
+  "foreground_taxon": "Drosophila_ananassae_Drosophila_ananassae__LOC6493807__XP_014764542.1",
+  "gap_fraction": 0.1473922902494331,
+  "generated_at": "2026-06-02T04:38:36.669623+00:00",
+  "mean_pairwise_p_distance": 0.08658392434988181,
+  "n_codons": 441,
+  "n_taxa": 12,
+  "required_start_codons": [
+    "ATG"
+  ],
+  "saturation_proxy": "moderate",
+  "status": "pass",
+  "terminal_stop_codons_allowed": true,
+  "tree": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002457.treefile",
+  "tree_shape_summary": "n_tips=12;n_internal_commas=11",
+  "tree_tips": [
+    "Drosophila_ananassae_Drosophila_ananassae__LOC6493807__XP_014764542.1",
+    "Drosophila_biarmipes_Drosophila_biarmipes__LOC108030823__XP_016959429.1",
+    "Drosophila_mauritiana_Drosophila_mauritiana__LOC117140134__XP_033158791.1",
+    "Drosophila_melanogaster_Drosophila_melanogaster__Act79B__NP_524210.1",
+    "Drosophila_pseudoobscura_Drosophila_pseudoobscura__Act79B__XP_001352883.1",
+    "Drosophila_sechellia_Drosophila_sechellia__Act79B__XP_002040890.1",
+    "Drosophila_simulans_Drosophila_simulans__LOC6739089__XP_016032930.1",
+    "Drosophila_subobscura_Drosophila_subobscura__LOC117893424__XP_034655932.1",
+    "Drosophila_suzukii_Drosophila_suzukii__Act79B__XP_016927008.1",
+    "Drosophila_virilis_Drosophila_virilis__Act79B__XP_002048319.1",
+    "Drosophila_willistoni_Drosophila_willistoni__LOC6645495__XP_002068049.1",
+    "Drosophila_yakuba_Drosophila_yakuba__LOC6535129__XP_039230803.1"
+  ],
+  "warnings": []
+}

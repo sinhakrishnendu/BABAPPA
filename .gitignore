@@ -129,6 +129,13 @@ babappa_prediction*/
 direct_predict_*/
 publication_benchmark/results/
 
+# Drosophila/OrthoFinder benchmark generated heavy artifacts
+publication_benchmark/drosophila_orthofinder/curated_cds/
+publication_benchmark/drosophila_orthofinder/metadata/
+publication_benchmark/drosophila_orthofinder/orthofinder_input/
+publication_benchmark/drosophila_orthofinder/orthofinder_run/
+publication_benchmark/drosophila_orthofinder/orthofinder_run*/
+
 # Keep templates/docs but ignore generated biological data
 real_empirical_pilot/input/cds/*.fasta
 real_empirical_pilot/input/trees/*.treefile
