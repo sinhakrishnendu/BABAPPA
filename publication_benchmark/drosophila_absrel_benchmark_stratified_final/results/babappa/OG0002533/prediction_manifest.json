@@ -1,0 +1,106 @@
+{
+  "applicability_reasons": [
+    "all_rule_based_checks_passed"
+  ],
+  "applicability_status": "in_domain",
+  "babappa_native_null": {
+    "babappa_native_null_version": "0.8.0",
+    "calibration_backend": "babappa_native_branch_shuffle_feature_null",
+    "calibration_scope": "BABAPPA-native empirical feature null; standalone BABAPPA calibration, complementary to codeml/HyPhy rather than dependent on them.",
+    "device": "mps",
+    "evidence_class": "strong_babappa_native_support",
+    "external_reference_required": false,
+    "interpretation_boundary": "This is a BABAPPA-native calibrated diagnostic result. It is designed to be usable as standalone BABAPPA evidence, while remaining scientifically complementary to likelihood-based codeml/HyPhy tests.",
+    "n_replicates_completed": 1000,
+    "n_replicates_requested": 1000,
+    "null_results_fabricated": false,
+    "null_tail_quantiles": {
+      "called_rows_q95": 5245.0,
+      "called_rows_q99": 5254.0,
+      "max_gene_support_q95": 0.9961451292037964,
+      "max_gene_support_q99": 0.9998705387115479,
+      "max_site_score_q95": 0.9961451292037964,
+      "max_site_score_q99": 0.9998705387115479
+    },
+    "observed": {
+      "called_branch_site_rows": 5369,
+      "max_branch_support": 0.9928383231163025,
+      "max_gene_support": 0.9928383231163025,
+      "max_site_score": 0.9928383231163025,
+      "q95_site_score": 0.05815916508436203,
+      "q99_site_score": 0.07062141597270966
+    },
+    "p_values": {
+      "p_babappa_called_rows": 0.000999000999000999,
+      "p_babappa_max_branch_support": 0.16583416583416583,
+      "p_babappa_max_gene_support": 0.16583416583416583,
+      "p_babappa_max_site_score": 0.16583416583416583
+    },
+    "seed": 20260530,
+    "status": "ok",
+    "tier_model": "moderate"
+  },
+  "direct_prediction_version": "0.8.0",
+  "foreground_requested": "leaves",
+  "foregrounds_scored": [
+    "Drosophila_ananassae_Drosophila_ananassae__LOC6495454__XP_001958879.1",
+    "Drosophila_biarmipes_Drosophila_biarmipes__LOC108026696__XP_016953273.1",
+    "Drosophila_mauritiana_Drosophila_mauritiana__LOC117138525__XP_033156554.1",
+    "Drosophila_melanogaster_Drosophila_melanogaster__betaTub56D__NP_725896.1",
+    "Drosophila_pseudoobscura_Drosophila_pseudoobscura__betaTub56D__XP_002136626.1",
+    "Drosophila_sechellia_Drosophila_sechellia__betaTub56D__XP_002034592.1",
+    "Drosophila_simulans_Drosophila_simulans__LOC6735263__XP_002082233.1",
+    "Drosophila_subobscura_Drosophila_subobscura__LOC117891833__XP_034653474.1",
+    "Drosophila_suzukii_Drosophila_suzukii__betaTub56D__XP_016929834.1",
+    "Drosophila_virilis_Drosophila_virilis__betaTub56D__XP_002049944.1",
+    "Drosophila_willistoni_Drosophila_willistoni__LOC6640838__XP_002063813.1",
+    "Drosophila_yakuba_Drosophila_yakuba__LOC6530939__XP_002091781.1"
+  ],
+  "generated_at": "2026-06-02T04:44:25.689096+00:00",
+  "model_package": "deployable_model_conservative_branch_site_100k_mps",
+  "msa": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002533.codon.aln.fasta",
+  "n_codons": 472,
+  "n_prediction_rows": 5664,
+  "n_taxa": 12,
+  "no_simulator_truth_used": true,
+  "outputs": {
+    "babappa_native_null_summary": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/babappa_native_null/babappa_native_null_summary.json",
+    "branch_predictions": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/branch_predictions.tsv",
+    "branch_site_predictions": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/branch_site_predictions.tsv",
+    "gene_summary": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/gene_summary.tsv",
+    "prediction_report": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/prediction_report.md",
+    "qc_report": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/qc_report.md"
+  },
+  "realignment_performed": false,
+  "scoring": {
+    "device": "mps",
+    "diagnostic_only": false,
+    "n_rows": 5664,
+    "outdir": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002533/scores",
+    "status": "ok",
+    "tier_model": "moderate"
+  },
+  "status": "ok",
+  "summary": {
+    "applicability_status": "in_domain",
+    "babappa_native_evidence_class": "strong_babappa_native_support",
+    "babappa_native_null_replicates": "1000",
+    "babappa_native_result_class": "babappa_native_calibrated_support",
+    "diagnostic_only": "False",
+    "family_id": "empirical",
+    "max_gene_support": "0.9928383231163025",
+    "n_branch_site_rows": "5664",
+    "n_branches_scored": "12",
+    "n_called_positive": "5369",
+    "p_babappa_called_rows": "0.000999000999000999",
+    "p_babappa_max_branch_support": "0.16583416583416583",
+    "p_babappa_max_gene_support": "0.16583416583416583",
+    "p_babappa_max_site_score": "0.16583416583416583",
+    "result_class": "diagnostic_positive",
+    "tier_model": "moderate"
+  },
+  "tree": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002533.treefile",
+  "truth_derived_inputs_excluded": true,
+  "user_msa_is_authoritative": true,
+  "validation_status": "pass"
+}

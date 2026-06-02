@@ -1,0 +1,12 @@
+# BABAPPA Direct MSA QC
+
+- status: `ok`
+- n_taxa: `12`
+- n_codons: `472`
+- foreground requested: `leaves`
+- foregrounds scored: `Drosophila_ananassae_Drosophila_ananassae__LOC6495454__XP_001958879.1,Drosophila_biarmipes_Drosophila_biarmipes__LOC108026696__XP_016953273.1,Drosophila_mauritiana_Drosophila_mauritiana__LOC117138525__XP_033156554.1,Drosophila_melanogaster_Drosophila_melanogaster__betaTub56D__NP_725896.1,Drosophila_pseudoobscura_Drosophila_pseudoobscura__betaTub56D__XP_002136626.1,Drosophila_sechellia_Drosophila_sechellia__betaTub56D__XP_002034592.1,Drosophila_simulans_Drosophila_simulans__LOC6735263__XP_002082233.1,Drosophila_subobscura_Drosophila_subobscura__LOC117891833__XP_034653474.1,Drosophila_suzukii_Drosophila_suzukii__betaTub56D__XP_016929834.1,Drosophila_virilis_Drosophila_virilis__betaTub56D__XP_002049944.1,Drosophila_willistoni_Drosophila_willistoni__LOC6640838__XP_002063813.1,Drosophila_yakuba_Drosophila_yakuba__LOC6530939__XP_002091781.1`
+- input validation: `pass`
+- applicability: `in_domain`
+- user MSA is authoritative: `True`
+- realignment performed: `False`
+- simulator truth used during empirical inference: `False`
