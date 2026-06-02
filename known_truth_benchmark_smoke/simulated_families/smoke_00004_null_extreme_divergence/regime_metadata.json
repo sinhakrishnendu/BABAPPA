@@ -1,0 +1,22 @@
+{
+  "alignment_difficulty": "extreme",
+  "compositional_bias": "none",
+  "expected_applicability": "out_of_domain",
+  "expected_decision_behavior": "abstain",
+  "expected_truth_class": "ood_null",
+  "foreground_branch_count": 1,
+  "foreground_branch_length": 0.12,
+  "gap_rate": 0.0,
+  "indel_rate": 0.0,
+  "n_codons": 420,
+  "n_families_default": 1,
+  "n_taxa": 10,
+  "omega_background": 0.3,
+  "omega_foreground_positive": 1.0,
+  "positive_effect_size": 0.0,
+  "regime": "null_extreme_divergence",
+  "regime_group": "null",
+  "saturation_tier": "extreme",
+  "selected_site_fraction": 0.0,
+  "tree_shape": "balanced"
+}

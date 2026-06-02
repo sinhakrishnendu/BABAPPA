@@ -1,0 +1,13 @@
+family_id	branch	branch_support	score	called_positive	score_backend
+smoke_00001_null_low_divergence	taxon1	0.069234	0.069234	False	smoke_surrogate
+smoke_00002_null_moderate_divergence	taxon1	0.242592	0.242592	False	smoke_surrogate
+smoke_00003_null_high_divergence	taxon1	0.062654	0.062654	False	smoke_surrogate
+smoke_00004_null_extreme_divergence	taxon1	0.204614	0.204614	False	smoke_surrogate
+smoke_00005_null_alignment_difficult	taxon1	0.283241	0.283241	False	smoke_surrogate
+smoke_00006_null_short_gene	taxon1	0.278145	0.278145	False	smoke_surrogate
+smoke_00007_null_few_taxa	taxon1	0.269440	0.269440	False	smoke_surrogate
+smoke_00008_null_long_branch	taxon1	0.106334	0.106334	False	smoke_surrogate
+smoke_00009_positive_weak_branch_site	taxon1	0.846232	0.846232	True	smoke_surrogate
+smoke_00010_positive_moderate_branch_site	taxon1	0.689400	0.689400	True	smoke_surrogate
+smoke_00011_positive_strong_branch_site	taxon1	0.834087	0.834087	True	smoke_surrogate
+smoke_00012_positive_short_foreground	taxon1	0.725670	0.725670	True	smoke_surrogate

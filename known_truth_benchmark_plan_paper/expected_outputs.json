@@ -1,0 +1,9 @@
+{
+  "alignments": "known_truth_benchmark_paper/alignments",
+  "babappa_scores": "known_truth_benchmark_paper/babappa_scores",
+  "calibration_evaluation": "known_truth_benchmark_paper/calibration_evaluation",
+  "evaluation": "known_truth_benchmark_paper/evaluation",
+  "report": "known_truth_benchmark_paper/report",
+  "simulated_families": "known_truth_benchmark_paper/simulated_families",
+  "truth_manifest": "known_truth_benchmark_paper/simulated_families/benchmark_truth_manifest.tsv"
+}

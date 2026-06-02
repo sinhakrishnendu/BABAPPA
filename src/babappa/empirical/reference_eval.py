@@ -88,6 +88,7 @@ class CodemlReferenceParseConfig:
 class HyphyReferenceParseConfig:
     hyphy_dir: str
     outdir: str
+    hyphy_positive_mode: str = "official"
 
 
 @dataclass(frozen=True)
@@ -178,6 +179,15 @@ class CloseTaxaControlFamilyPlanConfig:
     min_codons: int = 100
 
 
+@dataclass(frozen=True)
+class MethodClaimReadinessConfig:
+    simulation_summary: str
+    drosophila_summary: str
+    wrky_report: str
+    outdir: str
+    known_truth_summary: str = ""
+
+
 def freeze_empirical_evidence_pack(config: EmpiricalEvidencePackConfig) -> Dict[str, Any]:
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
@@ -213,6 +223,89 @@ def freeze_empirical_evidence_pack(config: EmpiricalEvidencePackConfig) -> Dict[
     (outdir / "checksums.sha256").write_text("".join(f"{entry['sha256']}  {entry['pack_path']}\n" for entry in entries), encoding="utf-8")
     (outdir / "evidence_pack_readme.md").write_text(_render_evidence_readme(payload), encoding="utf-8")
     return {"status": "ok", "path": str(outdir), "n_files": len(entries), "checksums": str(outdir / "checksums.sha256")}
+
+
+def validate_method_claim_readiness(config: MethodClaimReadinessConfig) -> Dict[str, Any]:
+    outdir = Path(config.outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+    simulation = _read_json_or_empty(Path(config.simulation_summary), [])
+    known_truth = _read_json_or_empty(Path(config.known_truth_summary), []) if config.known_truth_summary else {}
+    drosophila = _read_json_or_empty(Path(config.drosophila_summary), [])
+    wrky = _read_json_or_empty(Path(config.wrky_report), [])
+
+    n_families = int(drosophila.get("n_families") or 0)
+    hyphy_positive = int(drosophila.get("hyphy_absrel_positive_families") or 0)
+    babappa_supported = int(drosophila.get("babappa_native_calibrated_support") or 0)
+    counts = drosophila.get("concordance_counts") if isinstance(drosophila.get("concordance_counts"), dict) else {}
+    concordant_positive = int(counts.get("concordant_positive", 0))
+    concordant_negative = int(counts.get("concordant_negative", 0))
+    overall_agreement = drosophila.get("overall_agreement")
+    positive_agreement = drosophila.get("positive_agreement_against_hyphy")
+
+    simulation_ok = bool(simulation) and str(simulation.get("decision", simulation.get("status", ""))).lower() not in {"fail", "failed"}
+    known_truth_ok = bool(known_truth) and str(known_truth.get("status", "")).lower() in {"ok", "partial"}
+    drosophila_ok = bool(drosophila) and drosophila.get("status") == "ok"
+    ready_complementary = bool(simulation_ok and drosophila_ok and n_families >= 100)
+    not_replacement = True
+    if positive_agreement is not None:
+        not_replacement = float(positive_agreement) < 0.5
+    elif hyphy_positive:
+        not_replacement = concordant_positive / max(1, hyphy_positive) < 0.5
+
+    wrky_decision = str(wrky.get("decision_category", wrky.get("decision", "")))
+    needs_matched_null = wrky_decision in {"", "diagnostic_positive_calibration_pending", "babappa_only_inconclusive"} or "pending" in wrky_decision
+    payload = {
+        "method_claim_readiness_version": __version__,
+        "status": "ok",
+        "ready_as_simulation_validated_framework": bool(simulation_ok or known_truth_ok),
+        "ready_as_conservative_complementary_method": ready_complementary,
+        "not_ready_as_likelihood_replacement": not_replacement,
+        "not_ready_as_replacement": not_replacement,
+        "not_ready_for_empirical_discovery": True,
+        "needs_negative_controls": True,
+        "needs_matched_null_calibration": needs_matched_null or True,
+        "evidence": {
+            "simulation_summary_present": bool(simulation),
+            "known_truth_summary_present": bool(known_truth),
+            "drosophila_summary_present": bool(drosophila),
+            "wrky_report_present": bool(wrky),
+            "drosophila_families": n_families,
+            "babappa_native_supported": babappa_supported,
+            "hyphy_positive_families": hyphy_positive,
+            "concordant_positive": concordant_positive,
+            "concordant_negative": concordant_negative,
+            "overall_agreement": overall_agreement,
+            "positive_agreement_against_hyphy": positive_agreement,
+            "wrky_decision": wrky_decision or "unknown",
+        },
+        "claim_boundary": (
+            "BABAPPA is ready to present as a conservative, OOD-gated, simulation-trained "
+            "complementary method. It is not ready as a codeml/HyPhy replacement and not ready "
+            "for unsupported empirical discovery claims."
+        ),
+    }
+    _write_json(outdir / "method_claim_readiness.json", payload)
+    rows = [
+        {"decision": "ready_as_simulation_validated_framework", "value": str(payload["ready_as_simulation_validated_framework"]), "reason": "explicit simulation validation and/or known-truth simulation benchmark layer"},
+        {"decision": "ready_as_conservative_complementary_method", "value": str(payload["ready_as_conservative_complementary_method"]), "reason": "simulation validation plus Drosophila comparator/OOD behavior"},
+        {"decision": "not_ready_as_likelihood_replacement", "value": str(payload["not_ready_as_likelihood_replacement"]), "reason": "BABAPPA is not designed to reproduce codeml/HyPhy likelihood decisions"},
+        {"decision": "not_ready_as_replacement", "value": str(payload["not_ready_as_replacement"]), "reason": "low positive overlap with HyPhy aBSREL"},
+        {"decision": "not_ready_for_empirical_discovery", "value": str(payload["not_ready_for_empirical_discovery"]), "reason": "empirical controls and final calibration remain incomplete"},
+        {"decision": "needs_negative_controls", "value": str(payload["needs_negative_controls"]), "reason": "empirical false-positive behavior needs additional controls"},
+        {"decision": "needs_matched_null_calibration", "value": str(payload["needs_matched_null_calibration"]), "reason": "native empirical support needs broader matched-null validation"},
+    ]
+    write_tsv(outdir / "method_claim_readiness.tsv", rows, ["decision", "value", "reason"])
+    (outdir / "method_claim_readiness.md").write_text(_render_claim_readiness_md(payload), encoding="utf-8")
+    return {
+        "status": "ok",
+        "outdir": str(outdir),
+        "ready_as_simulation_validated_framework": payload["ready_as_simulation_validated_framework"],
+        "ready_as_conservative_complementary_method": payload["ready_as_conservative_complementary_method"],
+        "not_ready_as_likelihood_replacement": payload["not_ready_as_likelihood_replacement"],
+        "not_ready_as_replacement": payload["not_ready_as_replacement"],
+        "needs_negative_controls": payload["needs_negative_controls"],
+        "needs_matched_null_calibration": payload["needs_matched_null_calibration"],
+    }
 
 
 def validate_empirical_evidence_pack(config: EmpiricalEvidencePackValidationConfig) -> Dict[str, Any]:
@@ -537,18 +630,25 @@ def parse_codeml_reference(config: CodemlReferenceParseConfig) -> Dict[str, Any]
 def parse_hyphy_reference(config: HyphyReferenceParseConfig) -> Dict[str, Any]:
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
+    if config.hyphy_positive_mode not in {"official", "exploratory_recursive"}:
+        raise ValueError(f"unknown HyPhy positive mode: {config.hyphy_positive_mode}")
     hyphy_dir = Path(config.hyphy_dir)
     outputs = list(hyphy_dir.glob("*absrel*.json")) + list(hyphy_dir.glob("*meme*.json"))
     tool_missing = shutil.which("hyphy") is None and shutil.which("HYPHYMP") is None
     status = "pending_tool_missing" if tool_missing and not outputs else ("pending_not_run" if not outputs else "parsed")
-    parsed_outputs = [_parse_hyphy_json(path) for path in outputs]
+    parsed_outputs = [_parse_hyphy_json(path, positive_mode=config.hyphy_positive_mode) for path in outputs]
     min_p = _min_present([item.get("min_p_value") for item in parsed_outputs])
-    result_class = _reference_class_from_pvalue(min_p) if status == "parsed" else status
+    if status == "parsed":
+        classes = {str(item.get("result_class", "inconclusive")) for item in parsed_outputs}
+        result_class = "positive" if "positive" in classes else ("negative" if classes == {"negative"} else "inconclusive")
+    else:
+        result_class = status
     payload = {
         "hyphy_reference_parse_version": __version__,
         "status": status,
         "hyphy_dir": str(hyphy_dir),
         "tool_available": not tool_missing,
+        "hyphy_positive_mode": config.hyphy_positive_mode,
         "outputs": [str(p) for p in outputs],
         "parsed_outputs": parsed_outputs,
         "min_p_value": min_p,
@@ -1502,18 +1602,54 @@ def _parse_codeml_output(path: Path) -> Dict[str, Any]:
     return parsed
 
 
-def _parse_hyphy_json(path: Path) -> Dict[str, Any]:
+def _parse_hyphy_json(path: Path, positive_mode: str = "official") -> Dict[str, Any]:
     data = _read_json(path)
     lower = path.name.lower()
     test_name = "aBSREL" if "absrel" in lower else ("MEME" if "meme" in lower else path.stem)
+    if test_name == "aBSREL" and positive_mode == "official":
+        return _parse_absrel_official(path, data)
     p_values = _collect_numeric_values_by_key(data, {"p", "p-value", "p_value", "corrected p-value", "uncorrected p-value"})
     if test_name == "MEME":
         p_values.extend(_extract_meme_p_values(data))
+    warnings = ["exploratory_recursive_mode_not_for_publication"] if test_name == "aBSREL" and positive_mode == "exploratory_recursive" else []
+    min_p = min(p_values) if p_values else None
     return {
         "path": str(path),
         "test_name": test_name,
-        "min_p_value": min(p_values) if p_values else None,
+        "parser_mode": positive_mode,
+        "min_p_value": min_p,
         "n_p_values": len(p_values),
+        "result_class": _reference_class_from_pvalue(min_p),
+        "warnings": warnings,
+    }
+
+
+def _parse_absrel_official(path: Path, data: Dict[str, Any]) -> Dict[str, Any]:
+    test_results = data.get("test results") if isinstance(data, dict) else None
+    if not isinstance(test_results, dict) or "positive test results" not in test_results:
+        return {
+            "path": str(path),
+            "test_name": "aBSREL",
+            "parser_mode": "official",
+            "official_positive_test_results": None,
+            "official_tested_branches": None,
+            "min_p_value": None,
+            "n_p_values": 0,
+            "result_class": "inconclusive",
+            "warnings": ["missing_official_positive_test_results"],
+        }
+    positive_count = _safe_int(test_results.get("positive test results"))
+    tested = _safe_int(test_results.get("tested"))
+    return {
+        "path": str(path),
+        "test_name": "aBSREL",
+        "parser_mode": "official",
+        "official_positive_test_results": positive_count,
+        "official_tested_branches": tested,
+        "min_p_value": None,
+        "n_p_values": 0,
+        "result_class": "positive" if positive_count > 0 else "negative",
+        "warnings": [],
     }
 
 
@@ -2095,6 +2231,39 @@ def _tool_available(rows: List[Dict[str, Any]], tool: str) -> bool:
 
 def _render_parse_md(tool: str, payload: Dict[str, Any]) -> str:
     return f"# {tool} Reference Parse\n\n- status: `{payload['status']}`\n- result_class: `{payload['result_class']}`\n"
+
+
+def _render_claim_readiness_md(payload: Dict[str, Any]) -> str:
+    evidence = payload.get("evidence", {})
+    lines = [
+        "# BABAPPA Method Claim Readiness",
+        "",
+        f"- ready_as_simulation_validated_framework: `{payload['ready_as_simulation_validated_framework']}`",
+        f"- ready_as_conservative_complementary_method: `{payload['ready_as_conservative_complementary_method']}`",
+        f"- not_ready_as_likelihood_replacement: `{payload['not_ready_as_likelihood_replacement']}`",
+        f"- not_ready_as_replacement: `{payload['not_ready_as_replacement']}`",
+        f"- not_ready_for_empirical_discovery: `{payload['not_ready_for_empirical_discovery']}`",
+        f"- needs_negative_controls: `{payload['needs_negative_controls']}`",
+        f"- needs_matched_null_calibration: `{payload['needs_matched_null_calibration']}`",
+        "",
+        "## Evidence Snapshot",
+        "",
+        f"- Known-truth summary present: `{evidence.get('known_truth_summary_present')}`",
+        f"- Drosophila families: `{evidence.get('drosophila_families')}`",
+        f"- BABAPPA-native supported families: `{evidence.get('babappa_native_supported')}`",
+        f"- HyPhy-positive families: `{evidence.get('hyphy_positive_families')}`",
+        f"- concordant positive: `{evidence.get('concordant_positive')}`",
+        f"- concordant negative: `{evidence.get('concordant_negative')}`",
+        f"- overall agreement: `{evidence.get('overall_agreement')}`",
+        f"- positive agreement against HyPhy: `{evidence.get('positive_agreement_against_hyphy')}`",
+        f"- WRKY decision: `{evidence.get('wrky_decision')}`",
+        "",
+        "## Claim Boundary",
+        "",
+        payload["claim_boundary"],
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def _render_reference_results_md(payload: Dict[str, Any]) -> str:

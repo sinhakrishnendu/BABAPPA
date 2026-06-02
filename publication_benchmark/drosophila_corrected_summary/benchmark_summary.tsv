@@ -1,0 +1,14 @@
+metric	value
+families	140
+babappa_raw_diagnostic_positive	17
+babappa_native_calibrated_support	14
+hyphy_absrel_positive_families	73
+hyphy_positive_branches	185
+hyphy_tested_branches	1680
+concordant_positive	3
+concordant_negative	56
+BABAPPA_only	11
+HyPhy_only	70
+overall_agreement	0.421429
+positive_agreement_against_hyphy	0.0410959
+negative_agreement	0.835821

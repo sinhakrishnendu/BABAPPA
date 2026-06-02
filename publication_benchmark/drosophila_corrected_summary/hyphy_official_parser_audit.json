@@ -1,0 +1,12 @@
+{
+  "status": "ok",
+  "hyphy_positive_mode": "official",
+  "official_field": "test results -> positive test results",
+  "publication_ready": true,
+  "families": 140,
+  "hyphy_positive_families": 73,
+  "hyphy_positive_branches": 185,
+  "hyphy_tested_branches": 1680,
+  "warnings": [],
+  "non_publication_mode_note": "exploratory_recursive mode can overcount nested p-value-like quantities and must not be used for publication claims."
+}

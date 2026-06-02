@@ -1,2 +1,0 @@
-method	status	reason	runtime_seconds	aligned_fasta	site_map
-user_msa	ok	user_supplied_authoritative_codon_msa	0	publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002455/user_msa/methods/user_msa/empirical.user_msa.codon.fasta	publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002455/user_msa/site_map/user_msa.site_map.tsv

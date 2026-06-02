@@ -1,0 +1,2 @@
+threshold	tp	fp	tn	fn	precision	recall	specificity	f1	mcc	fpr	fnr	empirical_fdr	accuracy
+0.5	4	0	8	0	1.0	1.0	1.0	1.0	1.0	0.0	0.0	0.0	1.0

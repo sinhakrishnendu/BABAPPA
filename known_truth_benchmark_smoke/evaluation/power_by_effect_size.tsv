@@ -1,0 +1,13 @@
+regime	n	positive_n	called_positive_n	power
+null_alignment_difficult	1	0	0	0.0
+null_extreme_divergence	1	0	0	0.0
+null_few_taxa	1	0	0	0.0
+null_high_divergence	1	0	0	0.0
+null_long_branch	1	0	0	0.0
+null_low_divergence	1	0	0	0.0
+null_moderate_divergence	1	0	0	0.0
+null_short_gene	1	0	0	0.0
+positive_moderate_branch_site	1	1	1	1.0
+positive_short_foreground	1	1	1	1.0
+positive_strong_branch_site	1	1	1	1.0
+positive_weak_branch_site	1	1	1	1.0

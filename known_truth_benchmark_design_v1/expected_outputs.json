@@ -1,0 +1,8 @@
+{
+  "alignments": "per-method alignments and method policy",
+  "babappa_scores": "gene/branch/site scores plus applicability",
+  "calibration_evaluation": "BH q-values and FDR/power tables",
+  "evaluation": "AUROC/AUPRC/FDR/OOD metrics against truth",
+  "report": "manuscript-ready known-truth benchmark summary",
+  "simulated_families": "family FASTA/tree/truth files"
+}

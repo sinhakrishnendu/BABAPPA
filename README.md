@@ -2,15 +2,13 @@
 
 BABAPPA is the **Branch-site Alignment-Bias-Aware Probabilistic Positive-selection Analyzer**.
 
-Current source version: `v0.8.0`  
-Release archive label: `v0.8.0`  
 Status: research-alpha, simulation-trained, standalone BABAPPA-native calibrated evidence workflow
 
 BABAPPA supports branch-site positive-selection investigation from a user-supplied codon MSA and treefile. The main user-facing command treats the supplied MSA as the authoritative alignment, scores requested foreground branches, and reports candidate branch-site episodic-selection support using a deployable simulation-trained model plus a BABAPPA-native empirical null calibration. Alignment ensembles and codeml/HyPhy comparison are optional diagnostic comparators, not dependencies for BABAPPA to issue its own calibrated evidence statement.
 
 BABAPPA is intended to become a standalone complementary software system beside codeml and HyPhy. It does **not** claim likelihood-model equivalence to those tools, and it does not use their null models internally. Instead, BABAPPA reports BABAPPA-native calibrated support classes from its own simulation-trained scoring model and empirical feature-null calibration. For publication, users should report the BABAPPA evidence class, native null replicate count, p-like values, OOD/applicability status, and biological context.
 
-Version `v0.8.0` makes the direct end-user workflow the central interface: supply an aligned codon MSA, supply a matching treefile, choose foreground branches, and receive branch-site predictions with aligned and de-gapped codon coordinates. It also makes CDS integrity stricter and clearer: terminal stop codons are accepted with warnings, while internal stops, frame errors, missing ATG starts, duplicate IDs, and tree/MSA label mismatches stop execution before scoring.
+The direct end-user workflow is the central interface: supply an aligned codon MSA, supply a matching treefile, choose foreground branches, and receive branch-site predictions with aligned and de-gapped codon coordinates. CDS integrity is strict and explicit: terminal stop codons are accepted with warnings, while internal stops, frame errors, missing ATG starts, duplicate IDs, and tree/MSA label mismatches stop execution before scoring.
 
 ## Contents
 
@@ -51,7 +49,7 @@ The simulation phase is oracle-supervised because simulator truth is known durin
 
 > **Empirical interpretation warning**
 >
-> A raw BABAPPA diagnostic-positive score is not, by itself, a publishable empirical positive-selection claim. A manuscript-ready BABAPPA result should include BABAPPA-native null calibration, input QC/applicability status, biological controls or rationale, and the exact BABAPPA version/model package. codeml/HyPhy can be used as external comparators, but BABAPPA does not depend on them to report BABAPPA-native evidence.
+> A raw BABAPPA diagnostic-positive score is not, by itself, a publishable empirical positive-selection claim. A manuscript-ready BABAPPA result should include BABAPPA-native null calibration, input QC/applicability status, biological controls or rationale, and the exact model package or archive/commit used. codeml/HyPhy can be used as external comparators, but BABAPPA does not depend on them to report BABAPPA-native evidence.
 
 ## What BABAPPA Does
 
@@ -115,16 +113,10 @@ For development and tests:
 python -m pip install -e ".[dev]"
 ```
 
-Check the installed version:
+Check that the command-line interface is available:
 
 ```bash
-babappa --version
-```
-
-Expected for this release:
-
-```text
-0.8.0
+babappa --help
 ```
 
 Run tests:
@@ -742,7 +734,65 @@ babappa compare-empirical-reference-results \
   --outdir real_empirical_pilot/comparison/WRKY_candidate_02_close
 ```
 
-### 8. Publication Benchmark Pipeline
+### 8. Known-Truth Simulation Benchmark
+
+The primary scientific validation layer is the known-truth simulation benchmark. It evaluates BABAPPA against explicit simulated labels rather than treating empirical codeml/HyPhy outputs as truth.
+
+Create the benchmark design:
+
+```bash
+babappa design-known-truth-benchmark \
+  --outdir known_truth_benchmark_design_v1 \
+  --benchmark-name BABAPPA-BENCH-SIM-v1 \
+  --seed 42
+```
+
+Create a tiny smoke plan:
+
+```bash
+babappa plan-known-truth-benchmark \
+  --profile smoke \
+  --design-dir known_truth_benchmark_design_v1 \
+  --outdir known_truth_benchmark_plan_smoke \
+  --methods identity,mafft,babappalign,muscle \
+  --device auto \
+  --threads 2 \
+  --max-workers 1
+```
+
+Run the smoke only if you want to validate the framework quickly:
+
+```bash
+bash known_truth_benchmark_plan_smoke/run_known_truth_benchmark.sh
+bash known_truth_benchmark_plan_smoke/validate_known_truth_benchmark.sh
+bash known_truth_benchmark_plan_smoke/summarize_known_truth_benchmark.sh
+```
+
+Generate larger user-run plans:
+
+```bash
+babappa plan-known-truth-benchmark \
+  --profile pilot \
+  --design-dir known_truth_benchmark_design_v1 \
+  --outdir known_truth_benchmark_plan_pilot \
+  --methods identity,mafft,babappalign,muscle \
+  --device auto \
+  --threads 8 \
+  --max-workers 4
+
+babappa plan-known-truth-benchmark \
+  --profile paper \
+  --design-dir known_truth_benchmark_design_v1 \
+  --outdir known_truth_benchmark_plan_paper \
+  --methods identity,mafft,babappalign,muscle \
+  --device auto \
+  --threads 8 \
+  --max-workers 4
+```
+
+The known-truth benchmark reports AUROC, AUPRC, FDR, power, calibration, OOD abstention, and false-call suppression against simulation truth. Truth files are benchmark labels only and must never be used as empirical inference inputs.
+
+### 9. Publication Benchmark Pipeline
 
 The repository also includes a separate manuscript-only benchmarking harness:
 
@@ -763,6 +813,23 @@ bash publication_benchmark/scripts/05_make_publication_tables.sh publication_ben
 ```
 
 Use this for manuscript benchmark tables only. It should not be confused with the normal end-user command, and it does not make BABAPPA dependent on codeml or HyPhy.
+
+### Drosophila Benchmark Interpretation
+
+The Drosophila OrthoFinder/aBSREL benchmark should be treated as supplementary manuscript material, not as the main claim of BABAPPA. The corrected summary from the finished stratified benchmark is:
+
+- families: `140`
+- BABAPPA raw diagnostic-positive: `17`
+- BABAPPA-native calibrated support: `14`
+- HyPhy aBSREL-positive families: `73`
+- HyPhy positive branches: `185/1680`
+- using BABAPPA-native calibrated support:
+  - concordant positive: `3`
+  - concordant negative: `56`
+  - BABAPPA-only positive: `11`
+  - HyPhy-only positive: `70`
+
+This benchmark is **not** evidence that BABAPPA matches or replaces HyPhy. Its useful publication message is more specific: BABAPPA is much more conservative than HyPhy aBSREL on this heterogeneous empirical panel and produced no native-supported calls in true out-of-domain families. Report it as an applicability-aware, conservative-complementary behavior result.
 
 ## Input Requirements
 
@@ -904,16 +971,16 @@ Important retained artifacts:
 - WRKY evidence pack: `real_empirical_pilot/evidence_packs/WRKY_candidate_02_close/`
 - Git readiness report: `GIT_PUSH_READINESS_REPORT.md`
 
-Existing Zenodo-ready archive:
+Zenodo-ready archive, when prepared:
 
 ```text
-BABAPPA_v0.8.0_release_zenodo_YYYYMMDD.tar.xz
+BABAPPA_release_zenodo_YYYYMMDD.tar.xz
 ```
 
 Checksum:
 
 ```text
-pending for the v0.8.0 release archive
+reported alongside the deposited archive
 ```
 
 Validate package:
@@ -1059,15 +1126,9 @@ Upload to TestPyPI first:
 python -m twine upload --repository testpypi dist/*
 ```
 
-Then test installation in a fresh environment. Upload to PyPI only after the TestPyPI package installs and `babappa --version` plus `babappa --help` work.
+Then test installation in a fresh environment. Upload to PyPI only after the TestPyPI package installs and `babappa --help` works.
 
 ## Developer Notes
-
-Check version:
-
-```bash
-babappa --version
-```
 
 Run tests:
 

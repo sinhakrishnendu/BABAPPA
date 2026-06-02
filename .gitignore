@@ -128,6 +128,36 @@ real_empirical_pilot/acquisition_plans/*/hits/
 babappa_prediction*/
 direct_predict_*/
 publication_benchmark/results/
+publication_benchmark/results*/
+publication_benchmark/*results*/
+publication_benchmark/*benchmark*/results/
+publication_benchmark/*benchmark*/results*/
+publication_benchmark/*benchmark*/reference_runs/
+publication_benchmark/*benchmark*/single_copy_orthologs/
+publication_benchmark/*benchmark*/logs/
+publication_benchmark/*benchmark*/panels/*/msas/
+publication_benchmark/*benchmark*/panels/*/trees/
+publication_benchmark/*benchmark*/panels/*/*.fasta
+publication_benchmark/*benchmark*/panels/*/*.fa
+publication_benchmark/*benchmark*/panels/*/*.fas
+publication_benchmark/*benchmark*/panels/*/*.phy
+publication_benchmark/*benchmark*/panels/*/*.treefile
+publication_benchmark/*benchmark*/panels/*/*.nwk
+publication_benchmark/*benchmark*/panels/*/*.newick
+publication_benchmark/*benchmark*/**/absrel.json
+publication_benchmark/*benchmark*/**/meme.json
+publication_benchmark/*benchmark*/**/*.hyphy.json
+publication_benchmark/*benchmark*/**/*.codeml.out
+publication_benchmark/*benchmark*/**/*.rst
+publication_benchmark/*benchmark*/**/*.phy
+publication_benchmark/*benchmark*/**/*.log
+publication_benchmark/*benchmark*/**/*.err
+publication_benchmark/*benchmark*/**/*.tmp
+publication_benchmark/*benchmark*/**/*.partial
+
+# User-supplied/raw benchmark source datasets
+drosophilas/
+gapdh_grass/
 
 # Drosophila/OrthoFinder benchmark generated heavy artifacts
 publication_benchmark/drosophila_orthofinder/curated_cds/

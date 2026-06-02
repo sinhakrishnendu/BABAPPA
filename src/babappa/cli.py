@@ -29,17 +29,39 @@ from babappa.benchmarks import (
     ExternalCompletedTierReportPlanConfig,
     ExternalExtremeRecoveryPlanConfig,
     FastExternal10kPlanConfig,
+    KnownTruthAlignmentConfig,
+    KnownTruthBenchmarkDesignConfig,
+    KnownTruthBenchmarkPlanConfig,
+    KnownTruthBenchmarkReportConfig,
+    KnownTruthCalibrationEvaluationConfig,
+    KnownTruthEvaluationConfig,
+    KnownTruthMethodComparisonConfig,
+    KnownTruthReferenceComparisonPlanConfig,
+    KnownTruthScoringConfig,
+    KnownTruthSimulationConfig,
+    KnownTruthValidationConfig,
     LargeRunPlanConfig,
     SaturationPanelConfig,
     StabilityBenchmarkConfig,
     build_saturation_panel,
+    compare_methods_known_truth,
+    design_known_truth_benchmark,
+    evaluate_known_truth_benchmark,
+    evaluate_known_truth_calibration,
+    make_known_truth_benchmark_report,
     plan_complete_external_tier_reports,
     plan_external_extreme_recovery,
     plan_external_aligner_validation,
     plan_fast_external_10k,
     plan_large_run,
+    plan_known_truth_benchmark,
+    plan_known_truth_reference_comparison,
+    run_known_truth_alignments,
     run_stability_benchmark,
+    score_known_truth_benchmark,
+    simulate_known_truth_benchmark,
     validate_large_run_plan_dir,
+    validate_known_truth_benchmark,
     validate_saturation_panel_dir,
     validate_stability_benchmark_dir,
 )
@@ -179,6 +201,7 @@ from babappa.empirical import (
     ExternalBenchmarkPanelPlanConfig,
     HyphyReferenceParseConfig,
     HyphyReferencePrepConfig,
+    MethodClaimReadinessConfig,
     CdsFastaSanitizeConfig,
     ForegroundCandidateConfig,
     LocalPilotFileDiscoveryConfig,
@@ -250,6 +273,7 @@ from babappa.empirical import (
     validate_empirical_pilot_panel,
     validate_empirical_pilot_summary,
     validate_real_pilot_readiness,
+    validate_method_claim_readiness,
     validate_simulation_matched_null_calibration,
     write_reference_results_template,
     write_wrky_matched_null_script,
@@ -597,6 +621,7 @@ AVAILABLE_COMMANDS = [
     "parse-codeml-reference",
     "parse-hyphy-reference",
     "build-reference-results-table",
+    "validate-method-claim-readiness",
     "run-simulation-matched-null-calibration",
     "validate-simulation-matched-null-calibration",
     "write-reference-results-template",
@@ -606,6 +631,17 @@ AVAILABLE_COMMANDS = [
     "interpret-babappa-only-signal",
     "audit-babappa-only-result",
     "plan-close-taxa-control-family",
+    "design-known-truth-benchmark",
+    "plan-known-truth-benchmark",
+    "simulate-known-truth-benchmark",
+    "run-known-truth-alignments",
+    "score-known-truth-benchmark",
+    "evaluate-known-truth-benchmark",
+    "evaluate-known-truth-calibration",
+    "plan-known-truth-reference-comparison",
+    "compare-methods-known-truth",
+    "make-known-truth-benchmark-report",
+    "validate-known-truth-benchmark",
     "compare-models",
     "validate-model-comparison",
     "compare-ablations",
@@ -7773,11 +7809,20 @@ def parse_codeml_reference_command(
 def parse_hyphy_reference_command(
     hyphy_dir: Path = typer.Option(..., "--hyphy-dir"),
     outdir: Path = typer.Option(..., "--outdir"),
+    hyphy_positive_mode: str = typer.Option(
+        "official",
+        "--hyphy-positive-mode",
+        help="Use official aBSREL positive-test field by default; exploratory_recursive is non-publication.",
+    ),
 ) -> None:
     """Parse HyPhy outputs if present; otherwise report pending."""
     try:
         summary = parse_hyphy_reference(
-            HyphyReferenceParseConfig(hyphy_dir=str(hyphy_dir), outdir=str(outdir))
+            HyphyReferenceParseConfig(
+                hyphy_dir=str(hyphy_dir),
+                outdir=str(outdir),
+                hyphy_positive_mode=hyphy_positive_mode,
+            )
         )
     except OSError as exc:
         console.print(f"Error: could not parse HyPhy reference: {exc}", style="red")
@@ -7838,6 +7883,44 @@ def build_reference_results_table_command(
         "BABAPPA Reference Results Table",
         summary,
         ["status", "path", "json"],
+    )
+
+
+@app.command("validate-method-claim-readiness")
+def validate_method_claim_readiness_command(
+    simulation_summary: Path = typer.Option(..., "--simulation-summary"),
+    drosophila_summary: Path = typer.Option(..., "--drosophila-summary"),
+    wrky_report: Path = typer.Option(..., "--wrky-report"),
+    outdir: Path = typer.Option("method_claim_readiness", "--outdir"),
+    known_truth_summary: Optional[Path] = typer.Option(None, "--known-truth-summary"),
+) -> None:
+    """Validate whether current evidence supports only conservative complementary method claims."""
+    try:
+        summary = validate_method_claim_readiness(
+            MethodClaimReadinessConfig(
+                simulation_summary=str(simulation_summary),
+                drosophila_summary=str(drosophila_summary),
+                wrky_report=str(wrky_report),
+                outdir=str(outdir),
+                known_truth_summary=str(known_truth_summary) if known_truth_summary else "",
+            )
+        )
+    except OSError as exc:
+        console.print(f"Error: could not validate method claim readiness: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Method Claim Readiness",
+        summary,
+        [
+            "status",
+            "ready_as_simulation_validated_framework",
+            "ready_as_conservative_complementary_method",
+            "not_ready_as_likelihood_replacement",
+            "not_ready_as_replacement",
+            "needs_negative_controls",
+            "needs_matched_null_calibration",
+            "outdir",
+        ],
     )
 
 
@@ -8095,6 +8178,221 @@ def plan_close_taxa_control_family_command(
         summary,
         ["status", "control", "outdir", "scripts", "executed"],
     )
+
+
+@app.command("design-known-truth-benchmark")
+def design_known_truth_benchmark_command(
+    outdir: Path = typer.Option(..., "--outdir"),
+    benchmark_name: str = typer.Option("BABAPPA-BENCH-SIM-v1", "--benchmark-name"),
+    seed: int = typer.Option(42, "--seed"),
+) -> None:
+    """Create the BABAPPA known-truth benchmark design and regime manifest."""
+    try:
+        summary = design_known_truth_benchmark(
+            KnownTruthBenchmarkDesignConfig(outdir=str(outdir), benchmark_name=benchmark_name, seed=seed)
+        )
+    except OSError as exc:
+        console.print(f"Error: could not design known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Benchmark Design", summary, ["status", "benchmark_name", "n_regimes", "profiles", "outdir"])
+
+
+@app.command("plan-known-truth-benchmark")
+def plan_known_truth_benchmark_command(
+    profile: str = typer.Option(..., "--profile"),
+    design_dir: Path = typer.Option(..., "--design-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    methods: str = typer.Option("identity,mafft,babappalign,muscle", "--methods"),
+    device: str = typer.Option("auto", "--device"),
+    threads: int = typer.Option(8, "--threads"),
+    max_workers: int = typer.Option(4, "--max-workers"),
+) -> None:
+    """Generate smoke or user-run known-truth benchmark scripts."""
+    try:
+        summary = plan_known_truth_benchmark(
+            KnownTruthBenchmarkPlanConfig(
+                profile=profile,
+                design_dir=str(design_dir),
+                outdir=str(outdir),
+                methods=methods,
+                device=device,
+                threads=threads,
+                max_workers=max_workers,
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not plan known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Benchmark Plan", summary, ["status", "profile", "families", "score_backend", "user_run_only", "outdir"])
+
+
+@app.command("simulate-known-truth-benchmark")
+def simulate_known_truth_benchmark_command(
+    design_dir: Path = typer.Option(..., "--design-dir"),
+    profile: str = typer.Option(..., "--profile"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    seed: int = typer.Option(42, "--seed"),
+) -> None:
+    """Generate benchmark families with explicit simulated truth labels."""
+    try:
+        summary = simulate_known_truth_benchmark(
+            KnownTruthSimulationConfig(design_dir=str(design_dir), profile=profile, outdir=str(outdir), seed=seed)
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not simulate known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Simulation", summary, ["status", "profile", "n_families", "truth_manifest", "outdir"])
+
+
+@app.command("run-known-truth-alignments")
+def run_known_truth_alignments_command(
+    sim_dir: Path = typer.Option(..., "--sim-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    methods: str = typer.Option("identity,mafft,babappalign,muscle", "--methods"),
+    threads: int = typer.Option(8, "--threads"),
+    max_workers: int = typer.Option(4, "--max-workers"),
+) -> None:
+    """Create known-truth benchmark alignment artifacts."""
+    try:
+        summary = run_known_truth_alignments(
+            KnownTruthAlignmentConfig(sim_dir=str(sim_dir), outdir=str(outdir), methods=methods, threads=threads, max_workers=max_workers)
+        )
+    except OSError as exc:
+        console.print(f"Error: could not run known-truth alignments: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Alignments", summary, ["status", "n_families", "methods", "outdir"])
+
+
+@app.command("score-known-truth-benchmark")
+def score_known_truth_benchmark_command(
+    sim_dir: Path = typer.Option(..., "--sim-dir"),
+    alignment_dir: Path = typer.Option(..., "--alignment-dir"),
+    deployable_model_package: Path = typer.Option(..., "--deployable-model-package"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    device: str = typer.Option("auto", "--device"),
+    score_backend: str = typer.Option("direct", "--score-backend"),
+    null_replicates: int = typer.Option(0, "--null-replicates"),
+) -> None:
+    """Score a known-truth benchmark while reserving truth labels for evaluation."""
+    try:
+        summary = score_known_truth_benchmark(
+            KnownTruthScoringConfig(
+                sim_dir=str(sim_dir),
+                alignment_dir=str(alignment_dir),
+                deployable_model_package=str(deployable_model_package),
+                outdir=str(outdir),
+                device=device,
+                score_backend=score_backend,
+                null_replicates=null_replicates,
+            )
+        )
+    except (OSError, RuntimeError, ValueError) as exc:
+        console.print(f"Error: could not score known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Scoring", summary, ["status", "score_backend", "n_families", "outdir"])
+
+
+@app.command("evaluate-known-truth-benchmark")
+def evaluate_known_truth_benchmark_command(
+    truth: Path = typer.Option(..., "--truth"),
+    scores: Path = typer.Option(..., "--scores"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Evaluate BABAPPA benchmark scores against explicit truth."""
+    try:
+        summary = evaluate_known_truth_benchmark(KnownTruthEvaluationConfig(truth=str(truth), scores=str(scores), outdir=str(outdir)))
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not evaluate known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Evaluation", summary, ["status", "n_families", "auroc", "auprc", "outdir"])
+
+
+@app.command("evaluate-known-truth-calibration")
+def evaluate_known_truth_calibration_command(
+    truth: Path = typer.Option(..., "--truth"),
+    scores: Path = typer.Option(..., "--scores"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Evaluate q-values/FDR/power against known simulation truth."""
+    try:
+        summary = evaluate_known_truth_calibration(KnownTruthCalibrationEvaluationConfig(truth=str(truth), scores=str(scores), outdir=str(outdir)))
+    except OSError as exc:
+        console.print(f"Error: could not evaluate known-truth calibration: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Calibration Evaluation", summary, ["status", "n_tests", "outdir"])
+
+
+@app.command("plan-known-truth-reference-comparison")
+def plan_known_truth_reference_comparison_command(
+    benchmark_dir: Path = typer.Option(..., "--benchmark-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    tools: str = typer.Option("codeml,absrel,meme", "--tools"),
+    max_families: int = typer.Option(100, "--max-families"),
+) -> None:
+    """Plan codeml/HyPhy comparisons against the same simulation truth."""
+    try:
+        summary = plan_known_truth_reference_comparison(
+            KnownTruthReferenceComparisonPlanConfig(benchmark_dir=str(benchmark_dir), outdir=str(outdir), tools=tools, max_families=max_families)
+        )
+    except OSError as exc:
+        console.print(f"Error: could not plan known-truth reference comparison: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Reference Comparison Plan", summary, ["status", "tools", "user_run_only", "outdir"])
+
+
+@app.command("compare-methods-known-truth")
+def compare_methods_known_truth_command(
+    truth: Path = typer.Option(..., "--truth"),
+    babappa_evaluation: Path = typer.Option(..., "--babappa-evaluation"),
+    outdir: Path = typer.Option(..., "--outdir"),
+    reference_results: Optional[Path] = typer.Option(None, "--reference-results"),
+) -> None:
+    """Compare BABAPPA and optional reference methods against simulation truth."""
+    try:
+        summary = compare_methods_known_truth(
+            KnownTruthMethodComparisonConfig(
+                truth=str(truth),
+                babappa_evaluation=str(babappa_evaluation),
+                outdir=str(outdir),
+                reference_results=str(reference_results) if reference_results else "",
+            )
+        )
+    except OSError as exc:
+        console.print(f"Error: could not compare known-truth methods: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Method Comparison", summary, ["status", "reference_results_present", "outdir"])
+
+
+@app.command("make-known-truth-benchmark-report")
+def make_known_truth_benchmark_report_command(
+    benchmark_dir: Path = typer.Option(..., "--benchmark-dir"),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Write the known-truth benchmark report and manuscript tables."""
+    try:
+        summary = make_known_truth_benchmark_report(KnownTruthBenchmarkReportConfig(benchmark_dir=str(benchmark_dir), outdir=str(outdir)))
+    except OSError as exc:
+        console.print(f"Error: could not make known-truth benchmark report: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Benchmark Report", summary, ["status", "n_families", "outdir"])
+
+
+@app.command("validate-known-truth-benchmark")
+def validate_known_truth_benchmark_command(
+    benchmark_dir: Path = typer.Option(..., "--benchmark-dir"),
+    outdir: Optional[Path] = typer.Option(None, "--outdir"),
+) -> None:
+    """Validate known-truth benchmark truth files and manifests."""
+    try:
+        summary = validate_known_truth_benchmark(
+            KnownTruthValidationConfig(benchmark_dir=str(benchmark_dir), outdir=str(outdir) if outdir else "")
+        )
+    except OSError as exc:
+        console.print(f"Error: could not validate known-truth benchmark: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table("BABAPPA Known-Truth Validation", summary, ["status", "n_families", "n_failures", "outdir"])
+    if summary.get("status") == "fail":
+        raise typer.Exit(code=1)
 
 
 @app.command("compare-site-calibrations")

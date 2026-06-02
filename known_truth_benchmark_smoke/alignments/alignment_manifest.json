@@ -1,0 +1,12 @@
+{
+  "known_truth_alignment_version": "0.8.7",
+  "methods": [
+    "identity",
+    "mafft",
+    "babappalign",
+    "muscle"
+  ],
+  "n_families": 12,
+  "note": "Smoke alignments copy simulated codon MSAs. User-run paper profiles may replace this with production aligners.",
+  "status": "ok"
+}

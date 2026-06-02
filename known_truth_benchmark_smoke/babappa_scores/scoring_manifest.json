@@ -1,0 +1,8 @@
+{
+  "failures": [],
+  "known_truth_scoring_version": "0.8.7",
+  "score_backend": "smoke_surrogate",
+  "status": "ok",
+  "truth_used_as_empirical_input": false,
+  "truth_used_for_evaluation_only": true
+}

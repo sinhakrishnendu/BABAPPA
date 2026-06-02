@@ -1,3 +1,3 @@
 """BABAPPA package scaffold."""
 
-__version__ = "0.8.0"
+__version__ = "0.8.7"

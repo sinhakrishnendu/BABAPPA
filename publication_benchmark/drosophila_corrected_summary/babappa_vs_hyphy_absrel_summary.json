@@ -1,0 +1,82 @@
+{
+  "status": "ok",
+  "hyphy_positive_mode": "official",
+  "publication_mode": true,
+  "n_families": 140,
+  "babappa_raw_diagnostic_positive": 17,
+  "babappa_native_calibrated_support": 14,
+  "hyphy_absrel_positive_families": 73,
+  "hyphy_positive_branches": 185,
+  "hyphy_tested_branches": 1680,
+  "concordance_counts": {
+    "concordant_negative": 56,
+    "HyPhy_only": 70,
+    "BABAPPA_only": 11,
+    "concordant_positive": 3
+  },
+  "raw_concordance_counts": {
+    "concordant_negative": 54,
+    "HyPhy_only": 69,
+    "BABAPPA_only": 13,
+    "concordant_positive": 4
+  },
+  "concordance_by_stratum": {
+    "strict_in_domain": {
+      "concordant_negative": 7,
+      "HyPhy_only": 6,
+      "BABAPPA_only": 4,
+      "concordant_positive": 3
+    },
+    "relaxed_in_domain": {
+      "HyPhy_only": 7,
+      "concordant_negative": 11,
+      "BABAPPA_only": 2
+    },
+    "borderline_distance": {
+      "concordant_negative": 9,
+      "HyPhy_only": 11
+    },
+    "borderline_gap": {
+      "concordant_negative": 11,
+      "HyPhy_only": 6,
+      "BABAPPA_only": 3
+    },
+    "ood_high_distance": {
+      "HyPhy_only": 14,
+      "concordant_negative": 6
+    },
+    "ood_high_gap": {
+      "HyPhy_only": 9,
+      "BABAPPA_only": 2,
+      "concordant_negative": 9
+    },
+    "extreme_distance_stress": {
+      "HyPhy_only": 17,
+      "concordant_negative": 3
+    }
+  },
+  "applicability_counts": {
+    "in_domain": {
+      "families": 40,
+      "babappa_raw_positive": 9,
+      "babappa_native_supported": 9,
+      "hyphy_positive": 16
+    },
+    "borderline": {
+      "families": 48,
+      "babappa_raw_positive": 7,
+      "babappa_native_supported": 5,
+      "hyphy_positive": 18
+    },
+    "out_of_domain": {
+      "families": 52,
+      "babappa_raw_positive": 1,
+      "babappa_native_supported": 0,
+      "hyphy_positive": 39
+    }
+  },
+  "overall_agreement": 0.42142857142857143,
+  "positive_agreement_against_hyphy": 0.0410958904109589,
+  "negative_agreement": 0.835820895522388,
+  "claim_boundary": "HyPhy aBSREL is an external comparator, not empirical ground truth. Concordance metrics are not sensitivity/specificity."
+}

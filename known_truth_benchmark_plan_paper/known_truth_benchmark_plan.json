@@ -1,0 +1,13 @@
+{
+  "benchmark_dir": "known_truth_benchmark_paper",
+  "device": "auto",
+  "known_truth_benchmark_plan_version": "0.8.7",
+  "long_run_handoff": true,
+  "max_workers": 4,
+  "methods": "identity,mafft,babappalign,muscle",
+  "profile": "paper",
+  "profile_size": 5000,
+  "score_backend": "direct",
+  "threads": 8,
+  "user_run_mark": "USER-RUN ONLY \u2014 DO NOT EXECUTE IN CODEX"
+}

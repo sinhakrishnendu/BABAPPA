@@ -1,0 +1,13 @@
+{
+  "benchmark_dir": "known_truth_benchmark_smoke",
+  "device": "auto",
+  "known_truth_benchmark_plan_version": "0.8.7",
+  "long_run_handoff": false,
+  "max_workers": 1,
+  "methods": "identity,mafft,babappalign,muscle",
+  "profile": "smoke",
+  "profile_size": 12,
+  "score_backend": "smoke_surrogate",
+  "threads": 2,
+  "user_run_mark": ""
+}

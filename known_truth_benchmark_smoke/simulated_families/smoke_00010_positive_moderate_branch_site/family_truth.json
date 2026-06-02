@@ -1,0 +1,57 @@
+{
+  "effect_size": 4.0,
+  "expected_applicability": "in_domain",
+  "expected_decision": "detect",
+  "family_id": "smoke_00010_positive_moderate_branch_site",
+  "foreground_branches": [
+    "taxon1"
+  ],
+  "known_truth_family_version": "0.8.7",
+  "n_codons": 420,
+  "n_taxa": 10,
+  "omega_background": 0.3,
+  "omega_positive": 4.0,
+  "positive_branches": [
+    "taxon1"
+  ],
+  "regime": "positive_moderate_branch_site",
+  "saturation_tier": "moderate",
+  "selected_branch_site_pairs": [
+    "taxon1:27",
+    "taxon1:33",
+    "taxon1:36",
+    "taxon1:38",
+    "taxon1:39",
+    "taxon1:92",
+    "taxon1:101",
+    "taxon1:123",
+    "taxon1:134",
+    "taxon1:190",
+    "taxon1:239",
+    "taxon1:367",
+    "taxon1:374",
+    "taxon1:375",
+    "taxon1:396",
+    "taxon1:411"
+  ],
+  "selected_sites": [
+    27,
+    33,
+    36,
+    38,
+    39,
+    92,
+    101,
+    123,
+    134,
+    190,
+    239,
+    367,
+    374,
+    375,
+    396,
+    411
+  ],
+  "truth_boundary": "Known-truth files are for benchmark evaluation only. They must never be used as empirical inference inputs or as features for BABAPPA scoring.",
+  "truth_class": "positive"
+}

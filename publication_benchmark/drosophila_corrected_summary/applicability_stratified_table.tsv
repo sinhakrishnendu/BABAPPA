@@ -1,0 +1,4 @@
+applicability	families	babappa_raw_positive	babappa_native_supported	hyphy_positive
+borderline	48	7	5	18
+in_domain	40	9	9	16
+out_of_domain	52	1	0	39
