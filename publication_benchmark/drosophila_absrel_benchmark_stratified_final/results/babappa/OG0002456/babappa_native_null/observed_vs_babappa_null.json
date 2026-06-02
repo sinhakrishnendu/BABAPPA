@@ -1,0 +1,18 @@
+{
+  "evidence_class": "strong_babappa_native_support",
+  "observed": {
+    "called_branch_site_rows": 5292,
+    "max_branch_support": 0.5758937001228333,
+    "max_gene_support": 0.5758937001228333,
+    "max_site_score": 0.5758937001228333,
+    "q95_site_score": 0.10111435502767563,
+    "q99_site_score": 0.12166126072406769
+  },
+  "p_values": {
+    "p_babappa_called_rows": 0.000999000999000999,
+    "p_babappa_max_branch_support": 0.059940059940059943,
+    "p_babappa_max_gene_support": 0.059940059940059943,
+    "p_babappa_max_site_score": 0.059940059940059943
+  },
+  "status": "ok"
+}
