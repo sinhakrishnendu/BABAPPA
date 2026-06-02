@@ -1,0 +1,194 @@
+alignment_nt_length	gap_fraction	mean_pairwise_p_distance	msa	n_cds_integrity_fail	n_cds_missing	n_codons	n_records	n_residue_codon_mismatch	n_start_fail	n_taxa	panel_id	status	tree
+1863	0.381777	0.625726		0	0	621	12	0	0	12	OG0002422	filtered_high_gap_fraction	
+1503	0.418829	0.429456		0	0	501	12	0	0	12	OG0002424	filtered_high_gap_fraction	
+1503	0.433633	0.325821		0	0	501	12	0	0	12	OG0002425	filtered_high_gap_fraction	
+2751	0.055162	0.368805		0	0	917	12	0	0	12	OG0002426	filtered_high_p_distance	
+2751	0.060251	0.331705		0	0	917	12	0	0	12	OG0002427	filtered_high_p_distance	
+1566	0.054757	0.270083		0	0	522	12	0	0	12	OG0002428	filtered_high_p_distance	
+1800	0.039028	0.586128		0	0	600	12	0	0	12	OG0002429	filtered_high_p_distance	
+1800	0.048889	0.382330		0	0	600	12	0	0	12	OG0002430	filtered_high_p_distance	
+1800	0.062500	0.199842	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002431.codon.aln.fasta	0	0	600	12	0	0	12	OG0002431	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002431.treefile
+1326	0.413839	0.148915		0	0	442	12	0	0	12	OG0002433	filtered_high_gap_fraction	
+4425	0.080508	0.578580		0	0	1475	12	0	0	12	OG0002434	filtered_high_p_distance	
+2037	0.067501	0.163830	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002435.codon.aln.fasta	0	0	679	12	0	0	12	OG0002435	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002435.treefile
+2037	0.055719	0.160970	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002436.codon.aln.fasta	0	0	679	12	0	0	12	OG0002436	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002436.treefile
+1524	0.356299	0.103512		0	0	508	12	0	0	12	OG0002437	filtered_high_gap_fraction	
+1524	0.350066	0.332816		0	0	508	12	0	0	12	OG0002438	filtered_high_gap_fraction	
+1524	0.322507	0.412361		0	0	508	12	0	0	12	OG0002439	filtered_high_gap_fraction	
+1524	0.087434	0.476818		0	0	508	12	0	0	12	OG0002441	filtered_high_p_distance	
+1845	0.664634	0.426768		0	0	615	12	0	0	12	OG0002442	filtered_high_gap_fraction	
+1845	0.669648	0.475854		0	0	615	12	0	0	12	OG0002443	filtered_high_gap_fraction	
+1845	0.603252	0.530676		0	0	615	12	0	0	12	OG0002444	filtered_high_gap_fraction	
+1716	0.084062	0.585290		0	0	572	12	0	0	12	OG0002445	filtered_high_p_distance	
+1917	0.027778	0.475091		0	0	639	12	0	0	12	OG0002446	filtered_high_p_distance	
+1917	0.096635	0.373987		0	0	639	12	0	0	12	OG0002447	filtered_high_p_distance	
+1917	0.080464	0.183731	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002448.codon.aln.fasta	0	0	639	12	0	0	12	OG0002448	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002448.treefile
+1917	0.066771	0.523093		0	0	639	12	0	0	12	OG0002449	filtered_high_p_distance	
+1047	0.687679	0.167626		0	0	349	12	0	0	12	OG0002450	filtered_high_gap_fraction	
+1602	0.245943	0.167298		0	0	534	12	0	0	12	OG0002451	filtered_high_gap_fraction	
+1602	0.252497	0.180476		0	0	534	12	0	0	12	OG0002453	filtered_high_gap_fraction	
+1323	0.147392	0.034682	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002455.codon.aln.fasta	0	0	441	12	0	0	12	OG0002455	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002455.treefile
+1323	0.147392	0.078095	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002456.codon.aln.fasta	0	0	441	12	0	0	12	OG0002456	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002456.treefile
+1323	0.147392	0.086584	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002457.codon.aln.fasta	0	0	441	12	0	0	12	OG0002457	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002457.treefile
+1323	0.147392	0.064112	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002458.codon.aln.fasta	0	0	441	12	0	0	12	OG0002458	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002458.treefile
+1323	0.147392	0.070129	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002459.codon.aln.fasta	0	0	441	12	0	0	12	OG0002459	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002459.treefile
+1527	0.203831	0.481236		0	0	509	12	0	0	12	OG0002460	filtered_high_gap_fraction	
+1527	0.237066	0.569178		0	0	509	12	0	0	12	OG0002461	filtered_high_gap_fraction	
+1692	0.528812	0.252021		0	0	564	12	0	0	12	OG0002462	filtered_high_gap_fraction	
+1515	0.195710	0.550561		0	0	505	12	0	0	12	OG0002463	filtered_high_gap_fraction	
+2205	0.083107	0.539795		0	0	735	12	0	0	12	OG0002464	filtered_high_p_distance	
+1839	0.575177	0.285593		0	0	613	12	0	0	12	OG0002465	filtered_high_gap_fraction	
+1839	0.543774	0.317053		0	0	613	12	0	0	12	OG0002466	filtered_high_gap_fraction	
+1839	0.499456	0.278308		0	0	613	12	0	0	12	OG0002467	filtered_high_gap_fraction	
+1575	0.054286	0.263999		0	0	525	12	0	0	12	OG0002469	filtered_high_p_distance	
+1902	0.617508	0.480075		0	0	634	12	0	0	12	OG0002470	filtered_high_gap_fraction	
+3768	0.076035	0.297480		0	0	1256	12	0	0	12	OG0002471	filtered_high_p_distance	
+1944	0.218879	0.617612		0	0	648	12	0	0	12	OG0002472	filtered_high_gap_fraction	
+1944	0.442901	0.399501		0	0	648	12	0	0	12	OG0002473	filtered_high_gap_fraction	
+1890	0.049339	0.670317		0	0	630	12	0	0	12	OG0002474	filtered_high_p_distance	
+1683	0.061794	0.435171		0	0	561	12	0	0	12	OG0002475	filtered_high_p_distance	
+1683	0.051693	0.455711		0	0	561	12	0	0	12	OG0002476	filtered_high_p_distance	
+1683	0.062240	0.409653		0	0	561	12	0	0	12	OG0002477	filtered_high_p_distance	
+1683	0.069667	0.357476		0	0	561	12	0	0	12	OG0002478	filtered_high_p_distance	
+1509	0.186547	0.219006		0	0	503	12	0	0	12	OG0002479	filtered_high_gap_fraction	
+3681	0.613964	0.420657		0	0	1227	12	0	0	12	OG0002480	filtered_high_gap_fraction	
+1698	0.216431	0.302995		0	0	566	12	0	0	12	OG0002481	filtered_high_gap_fraction	
+1698	0.207450	0.302109		0	0	566	12	0	0	12	OG0002482	filtered_high_gap_fraction	
+1698	0.223204	0.194678		0	0	566	12	0	0	12	OG0002483	filtered_high_gap_fraction	
+1698	0.198763	0.410065		0	0	566	12	0	0	12	OG0002484	filtered_high_gap_fraction	
+1542	0.343872	0.101759		0	0	514	12	0	0	12	OG0002485	filtered_high_gap_fraction	
+1542	0.131809	0.637338		0	0	514	12	0	0	12	OG0002486	filtered_high_p_distance	
+1542	0.147536	0.272316		0	0	514	12	0	0	12	OG0002487	filtered_high_p_distance	
+1542	0.342412	0.240551		0	0	514	12	0	0	12	OG0002488	filtered_high_gap_fraction	
+1725	0.285217	0.213625		0	0	575	12	0	0	12	OG0002489	filtered_high_gap_fraction	
+2067	0.076560	0.636351		0	0	689	12	0	0	12	OG0002490	filtered_high_p_distance	
+3354	0.036076	0.563011		0	0	1118	12	0	0	12	OG0002492	filtered_high_p_distance	
+1545	0.026214	0.280139		0	0	515	12	0	0	12	OG0002493	filtered_high_p_distance	
+1530	0.463399	0.425661		0	0	510	12	0	0	12	OG0002494	filtered_high_gap_fraction	
+1530	0.301144	0.392147		0	0	510	12	0	0	12	OG0002495	filtered_high_gap_fraction	
+1914	0.149556	0.482421		0	0	638	12	0	0	12	OG0002496	filtered_high_p_distance	
+582	0.026203	0.282240		0	0	194	12	0	0	12	OG0002497	filtered_high_p_distance	
+582	0.182131	0.176938		0	0	194	12	0	0	12	OG0002498	filtered_high_gap_fraction	
+582	0.182990	0.252840		0	0	194	12	0	0	12	OG0002499	filtered_high_gap_fraction	
+582	0.180842	0.065145		0	0	194	12	0	0	12	OG0002500	filtered_high_gap_fraction	
+2880	0.052257	0.548349		0	0	960	12	0	0	12	OG0002501	filtered_high_p_distance	
+3003	0.163170	0.505150		0	0	1001	12	0	0	12	OG0002502	filtered_high_gap_fraction	
+1644	0.029197	0.325657		0	0	548	12	0	0	12	OG0002503	filtered_high_p_distance	
+1188	0.144360	0.202684		0	0	396	12	0	0	12	OG0002504	filtered_high_p_distance	
+1545	0.188350	0.255867		0	0	515	12	0	0	12	OG0002506	filtered_high_gap_fraction	
+1641	0.015692	0.435089		0	0	547	12	0	0	12	OG0002507	filtered_high_p_distance	
+1629	0.570902	0.250725		0	0	543	12	0	0	12	OG0002508	filtered_high_gap_fraction	
+2700	0.225370	0.574427		0	0	900	12	0	0	12	OG0002510	filtered_high_gap_fraction	
+2700	0.044074	0.508075		0	0	900	12	0	0	12	OG0002511	filtered_high_p_distance	
+2700	0.070370	0.466990		0	0	900	12	0	0	12	OG0002512	filtered_high_p_distance	
+1971	0.020548	0.331290		0	0	657	12	0	0	12	OG0002513	filtered_high_p_distance	
+1971	0.124302	0.544610		0	0	657	12	0	0	12	OG0002514	filtered_high_p_distance	
+1689	0.595027	0.368662		0	0	563	12	0	0	12	OG0002515	filtered_high_gap_fraction	
+1689	0.585850	0.381781		0	0	563	12	0	0	12	OG0002516	filtered_high_gap_fraction	
+1785	0.018067	0.289772		0	0	595	12	0	0	12	OG0002517	filtered_high_p_distance	
+1578	0.034854	0.251527		0	0	526	12	0	0	12	OG0002519	filtered_high_p_distance	
+774	0.700581	0.160166		0	0	258	12	0	0	12	OG0002520	filtered_high_gap_fraction	
+4137	0.042301	0.520117		0	0	1379	12	0	0	12	OG0002521	filtered_high_p_distance	
+3051	0.641183	0.148286		0	0	1017	12	0	0	12	OG0002522	filtered_high_gap_fraction	
+3051	0.640610	0.250134		0	0	1017	12	0	0	12	OG0002523	filtered_high_gap_fraction	
+1959	0.409393	0.289322		0	0	653	12	0	0	12	OG0002524	filtered_high_gap_fraction	
+1959	0.476519	0.261911		0	0	653	12	0	0	12	OG0002525	filtered_high_gap_fraction	
+1959	0.086651	0.658407		0	0	653	12	0	0	12	OG0002526	filtered_high_p_distance	
+2841	0.208377	0.624036		0	0	947	12	0	0	12	OG0002527	filtered_high_gap_fraction	
+2841	0.244456	0.220404		0	0	947	12	0	0	12	OG0002528	filtered_high_gap_fraction	
+2841	0.338965	0.137066		0	0	947	12	0	0	12	OG0002529	filtered_high_gap_fraction	
+2841	0.267687	0.170337		0	0	947	12	0	0	12	OG0002530	filtered_high_gap_fraction	
+1416	0.032309	0.113267	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002531.codon.aln.fasta	0	0	472	12	0	0	12	OG0002531	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002531.treefile
+1416	0.055085	0.121076	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002532.codon.aln.fasta	0	0	472	12	0	0	12	OG0002532	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002532.treefile
+1416	0.051377	0.076661	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002533.codon.aln.fasta	0	0	472	12	0	0	12	OG0002533	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002533.treefile
+1416	0.038136	0.088784	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002534.codon.aln.fasta	0	0	472	12	0	0	12	OG0002534	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002534.treefile
+2655	0.047269	0.322134		0	0	885	12	0	0	12	OG0002535	filtered_high_p_distance	
+2655	0.032863	0.309989		0	0	885	12	0	0	12	OG0002536	filtered_high_p_distance	
+2655	0.078814	0.251849		0	0	885	12	0	0	12	OG0002537	filtered_high_p_distance	
+2655	0.057721	0.249544		0	0	885	12	0	0	12	OG0002538	filtered_high_p_distance	
+840	0.107143	0.234364		0	0	280	12	0	0	12	OG0002539	filtered_high_p_distance	
+1530	0.081209	0.316466		0	0	510	12	0	0	12	OG0002540	filtered_high_p_distance	
+1530	0.027941	0.212586		0	0	510	12	0	0	12	OG0002541	filtered_high_p_distance	
+3537	0.318137	0.324932		0	0	1179	12	0	0	12	OG0002542	filtered_high_gap_fraction	
+3537	0.206390	0.557418		0	0	1179	12	0	0	12	OG0002543	filtered_high_gap_fraction	
+3537	0.398360	0.564661		0	0	1179	12	0	0	12	OG0002544	filtered_high_gap_fraction	
+1494	0.266566	0.391736		0	0	498	12	0	0	12	OG0002545	filtered_high_gap_fraction	
+13848				0	0	4616	12	0	0	12	OG0002546	filtered_codon_count	
+13848				0	0	4616	12	0	0	12	OG0002547	filtered_codon_count	
+13848				0	0	4616	12	0	0	12	OG0002548	filtered_codon_count	
+1224	0.381944	0.255378		0	0	408	12	0	0	12	OG0002549	filtered_high_gap_fraction	
+2583	0.100949	0.663675		0	0	861	12	0	0	12	OG0002550	filtered_high_p_distance	
+2583	0.271971	0.227259		0	0	861	12	0	0	12	OG0002551	filtered_high_gap_fraction	
+1860	0.386828	0.565679		0	0	620	12	0	0	12	OG0002552	filtered_high_gap_fraction	
+1851	0.431118	0.355503		0	0	617	12	0	0	12	OG0002553	filtered_high_gap_fraction	
+1284	0.283100	0.372735		0	0	428	12	0	0	12	OG0002554	filtered_high_gap_fraction	
+1509	0.045891	0.355814		0	0	503	12	0	0	12	OG0002555	filtered_high_p_distance	
+3675	0.642857	0.196263		0	0	1225	12	0	0	12	OG0002556	filtered_high_gap_fraction	
+1569	0.036966	0.339417		0	0	523	12	0	0	12	OG0002557	filtered_high_p_distance	
+1569	0.030752	0.441640		0	0	523	12	0	0	12	OG0002558	filtered_high_p_distance	
+1503	0.061710	0.255187		0	0	501	12	0	0	12	OG0002559	filtered_high_p_distance	
+3297	0.680315	0.277766		0	0	1099	12	0	0	12	OG0002560	filtered_high_gap_fraction	
+420	0.398810	0.197559		0	0	140	12	0	0	12	OG0002561	filtered_high_gap_fraction	
+1527	0.396202	0.546002		0	0	509	12	0	0	12	OG0002562	filtered_high_gap_fraction	
+1206	0.164179	0.097207		0	0	402	12	0	0	12	OG0002563	filtered_high_gap_fraction	
+4446	0.187528	0.668811		0	0	1482	12	0	0	12	OG0002564	filtered_high_gap_fraction	
+696	0.228807	0.288137		0	0	232	12	0	0	12	OG0002565	filtered_high_gap_fraction	
+2622	0.031465	0.500456		0	0	874	12	0	0	12	OG0002566	filtered_high_p_distance	
+2118	0.049221	0.601818		0	0	706	12	0	0	12	OG0002567	filtered_high_p_distance	
+1890	0.019709	0.358177		0	0	630	12	0	0	12	OG0002568	filtered_high_p_distance	
+1824	0.026042	0.537252		0	0	608	12	0	0	12	OG0002570	filtered_high_p_distance	
+2145	0.430303	0.419846		0	0	715	12	0	0	12	OG0002571	filtered_high_gap_fraction	
+2307	0.040746	0.474705		0	0	769	12	0	0	12	OG0002572	filtered_high_p_distance	
+2307	0.055375	0.438797		0	0	769	12	0	0	12	OG0002573	filtered_high_p_distance	
+4632				0	0	1544	12	0	0	12	OG0002574	filtered_codon_count	
+2154	0.061281	0.370145		0	0	718	12	0	0	12	OG0002575	filtered_high_p_distance	
+4419	0.916950	0.355418		0	0	1473	12	0	0	12	OG0002576	filtered_high_gap_fraction	
+4419	0.175209	0.635255		0	0	1473	12	0	0	12	OG0002577	filtered_high_gap_fraction	
+2442	0.033374	0.534184		0	0	814	12	0	0	12	OG0002578	filtered_high_p_distance	
+1533	0.112524	0.587073		0	0	511	12	0	0	12	OG0002580	filtered_high_p_distance	
+1680	0.185863	0.190740		0	0	560	12	0	0	12	OG0002582	filtered_high_gap_fraction	
+1680	0.032589	0.589855		0	0	560	12	0	0	12	OG0002583	filtered_high_p_distance	
+1380	0.072826	0.249474		0	0	460	12	0	0	12	OG0002584	filtered_high_p_distance	
+1380	0.030978	0.179461	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002585.codon.aln.fasta	0	0	460	12	0	0	12	OG0002585	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002585.treefile
+1380	0.073732	0.179904	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002586.codon.aln.fasta	0	0	460	12	0	0	12	OG0002586	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002586.treefile
+2619	0.146430	0.565126		0	0	873	12	0	0	12	OG0002587	filtered_high_p_distance	
+2619	0.106911	0.660174		0	0	873	12	0	0	12	OG0002588	filtered_high_p_distance	
+2619	0.076842	0.468686		0	0	873	12	0	0	12	OG0002589	filtered_high_p_distance	
+2187	0.036808	0.621211		0	0	729	12	0	0	12	OG0002590	filtered_high_p_distance	
+2379	0.325872	0.317032		0	0	793	12	0	0	12	OG0002591	filtered_high_gap_fraction	
+2379	0.014607	0.346325		0	0	793	12	0	0	12	OG0002592	filtered_high_p_distance	
+2442	0.539926	0.162169		0	0	814	12	0	0	12	OG0002593	filtered_high_gap_fraction	
+2538	0.432624	0.488859		0	0	846	12	0	0	12	OG0002594	filtered_high_gap_fraction	
+7113				0	0	2371	12	0	0	12	OG0002595	filtered_codon_count	
+909	0.184543	0.339667		0	0	303	12	0	0	12	OG0002596	filtered_high_gap_fraction	
+909	0.232398	0.240378		0	0	303	12	0	0	12	OG0002597	filtered_high_gap_fraction	
+1479	0.683232	0.017720		0	0	493	12	0	0	12	OG0002598	filtered_high_gap_fraction	
+3846	0.228354	0.656346		0	0	1282	12	0	0	12	OG0002599	filtered_high_gap_fraction	
+3846	0.453523	0.567851		0	0	1282	12	0	0	12	OG0002600	filtered_high_gap_fraction	
+7488				0	0	2496	12	0	0	12	OG0002601	filtered_codon_count	
+7488				0	0	2496	12	0	0	12	OG0002602	filtered_codon_count	
+7488				0	0	2496	12	0	0	12	OG0002603	filtered_codon_count	
+1551	0.190200	0.481462		0	0	517	12	0	0	12	OG0002604	filtered_high_gap_fraction	
+1551	0.104126	0.327132		0	0	517	12	0	0	12	OG0002605	filtered_high_p_distance	
+1551	0.248388	0.390146		0	0	517	12	0	0	12	OG0002606	filtered_high_gap_fraction	
+1527	0.272430	0.329082		0	0	509	12	0	0	12	OG0002607	filtered_high_gap_fraction	
+1527	0.072855	0.329585		0	0	509	12	0	0	12	OG0002608	filtered_high_p_distance	
+1527	0.184840	0.367745		0	0	509	12	0	0	12	OG0002609	filtered_high_gap_fraction	
+1074	0.317505	0.160467		0	0	358	12	0	0	12	OG0002610	filtered_high_gap_fraction	
+1074	0.263501	0.307797		0	0	358	12	0	0	12	OG0002611	filtered_high_gap_fraction	
+1074	0.092877	0.165603	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002612.codon.aln.fasta	0	0	358	12	0	0	12	OG0002612	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002612.treefile
+1677	0.013119	0.348169		0	0	559	12	0	0	12	OG0002613	filtered_high_p_distance	
+1677	0.039952	0.317729		0	0	559	12	0	0	12	OG0002614	filtered_high_p_distance	
+1677	0.064252	0.438665		0	0	559	12	0	0	12	OG0002615	filtered_high_p_distance	
+2250	0.040667	0.589679		0	0	750	12	0	0	12	OG0002616	filtered_high_p_distance	
+2250	0.181333	0.121681		0	0	750	12	0	0	12	OG0002617	filtered_high_gap_fraction	
+2250	0.181333	0.073644		0	0	750	12	0	0	12	OG0002618	filtered_high_gap_fraction	
+462	0.115260	0.323639		0	0	154	12	0	0	12	OG0002619	filtered_high_p_distance	
+2076	0.077312	0.181424	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002620.codon.aln.fasta	0	0	692	12	0	0	12	OG0002620	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002620.treefile
+1794	0.115245	0.509985		0	0	598	12	0	0	12	OG0002621	filtered_high_p_distance	
+1794	0.148829	0.571375		0	0	598	12	0	0	12	OG0002622	filtered_high_p_distance	
+1794	0.120541	0.236110		0	0	598	12	0	0	12	OG0002623	filtered_high_p_distance	
+921	0.332248	0.080291		0	0	307	12	0	0	12	OG0002624	filtered_high_gap_fraction	
+1443	0.073458	0.162992	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002625.codon.aln.fasta	0	0	481	12	0	0	12	OG0002625	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002625.treefile
+1443	0.127685	0.153623	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002626.codon.aln.fasta	0	0	481	12	0	0	12	OG0002626	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002626.treefile
+1443	0.091303	0.146680	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002627.codon.aln.fasta	0	0	481	12	0	0	12	OG0002627	ok	publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002627.treefile

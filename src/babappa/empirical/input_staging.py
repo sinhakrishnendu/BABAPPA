@@ -40,7 +40,7 @@ VALID_REFERENCE_STATUS = {"codeml_available", "hyphy_available", "both_available
 STOP_CODONS = {"TAA", "TAG", "TGA"}
 START_CODONS = {"ATG"}
 ALLOWED_DNA = set("ACGTURYSWKMBDHVN-.?")
-USER_RUN_ONLY = "USER-RUN ONLY - DO NOT EXECUTE IN CODEX"
+USER_RUN_ONLY = "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING"
 
 
 @dataclass(frozen=True)
@@ -279,7 +279,7 @@ def import_real_pilot_batch(config: RealPilotBatchImportConfig) -> Dict[str, Any
 
 
 def plan_real_pilot_tree_building(config: RealPilotTreeBuildingPlanConfig) -> Dict[str, Any]:
-    """Plan user-run tree building for families with CDS present and tree missing."""
+    """Plan manual execution tree building for families with CDS present and tree missing."""
 
     workspace = Path(config.workspace)
     outdir = Path(config.outdir)

@@ -19,7 +19,7 @@ runs/
 - New fast external 1K validation should go under `runs/external_1k_fast/`.
 - New fast external 10K validation should go under `runs/external_10k_fast/` only after 1K method-policy review.
 - Final 100K benchmark outputs should go under `runs/final_100k/`.
-- Keep generated user-run scripts inside the run directory that owns their outputs.
+- Keep generated manual execution scripts inside the run directory that owns their outputs.
 - Keep `method_policy_*`, reports, summaries, logs, and expected-output manifests with the run they describe.
 
 ## Current Workspace Caveat

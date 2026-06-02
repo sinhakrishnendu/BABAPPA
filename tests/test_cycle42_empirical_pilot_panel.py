@@ -167,7 +167,7 @@ def test_classical_reference_planner_writes_templates_without_executing(tmp_path
         ClassicalReferenceWorkflowPlanConfig(str(PANEL), str(tmp_path / "classical"), "codeml,hyphy")
     )
     assert result["executed"] is False
-    assert "USER-RUN ONLY" in (tmp_path / "classical" / "codeml_commands.sh").read_text()
+    assert "MANUAL EXECUTION SCRIPT" in (tmp_path / "classical" / "codeml_commands.sh").read_text()
     assert (tmp_path / "classical" / "hyphy_commands.sh").exists()
 
 

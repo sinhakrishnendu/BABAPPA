@@ -5,7 +5,7 @@
 - max mean p-distance: `0.25`
 - executed: `False`
 
-All scripts are USER-RUN ONLY and must not be executed by Codex.
+All scripts are MANUAL EXECUTION SCRIPT and must be reviewed before running.
 
 - `download_homologs.sh`
 - `recover_cds.sh`

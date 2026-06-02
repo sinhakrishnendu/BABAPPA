@@ -1,4 +1,4 @@
-* USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+* MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 * panel_id: short_low_information_01
 * foreground branch/taxon: replace_with_foreground_taxon
 seqfile = alignment.phy

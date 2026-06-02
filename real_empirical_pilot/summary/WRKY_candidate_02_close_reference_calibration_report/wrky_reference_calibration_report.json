@@ -107,7 +107,7 @@
       "mean_pairwise_p_distance": 0.09719812784367628,
       "n_codons": 490,
       "n_taxa": 7,
-      "notes": "Initial null calibration scaffold; user-run only.",
+      "notes": "Initial null calibration scaffold; manual execution only.",
       "null_replicates_initial": 1000,
       "p_distance_source": "alignment_ensemble_mean",
       "recommended_tier": "moderate",

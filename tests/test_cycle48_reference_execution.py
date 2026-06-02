@@ -31,7 +31,7 @@ def test_install_reference_tools_plan_writes_conda_and_brew_helpers(tmp_path: Pa
     result = install_reference_tools_plan(ReferenceToolsInstallPlanConfig(str(tmp_path / "install")))
     assert result["status"] == "planned"
     assert "paml hyphy" in (tmp_path / "install" / "install_reference_tools_conda.sh").read_text()
-    assert "USER-RUN ONLY" in (tmp_path / "install" / "install_reference_tools_brew.sh").read_text()
+    assert "MANUAL EXECUTION SCRIPT" in (tmp_path / "install" / "install_reference_tools_brew.sh").read_text()
 
 
 def test_check_reference_tools_reports_missing_without_failure(tmp_path: Path, monkeypatch) -> None:

@@ -207,7 +207,7 @@ def test_simulation_matched_calibration_planner_writes_commands_without_executio
     )
     assert result["heavy_jobs_executed"] is False
     commands = (tmp_path / "calibration_plan" / "proposed_null_simulation_commands.sh").read_text()
-    assert "USER-RUN ONLY" in commands
+    assert "MANUAL EXECUTION SCRIPT" in commands
     assert "# babappa simulate" in commands
 
 

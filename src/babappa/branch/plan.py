@@ -41,7 +41,7 @@ class BranchConditioned10kPlanConfig:
 
 
 def plan_branch_conditioned_10k(config: BranchConditioned10kPlanConfig) -> dict:
-    """Write user-run branch-conditioned 10K validation scripts and metadata."""
+    """Write manual execution branch-conditioned 10K validation scripts and metadata."""
     outdir = Path(config.outdir)
     run_path = outdir / "run_branch_conditioned_10k.sh"
     monitor_path = outdir / "monitor_branch_conditioned_10k.sh"
@@ -79,7 +79,7 @@ def _header(config: BranchConditioned10kPlanConfig) -> str:
         f"source {config.conda_sh}",
         f"conda activate {config.conda_env}",
         "",
-        "# USER-RUN ONLY — DO NOT EXECUTE IN CODEX",
+        "# MANUAL EXECUTION SCRIPT — Review before running",
         "",
     ])
 
@@ -252,7 +252,7 @@ def _markdown(config: BranchConditioned10kPlanConfig, expected: dict) -> str:
         "",
         "## Recovery",
         "",
-        "A failed tier can be resumed by rerunning commands for that tier after validating the last completed directory. The scripts are USER-RUN ONLY and were not executed by Codex.",
+        "A failed tier can be resumed by rerunning commands for that tier after validating the last completed directory. The scripts are MANUAL EXECUTION SCRIPT and were not executed automatically.",
         "",
         "## Why 100K waits",
         "",

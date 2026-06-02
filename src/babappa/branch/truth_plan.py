@@ -36,7 +36,7 @@ class ExplicitBranchTruthPrototypePlanConfig:
 
 @dataclass(frozen=True)
 class ExplicitBranchTruth1kPlanConfig:
-    """Configuration for explicit branch-truth 1K user-run planning."""
+    """Configuration for explicit branch-truth 1K manual execution planning."""
 
     outdir: str = "explicit_branch_truth_1k_plan"
     n_families_per_tier: int = 250
@@ -64,7 +64,7 @@ class ExplicitBranchTruth1kPlanConfig:
 
 @dataclass(frozen=True)
 class ExplicitBranchTruth10kPlanConfig:
-    """Configuration for conservative explicit branch-truth 10K user-run planning."""
+    """Configuration for conservative explicit branch-truth 10K manual execution planning."""
 
     outdir: str = "explicit_branch_truth_10k_plan"
     n_families_per_tier: int = 2500
@@ -357,7 +357,7 @@ def _mac_run_script(config, scale: str, block_until_env: bool) -> str:
             f"log=logs/explicit_branch_truth_{scale}_mps_${{ts}}.log",
             "exec > >(tee -a \"$log\") 2>&1",
             f"echo 'BABAPPA explicit branch-truth {scale.upper()} Apple Silicon/MPS plan started.'",
-            "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'",
+            "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'",
                 f"echo 'Device: {config.device}; batch size: '\"$BABAPPA_MPS_BATCH_SIZE\"'; workers: '\"$BABAPPA_PERF_WORKERS\"'; torch threads: '\"$BABAPPA_TORCH_THREADS\"'; babappalign device: '\"$BABAPPA_BABAPPALIGN_DEVICE\"'; babappalign backend: '\"$BABAPPA_BABAPPALIGN_BACKEND\"'; babappalign workers: '\"$BABAPPA_BABAPPALIGN_WORKERS\"'; babappalign max workers: '\"$BABAPPA_BABAPPALIGN_MAX_WORKERS\"'; aligner child threads: '\"$BABAPPA_ALIGNER_SUBPROCESS_THREADS\"'; min free GB: '\"$BABAPPA_MIN_FREE_GB\"'; feature policy: {config.feature_policy}; truth mode: {config.truth_mode}'",
             "",
         ]
@@ -513,7 +513,7 @@ def _mac_header(config, activate: bool = True) -> List[str]:
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         "",
-        "# USER-RUN ONLY - DO NOT EXECUTE IN CODEX",
+        "# MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING",
         "",
     ]
     if activate:
@@ -1270,7 +1270,7 @@ def _header() -> List[str]:
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         "",
-        "# USER-RUN ONLY - PLAN SCAFFOLD",
+        "# MANUAL EXECUTION SCRIPT - PLAN SCAFFOLD",
         "",
     ]
 
@@ -1282,7 +1282,7 @@ def _conda_header(conda_sh: str, conda_env: str) -> List[str]:
         f"source {conda_sh}",
         f"conda activate {conda_env}",
         "",
-        "# USER-RUN ONLY - DO NOT EXECUTE IN CODEX",
+        "# MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING",
         "",
     ]
 

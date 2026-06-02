@@ -1,0 +1,13 @@
+family_id	method	branch_id	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	user_msa	Drosophila_ananassae_Drosophila_ananassae__LOC6494760__XP_001959725.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_biarmipes_Drosophila_biarmipes__LOC108026627__XP_016953132.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_mauritiana_Drosophila_mauritiana__LOC117135977__XP_033152481.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_melanogaster_Drosophila_melanogaster__gas__NP_611678.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_pseudoobscura_Drosophila_pseudoobscura__gas__XP_001360806.2	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_sechellia_Drosophila_sechellia__gas__XP_002039917.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_simulans_Drosophila_simulans__LOC6735713__XP_002082629.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_subobscura_Drosophila_subobscura__LOC117891805__XP_034653377.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_suzukii_Drosophila_suzukii__gas__XP_016928770.3	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_virilis_Drosophila_virilis__gas__XP_002050067.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_willistoni_Drosophila_willistoni__LOC6643291__XP_002066057.1	600	0.0	0.0	0	False
+empirical	user_msa	Drosophila_yakuba_Drosophila_yakuba__LOC6531278__XP_002092087.2	600	0.0	0.0	0	False

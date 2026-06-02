@@ -1,0 +1,2 @@
+family_id	method	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	user_msa	5292	0.5758937001228333	0.07091430775949327	5292	False

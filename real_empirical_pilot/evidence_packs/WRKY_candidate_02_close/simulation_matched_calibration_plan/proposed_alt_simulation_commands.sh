@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'
+echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'
 echo 'Optional matched alternative simulations for calibration stress testing; not run automatically.'
 
 # Proposed heavy command placeholder, intentionally commented:

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'
+echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'
 
 # Install HyPhy separately if `hyphy` is not available on PATH.
 # hyphy meme --alignment ../input/wrky_candidate_01.cds.fasta --tree ../input/wrky_candidate_01.treefile

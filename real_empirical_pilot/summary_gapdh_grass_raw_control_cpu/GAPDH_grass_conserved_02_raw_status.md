@@ -36,7 +36,7 @@ This report summarizes the updated `GAPDH_grass_conserved_02_raw` run performed 
 The result is not cleanly interpretable as a conserved negative control:
 
 - `identity` failed because raw CDS lengths are unequal.
-- `mafft` failed in the Codex shell due local `/dev/stderr` permission behavior.
+- `mafft` failed in the restricted shell due local `/dev/stderr` permission behavior.
 - `babappalign` completed.
 - `muscle` completed.
 - The method policy quarantined all methods because site-map quality was poor.
@@ -47,4 +47,4 @@ Do not treat this as a biological positive-selection result or as a clean conser
 
 `saturated_or_alignment_sensitive_diagnostic_positive_with_method_policy_failure`
 
-Recommended next step: rerun the user script from the normal terminal/molevo environment so MAFFT and MPS are available outside the Codex sandbox. If the fresh run still quarantines all methods, curate a closer/cleaner GAPDH ortholog panel before using it as a negative control.
+Recommended next step: rerun the user script from the normal terminal/molevo environment so MAFFT and MPS are available outside the restricted shell environment. If the fresh run still quarantines all methods, curate a closer/cleaner GAPDH ortholog panel before using it as a negative control.

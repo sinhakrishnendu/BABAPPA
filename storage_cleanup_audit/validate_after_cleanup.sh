@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$HOME/Documents/GitHub/BABAPPA"
 
-echo "USER-RUN ONLY -- lightweight validation after quarantine"
+echo "MANUAL EXECUTION SCRIPT -- lightweight validation after quarantine"
 python -m pip install -e ".[dev]"
 python -m pytest -q
 babappa validate-deployable-model-package --package-dir deployable_model_conservative_branch_site_100k_mps

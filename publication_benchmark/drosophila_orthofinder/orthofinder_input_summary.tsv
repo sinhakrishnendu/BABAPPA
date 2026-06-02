@@ -1,0 +1,13 @@
+species	assembly	source	status	raw_cds_records	selected_longest_gene_records	rejected_records	rejection_counts
+Drosophila_ananassae	GCF_017639315.1	RefSeq	ok	25915	14664	115	"{""internal_stop"": 112, ""length_not_divisible_by_3"": 3}"
+Drosophila_biarmipes	GCF_025231255.1	RefSeq	ok	26154	14356	118	"{""internal_stop"": 118}"
+Drosophila_mauritiana	GCF_004382145.1	RefSeq	ok	23239	13978	136	"{""internal_stop"": 125, ""length_not_divisible_by_3"": 11}"
+Drosophila_melanogaster	GCF_000001215.4	RefSeq	ok	30802	13923	632	"{""internal_stop"": 519, ""length_not_divisible_by_3"": 61, ""too_short_protein"": 52}"
+Drosophila_pseudoobscura	GCF_009870125.1	RefSeq	ok	26574	14254	91	"{""internal_stop"": 86, ""length_not_divisible_by_3"": 5}"
+Drosophila_sechellia	GCF_004382195.2	RefSeq	ok	23937	13956	163	"{""internal_stop"": 162, ""length_not_divisible_by_3"": 1}"
+Drosophila_simulans	GCF_016746395.2	RefSeq	ok	26225	14174	84	"{""internal_stop"": 84}"
+Drosophila_subobscura	GCF_008121235.1	RefSeq	ok	22475	13333	108	"{""internal_stop"": 105, ""length_not_divisible_by_3"": 3}"
+Drosophila_suzukii	GCF_043229965.1	RefSeq	ok	26986	15603	148	"{""internal_stop"": 145, ""length_not_divisible_by_3"": 3}"
+Drosophila_virilis	GCF_030788295.1	RefSeq	ok	24711	13772	83	"{""internal_stop"": 81, ""length_not_divisible_by_3"": 1, ""too_short_protein"": 1}"
+Drosophila_willistoni	GCF_018902025.1	RefSeq	ok	21170	14678	98	"{""internal_stop"": 86, ""length_not_divisible_by_3"": 11, ""too_short_protein"": 1}"
+Drosophila_yakuba	GCF_016746365.2	RefSeq	ok	25398	14128	103	"{""internal_stop"": 99, ""length_not_divisible_by_3"": 4}"

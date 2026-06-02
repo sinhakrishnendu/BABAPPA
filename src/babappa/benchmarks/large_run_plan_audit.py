@@ -24,19 +24,19 @@ def validate_large_run_plan_dir(plan_dir: str | Path) -> dict:
         if not file_path.exists():
             failures.append(f"missing_{label}:{file_path}")
     commands_text = required["commands"].read_text(encoding="utf-8") if required["commands"].exists() else ""
-    if "USER-RUN ONLY" not in commands_text:
+    if "MANUAL EXECUTION SCRIPT" not in commands_text:
         failures.append("commands_missing_user_run_only_marker")
     if not commands_text.startswith("#!/usr/bin/env bash\nset -euo pipefail"):
         failures.append("commands_missing_executable_header")
     if "babappa make-saturation-panel" not in commands_text:
         failures.append("commands_missing_executable_babappa_steps")
     external_text = required["external"].read_text(encoding="utf-8") if required["external"].exists() else ""
-    if "USER-RUN ONLY" not in external_text:
+    if "MANUAL EXECUTION SCRIPT" not in external_text:
         failures.append("external_commands_missing_user_run_only_marker")
     if required["external"].exists() and "babappa build-site-map" not in external_text:
         failures.append("external_commands_missing_site_map_step")
     reference_text = required["reference"].read_text(encoding="utf-8") if required["reference"].exists() else ""
-    if "USER-RUN ONLY" not in reference_text:
+    if "MANUAL EXECUTION SCRIPT" not in reference_text:
         failures.append("reference_missing_user_run_only_marker")
     for line in reference_text.splitlines():
         stripped = line.strip()

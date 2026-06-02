@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+pass	Drosophila_ananassae_Drosophila_ananassae__LOC6506687__XP_032309811.1	12	679	0.0	0.05571919489445263	0.16096978225793945	high		

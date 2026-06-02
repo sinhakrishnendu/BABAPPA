@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "panel": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/stratified_drosophila_babappa_absrel_panel.tsv",
+  "n_families": 140,
+  "families_per_stratum_requested": 20,
+  "strata": [
+    {
+      "benchmark_stratum": "strict_in_domain",
+      "description": "Low-divergence, low-gap families expected to be BABAPPA in-domain.",
+      "families_selected": 20,
+      "status_counts": "{\"filtered_codon_count\": 8, \"filtered_high_gap_fraction\": 89, \"filtered_high_p_distance\": 76, \"ok\": 20}",
+      "min_gap_fraction": null,
+      "max_gap_fraction": 0.15,
+      "min_mean_pdistance": null,
+      "max_mean_pdistance": 0.2
+    },
+    {
+      "benchmark_stratum": "relaxed_in_domain",
+      "description": "Moderate but still clean families near the upper in-domain range.",
+      "families_selected": 20,
+      "status_counts": "{\"fail\": 1, \"filtered_codon_count\": 14, \"filtered_high_gap_fraction\": 112, \"filtered_high_p_distance\": 128, \"filtered_low_p_distance\": 45, \"ok\": 20}",
+      "min_gap_fraction": null,
+      "max_gap_fraction": 0.2,
+      "min_mean_pdistance": 0.2,
+      "max_mean_pdistance": 0.25
+    },
+    {
+      "benchmark_stratum": "borderline_distance",
+      "description": "Low-gap families whose divergence is expected to push BABAPPA toward borderline.",
+      "families_selected": 20,
+      "status_counts": "{\"filtered_codon_count\": 4, \"filtered_high_gap_fraction\": 61, \"filtered_high_p_distance\": 48, \"filtered_low_p_distance\": 25, \"ok\": 20}",
+      "min_gap_fraction": null,
+      "max_gap_fraction": 0.2,
+      "min_mean_pdistance": 0.25,
+      "max_mean_pdistance": 0.35
+    },
+    {
+      "benchmark_stratum": "borderline_gap",
+      "description": "Moderate-divergence families with elevated gap burden.",
+      "families_selected": 20,
+      "status_counts": "{\"filtered_codon_count\": 10, \"filtered_high_gap_fraction\": 54, \"filtered_high_p_distance\": 27, \"filtered_low_gap_fraction\": 152, \"ok\": 20}",
+      "min_gap_fraction": 0.2,
+      "max_gap_fraction": 0.35,
+      "min_mean_pdistance": null,
+      "max_mean_pdistance": 0.25
+    },
+    {
+      "benchmark_stratum": "ood_high_distance",
+      "description": "Low-gap but high-divergence OOD stress-test families.",
+      "families_selected": 20,
+      "status_counts": "{\"filtered_codon_count\": 4, \"filtered_high_gap_fraction\": 47, \"filtered_high_p_distance\": 26, \"filtered_low_p_distance\": 46, \"ok\": 20}",
+      "min_gap_fraction": null,
+      "max_gap_fraction": 0.25,
+      "min_mean_pdistance": 0.35,
+      "max_mean_pdistance": 0.5
+    },
+    {
+      "benchmark_stratum": "ood_high_gap",
+      "description": "High-gap OOD stress-test families with non-extreme divergence.",
+      "families_selected": 20,
+      "status_counts": "{\"fail\": 1, \"filtered_codon_count\": 19, \"filtered_high_gap_fraction\": 28, \"filtered_high_p_distance\": 17, \"filtered_low_gap_fraction\": 313, \"ok\": 20}",
+      "min_gap_fraction": 0.35,
+      "max_gap_fraction": 0.5,
+      "min_mean_pdistance": null,
+      "max_mean_pdistance": 0.35
+    },
+    {
+      "benchmark_stratum": "extreme_distance_stress",
+      "description": "Very high-divergence families used to test abstention and failure modes.",
+      "families_selected": 20,
+      "status_counts": "{\"filtered_high_gap_fraction\": 15, \"filtered_low_p_distance\": 60, \"ok\": 20}",
+      "min_gap_fraction": null,
+      "max_gap_fraction": 0.5,
+      "min_mean_pdistance": 0.5,
+      "max_mean_pdistance": null
+    }
+  ],
+  "publication_rationale": "This design separates clean in-domain performance from borderline and OOD stress-test behavior, avoiding a single mixed average that hides applicability."
+}

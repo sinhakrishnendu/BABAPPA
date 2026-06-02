@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "USER-RUN ONLY - DO NOT EXECUTE IN CODEX"
+echo "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING"
 
 OUTROOT="${1:-publication_benchmark/results}"
 

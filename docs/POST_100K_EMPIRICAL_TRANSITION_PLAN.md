@@ -39,7 +39,7 @@ The conservative explicit branch-truth 100K Apple Silicon/MPS validation support
 - Start empirical scoring with tier-aware 100K calibration artifacts.
 - Add a simulation-matched calibration report that compares empirical feature distributions against the 100K training/evaluation distribution.
 - Treat calibration mismatch as an abstention or low-applicability warning, not as a positive-selection result.
-- Use `babappa plan-simulation-matched-calibration` to create USER-RUN ONLY proposed null-simulation commands from empirical QC summaries; this planner does not run heavy simulations.
+- Use `babappa plan-simulation-matched-calibration` to create MANUAL EXECUTION SCRIPT proposed null-simulation commands from empirical QC summaries; this planner does not run heavy simulations.
 - Cycle 41 upgrades the planner to use real empirical QC fields when available and to write both null and optional alternative simulation command templates.
 
 ## OOD and Applicability Gate
@@ -53,7 +53,7 @@ The conservative explicit branch-truth 100K Apple Silicon/MPS validation support
 - Compare against CODEML-style branch-site tests and HyPhy-style workflows where appropriate.
 - Evaluate concordant positives, BABAPPA-only positives, classical-only positives, and abstained/low-applicability cases separately.
 - Do not tune BABAPPA to imitate classical methods; use them as external reference points and failure-mode probes.
-- Use `babappa plan-external-benchmark-panel` to generate USER-RUN ONLY BABAPPA, codeml, and HyPhy command templates before any benchmark execution.
+- Use `babappa plan-external-benchmark-panel` to generate MANUAL EXECUTION SCRIPT BABAPPA, codeml, and HyPhy command templates before any benchmark execution.
 
 ## Real Case-Study Panel
 

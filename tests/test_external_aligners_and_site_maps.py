@@ -320,7 +320,7 @@ def test_external_aligner_plan_includes_babappalign_by_default(tmp_path) -> None
     assert "--methods identity,mafft,prank,babappalign" not in commands
     assert "aligner-method-policy" in commands
     assert "codon_dropout" not in commands
-    assert "USER-RUN ONLY" in commands
+    assert "MANUAL EXECUTION SCRIPT" in commands
     assert "prank" not in expected["effective_methods"]
 
 
@@ -337,7 +337,7 @@ def test_external_aligner_plan_default_methods_exclude_prank_include_fast_method
     assert "prank" not in expected["effective_methods"]
     assert expected["effective_methods"] == ["identity", "mafft", "babappalign", "muscle"]
     assert "identity,mafft,babappalign,muscle" in commands
-    assert "USER-RUN ONLY" in commands
+    assert "MANUAL EXECUTION SCRIPT" in commands
 
 
 def test_external_aligner_plan_accepts_conda_overrides(tmp_path) -> None:
@@ -381,10 +381,10 @@ def test_completion_and_extreme_planners_write_user_run_scripts(tmp_path) -> Non
 
     complete_script = Path(complete["commands"]).read_text("utf-8")
     extreme_script = Path(extreme["commands"]).read_text("utf-8")
-    assert "USER-RUN ONLY" in complete_script
+    assert "MANUAL EXECUTION SCRIPT" in complete_script
     assert "calibrate-site-neural" in complete_script
     assert "aggregation-threshold-policy" in complete_script
-    assert "USER-RUN ONLY" in extreme_script
+    assert "MANUAL EXECUTION SCRIPT" in extreme_script
     assert "--methods identity,mafft,babappalign,muscle" in extreme_script
     assert "prank" not in json.loads((extreme_dir / "expected_outputs.json").read_text("utf-8"))["effective_methods"]
 

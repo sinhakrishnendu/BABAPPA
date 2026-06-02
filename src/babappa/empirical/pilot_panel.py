@@ -1133,7 +1133,7 @@ def _render_real_pilot_decision_md(payload: Dict[str, Any]) -> str:
 def _codeml_ctl(row: Dict[str, str], null: bool) -> str:
     omega = "1" if null else "estimated"
     return "\n".join([
-        f"* USER-RUN ONLY - DO NOT EXECUTE IN CODEX",
+        f"* MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING",
         f"* panel_id: {row.get('panel_id')}",
         f"* foreground branch/taxon: {row.get('foreground')}",
         "seqfile = alignment.phy",
@@ -1152,7 +1152,7 @@ def _foreground_marking_readme(row: Dict[str, str]) -> str:
     return "\n".join([
         "# Foreground Branch Marking",
         "",
-        "USER-RUN ONLY - DO NOT EXECUTE IN CODEX",
+        "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING",
         "",
         f"Panel ID: `{row.get('panel_id')}`",
         f"Foreground: `{row.get('foreground')}`",
@@ -1163,7 +1163,7 @@ def _foreground_marking_readme(row: Dict[str, str]) -> str:
 
 
 def _render_codeml_commands(rows: List[Dict[str, str]]) -> str:
-    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'", ""]
+    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'", ""]
     for row in rows:
         panel_id = row.get("panel_id", "")
         lines.append(f"# (cd codeml/{panel_id} && codeml branch_site_model_A.ctl && codeml branch_site_null.ctl)")
@@ -1172,7 +1172,7 @@ def _render_codeml_commands(rows: List[Dict[str, str]]) -> str:
 
 
 def _render_hyphy_commands(rows: List[Dict[str, str]]) -> str:
-    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'", ""]
+    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'", ""]
     lines.append("# Install HyPhy separately if `hyphy` is not available on PATH.")
     for row in rows:
         lines.append(f"# hyphy meme --alignment {row.get('cds_fasta')} --tree {row.get('tree_file')}")
@@ -1185,7 +1185,7 @@ def _render_classical_plan_md(rows: List[Dict[str, str]], tools: List[str]) -> s
     return "\n".join([
         "# Classical Reference Workflow Plan",
         "",
-        "USER-RUN ONLY - DO NOT EXECUTE IN CODEX.",
+        "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING.",
         "",
         f"- tools: `{','.join(tools)}`",
         f"- families: `{len(rows)}`",

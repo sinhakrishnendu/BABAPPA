@@ -1,0 +1,15 @@
+{
+  "status": "ok",
+  "orthofinder_results": "publication_benchmark/drosophila_orthofinder/orthofinder_run_20260602_073945/Results_Jun02",
+  "families_written": 20,
+  "panel": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/relaxed_in_domain/drosophila_babappa_absrel_panel.tsv",
+  "foreground": "leaves",
+  "require_start_codon": true,
+  "min_taxa": 6,
+  "min_codons": 100,
+  "max_codons": 1500,
+  "min_gap_fraction": null,
+  "max_gap_fraction": 0.2,
+  "min_mean_pdistance": 0.2,
+  "max_mean_pdistance": 0.25
+}

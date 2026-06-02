@@ -1,6 +1,6 @@
 # Real Pilot Tree Building Plan
 
-USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 
 - trees to build: `0`
 - executed: `False`

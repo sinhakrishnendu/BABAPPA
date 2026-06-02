@@ -89,7 +89,7 @@ BABAPPA does not:
 
 ## Long-Run Handoff Policy
 
-Codex and other assisted-maintenance sessions should not execute heavy empirical calibration, broad empirical scans, retraining, 10K/100K simulations, or long aligner/reference batches. The expected workflow is to generate reproducible USER-RUN scripts, validators, parsers, and reports; the user runs long jobs locally or offline and returns summaries/logs for interpretation.
+automation environment and other assisted-maintenance sessions should not execute heavy empirical calibration, broad empirical scans, retraining, 10K/100K simulations, or long aligner/reference batches. The expected workflow is to generate reproducible manual execution scripts, validators, parsers, and reports; the user runs long jobs locally or offline and returns summaries/logs for interpretation.
 
 ## Installation
 
@@ -481,7 +481,7 @@ babappa build-site-map --sim-dir sim_smoke --align-dir align_smoke --outdir site
 babappa validate-site-map --site-map-dir site_map_smoke
 ```
 
-Heavy 10K/100K plans are user-run only and should not be launched casually.
+Heavy 10K/100K plans are manual execution only and should not be launched casually.
 
 ### 2. Deployable Model Package Validation
 
@@ -752,7 +752,7 @@ publication_benchmark/
 
 This is not required for normal BABAPPA use. It exists to compare BABAPPA-native calibrated evidence with codeml and HyPhy on a curated publication panel.
 
-Typical user-run sequence:
+Typical manual execution sequence:
 
 ```bash
 bash publication_benchmark/scripts/01_run_babappa_native.sh publication_benchmark/panel_template.tsv publication_benchmark/results

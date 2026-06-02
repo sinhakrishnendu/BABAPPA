@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$HOME/Documents/GitHub/BABAPPA"
 
-echo "USER-RUN ONLY -- REVIEW BEFORE EXECUTION"
+echo "MANUAL EXECUTION SCRIPT -- REVIEW BEFORE EXECUTION"
 STAMP="$(date +%Y%m%d_%H%M%S)"
 QUARANTINE="${BABAPPA_QUARANTINE_DIR:-$HOME/BABAPPA_STORAGE_QUARANTINE_${STAMP}}"
 LOG="storage_cleanup_audit/quarantine_move_log.tsv"

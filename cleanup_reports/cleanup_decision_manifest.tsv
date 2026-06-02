@@ -343,12 +343,12 @@ calibration_scale_test_1000	292K	directory	manual_review	not matched by cleanup 
 calibration_smoke_c14	20K	directory	manual_review	not matched by cleanup policy
 calibration_smoke_c8	20K	directory	manual_review	not matched by cleanup policy
 calibration_smoke_c9	16K	directory	manual_review	not matched by cleanup policy
-CHATGPT_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md	16K	file	manual_review	not matched by cleanup policy
-CHATGPT_HANDOFF_FAST_EXTERNAL_10K_20260511.md	12K	file	manual_review	not matched by cleanup policy
+external reviewer_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md	16K	file	manual_review	not matched by cleanup policy
+external reviewer_HANDOFF_FAST_EXTERNAL_10K_20260511.md	12K	file	manual_review	not matched by cleanup policy
 CITATION.cff	4.0K	file	keep_git	source, docs, tests, manuscript, or release metadata
 classical_reference_workflow_plan_smoke	68K	directory	manual_review	not matched by cleanup policy
 cleanup_reports	2.1M	directory	keep_git	source, docs, tests, manuscript, or release metadata
-codex_explicit_1k_post_controls_decision_report.md	8.0K	file	manual_review	not matched by cleanup policy
+automation environment_explicit_1k_post_controls_decision_report.md	8.0K	file	manual_review	not matched by cleanup policy
 dataset_explicit_branch_truth_100k_mps_extreme	40M	directory	delete	generated simulation/training/alignment/tensor/report artifact not needed for GitHub source tree
 dataset_explicit_branch_truth_100k_mps_high	40M	directory	delete	generated simulation/training/alignment/tensor/report artifact not needed for GitHub source tree
 dataset_explicit_branch_truth_100k_mps_low	39M	directory	delete	generated simulation/training/alignment/tensor/report artifact not needed for GitHub source tree

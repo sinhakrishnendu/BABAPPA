@@ -185,7 +185,7 @@ def test_branch_conditioned_planner_generates_user_run_scripts(tmp_path) -> None
         "branch_conditioned_10k_plan.md",
     ]:
         assert (outdir / filename).exists()
-    assert "USER-RUN ONLY" in run_text
+    assert "MANUAL EXECUTION SCRIPT" in run_text
     assert "align-external" not in run_text
     assert "train-site-neural" not in run_text
     assert "identity" in json.dumps(expected)

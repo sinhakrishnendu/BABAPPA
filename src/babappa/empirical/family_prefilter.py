@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from babappa import __version__
 from babappa.datasets.index import read_tsv, write_tsv
 
-USER_RUN_ONLY = "USER-RUN ONLY - DO NOT EXECUTE IN CODEX"
+USER_RUN_ONLY = "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING"
 STOP_CODONS = {"TAA", "TAG", "TGA"}
 PILOT_MANIFEST_FIELDS = [
     "panel_id",
@@ -180,7 +180,7 @@ def prefilter_empirical_family(config: EmpiricalFamilyPrefilterConfig) -> Dict[s
 
 
 def plan_empirical_family_acquisition(config: EmpiricalFamilyAcquisitionPlanConfig) -> Dict[str, Any]:
-    """Create USER-RUN scripts for family acquisition; do not execute downloads."""
+    """Create manual execution scripts for family acquisition; do not execute downloads."""
 
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)

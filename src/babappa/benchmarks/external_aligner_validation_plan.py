@@ -60,7 +60,7 @@ class ExternalAlignerValidationPlanConfig:
 
 
 def plan_external_aligner_validation(config: ExternalAlignerValidationPlanConfig) -> dict:
-    """Write user-run scripts for external-aligner validation without executing jobs."""
+    """Write manual execution scripts for external-aligner validation without executing jobs."""
     outdir = Path(config.outdir)
     commands_path = outdir / "external_aligner_validation_commands.sh"
     monitor_path = outdir / "monitor_external_aligner_validation.sh"
@@ -103,7 +103,7 @@ class ExternalCompletedTierReportPlanConfig:
 
 
 def plan_complete_external_tier_reports(config: ExternalCompletedTierReportPlanConfig) -> dict:
-    """Write a user-run script to add calibration/policies to completed external tiers."""
+    """Write a manual execution script to add calibration/policies to completed external tiers."""
     outdir = Path(config.outdir)
     commands_path = outdir / "complete_external_tier_reports_commands.sh"
     expected_path = outdir / "expected_outputs.json"
@@ -155,7 +155,7 @@ class ExternalExtremeRecoveryPlanConfig:
 
 
 def plan_external_extreme_recovery(config: ExternalExtremeRecoveryPlanConfig) -> dict:
-    """Write a user-run recovery plan for the missing external extreme tier."""
+    """Write a manual execution recovery plan for the missing external extreme tier."""
     outdir = Path(config.outdir)
     commands_path = outdir / "external_extreme_recovery_commands.sh"
     expected_path = outdir / "expected_outputs.json"
@@ -191,7 +191,7 @@ def plan_external_extreme_recovery(config: ExternalExtremeRecoveryPlanConfig) ->
 
 @dataclass(frozen=True)
 class FastExternal10kPlanConfig:
-    """Configuration for a user-run fast external-aligner 10K validation plan."""
+    """Configuration for a manual execution fast external-aligner 10K validation plan."""
 
     outdir: str
     panel_outdir: str
@@ -235,7 +235,7 @@ class FastExternal10kPlanConfig:
 
 
 def plan_fast_external_10k(config: FastExternal10kPlanConfig) -> dict:
-    """Write a user-run fast external-aligner 10K plan without executing jobs."""
+    """Write a manual execution fast external-aligner 10K plan without executing jobs."""
     outdir = Path(config.outdir)
     run_path = outdir / "run_fast_external_10k.sh"
     monitor_path = outdir / "monitor_fast_external_10k.sh"
@@ -378,7 +378,7 @@ def _render_script(commands: List[str], config) -> str:
             f"source {config.conda_sh}",
             f"conda activate {config.conda_env}",
             "",
-            "# USER-RUN ONLY - DO NOT EXECUTE IN CODEX",
+            "# MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING",
             "# Fast external-aligner mapped-site validation with method-policy quarantine.",
             "",
             *commands,
@@ -394,7 +394,7 @@ def _render_monitor(config: ExternalAlignerValidationPlanConfig) -> str:
     dirs = " ".join(tier_dirs)
     return "\n".join(
         [
-            "# USER-RUN ONLY - DO NOT EXECUTE IN CODEX",
+            "# MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING",
             "# Monitoring command templates for external-aligner validation.",
             "# ps -eo pid,etime,pcpu,pmem,args | grep '[p]ython'",
             "# Use platform-specific accelerator monitoring outside this portable template.",
@@ -412,7 +412,7 @@ def _render_markdown(config: ExternalAlignerValidationPlanConfig, expected: dict
         "",
         "## Purpose",
         "",
-        "Prepare a fast mapped-site validation using identity, MAFFT, BABAPPAlign, and MUSCLE by default without executing jobs in Codex.",
+        "Prepare a fast mapped-site validation using identity, MAFFT, BABAPPAlign, and MUSCLE by default without executing jobs automatically.",
         "",
         "## Configuration",
         "",
@@ -445,10 +445,10 @@ def _complete_tier_markdown(config: ExternalCompletedTierReportPlanConfig) -> st
         [
             "# BABAPPA completed external-tier report completion plan",
             "",
-            "This plan writes user-run commands to add site calibration, aggregation threshold policies, and refreshed reports for already completed external tiers.",
+            "This plan writes manual execution commands to add site calibration, aggregation threshold policies, and refreshed reports for already completed external tiers.",
             "",
             f"- Tiers: {', '.join(config.tiers)}",
-            "- The script is USER-RUN ONLY and was not executed by Codex.",
+            "- The script is MANUAL EXECUTION SCRIPT and was not executed automatically.",
             "",
         ]
     )
@@ -466,7 +466,7 @@ def _extreme_markdown(config: ExternalExtremeRecoveryPlanConfig, expected: dict)
             "- PRANK is excluded.",
             "- MUSCLE is optional and skipped gracefully if unavailable.",
             f"- Timeout seconds: {config.timeout_seconds}",
-            "- The script is USER-RUN ONLY and was not executed by Codex.",
+            "- The script is MANUAL EXECUTION SCRIPT and was not executed automatically.",
             "",
         ]
     )
@@ -502,7 +502,7 @@ def _fast10k_header(config: FastExternal10kPlanConfig) -> List[str]:
         f"source {config.conda_sh}",
         f"conda activate {config.conda_env}",
         "",
-        "# USER-RUN ONLY — DO NOT EXECUTE IN CODEX",
+        "# MANUAL EXECUTION SCRIPT — Review before running",
         "",
     ]
 
@@ -761,7 +761,7 @@ def _fast10k_expected(config: FastExternal10kPlanConfig) -> dict:
             },
         },
         "estimated_runtime_warning": (
-            "10K external alignment is a long user-run job. BABAPPAlign and MUSCLE "
+            "10K external alignment is a long manual execution job. BABAPPAlign and MUSCLE "
             "can dominate runtime; monitor logs and per-tier method policy."
         ),
         "estimated_disk_warning": (

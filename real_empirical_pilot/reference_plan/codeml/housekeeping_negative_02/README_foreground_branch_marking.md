@@ -1,6 +1,6 @@
 # Foreground Branch Marking
 
-USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 
 Panel ID: `housekeeping_negative_02`
 Foreground: `replace_with_foreground_taxon`

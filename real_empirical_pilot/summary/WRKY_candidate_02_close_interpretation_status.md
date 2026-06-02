@@ -18,7 +18,7 @@ Diagnostic empirical evidence only. Not manuscript-ready and not a final positiv
 
 Simulation-matched null calibration estimates family-specific score behavior before interpretation.
 
-## Next User-Run Commands
+## Next manual execution Commands
 
 - `cd real_empirical_pilot/reference_runs/WRKY_candidate_02_close/codeml && bash run_codeml_modelA.sh && bash run_codeml_null.sh && bash parse_codeml_lrt.sh`
 - `cd real_empirical_pilot/reference_runs/WRKY_candidate_02_close/hyphy && bash run_absrel.sh && bash run_meme.sh`

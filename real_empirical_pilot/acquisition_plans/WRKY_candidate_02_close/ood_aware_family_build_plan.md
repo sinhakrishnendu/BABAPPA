@@ -1,6 +1,6 @@
 # OOD-Aware Family Build Plan
 
-USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 
 - family: `WRKY_candidate_02_close`
 - max mean p-distance: `0.35`

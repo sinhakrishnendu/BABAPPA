@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'
+echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'
 
 # OOD-aware family build for WRKY_candidate_02_close.
 # Steps: download -> BLASTP best hit -> recover CDS -> sanitize -> align -> tree -> prefilter -> gated import.

@@ -1,4 +1,4 @@
-* USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+* MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 * panel_id: housekeeping_negative_02
 * foreground branch/taxon: replace_with_foreground_taxon
 seqfile = alignment.phy

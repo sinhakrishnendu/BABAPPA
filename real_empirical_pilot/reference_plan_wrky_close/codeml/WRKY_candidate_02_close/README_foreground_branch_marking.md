@@ -1,6 +1,6 @@
 # Foreground Branch Marking
 
-USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 
 Panel ID: `WRKY_candidate_02_close`
 Foreground: `Arabidopsis_thaliana`

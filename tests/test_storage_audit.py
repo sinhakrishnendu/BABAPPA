@@ -46,7 +46,7 @@ def test_quarantine_script_contains_no_permanent_delete_command(tmp_path):
     script = (tmp_path / "audit" / "quarantine_large_reproducible_outputs.sh").read_text(
         encoding="utf-8"
     )
-    assert "USER-RUN ONLY" in script
+    assert "MANUAL EXECUTION SCRIPT" in script
     assert "rm -rf" not in script
     assert " mv " in script or "\nmv " in script
 

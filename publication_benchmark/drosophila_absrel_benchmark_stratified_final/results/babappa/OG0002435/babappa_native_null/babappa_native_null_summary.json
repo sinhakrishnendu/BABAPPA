@@ -1,0 +1,37 @@
+{
+  "babappa_native_null_version": "0.8.0",
+  "calibration_backend": "babappa_native_branch_shuffle_feature_null",
+  "calibration_scope": "BABAPPA-native empirical feature null; standalone BABAPPA calibration, complementary to codeml/HyPhy rather than dependent on them.",
+  "device": "mps",
+  "evidence_class": "not_significant_under_babappa_native_null",
+  "external_reference_required": false,
+  "interpretation_boundary": "This is a BABAPPA-native calibrated diagnostic result. It is designed to be usable as standalone BABAPPA evidence, while remaining scientifically complementary to likelihood-based codeml/HyPhy tests.",
+  "n_replicates_completed": 1000,
+  "n_replicates_requested": 1000,
+  "null_results_fabricated": false,
+  "null_tail_quantiles": {
+    "called_rows_q95": 0.0,
+    "called_rows_q99": 0.0,
+    "max_gene_support_q95": 0.0,
+    "max_gene_support_q99": 0.0,
+    "max_site_score_q95": 0.0,
+    "max_site_score_q99": 0.0
+  },
+  "observed": {
+    "called_branch_site_rows": 0,
+    "max_branch_support": 0.0,
+    "max_gene_support": 0.0,
+    "max_site_score": 0.0,
+    "q95_site_score": 0.0,
+    "q99_site_score": 0.0
+  },
+  "p_values": {
+    "p_babappa_called_rows": 1.0,
+    "p_babappa_max_branch_support": 1.0,
+    "p_babappa_max_gene_support": 1.0,
+    "p_babappa_max_site_score": 1.0
+  },
+  "seed": 20260530,
+  "status": "ok",
+  "tier_model": "high"
+}

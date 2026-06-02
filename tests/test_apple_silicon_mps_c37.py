@@ -118,7 +118,7 @@ def test_mac_10k_planner_generates_mps_scripts_without_cuda(tmp_path) -> None:
     monitor_text = (outdir / "monitor_explicit_branch_truth_10k_mps.sh").read_text("utf-8")
 
     assert summary["does_not_run_jobs"] is True
-    assert "USER-RUN ONLY" in run_text
+    assert "MANUAL EXECUTION SCRIPT" in run_text
     assert "PYTORCH_ENABLE_MPS_FALLBACK=1" in run_text
     assert "babappalign_model_missing" in run_text
     assert "$HOME/.cache/babappalign/models/babappascore.pt" in run_text

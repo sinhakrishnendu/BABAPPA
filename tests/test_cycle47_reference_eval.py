@@ -110,7 +110,7 @@ def test_codeml_planner_writes_model_templates_and_foreground_tree(tmp_path: Pat
     assert result["status"] == "prepared"
     assert "model = 2" in (tmp_path / "codeml" / "codeml_modelA.ctl").read_text()
     assert "taxon1#1" in (tmp_path / "codeml" / "tree_foreground.nwk").read_text()
-    assert "USER-RUN ONLY" in (tmp_path / "codeml" / "run_codeml_modelA.sh").read_text()
+    assert "MANUAL EXECUTION SCRIPT" in (tmp_path / "codeml" / "run_codeml_modelA.sh").read_text()
     safety = json.loads((tmp_path / "codeml" / "codeml_alignment_safety.json").read_text())
     assert safety["stop_codons_replaced_with_NNN"] >= 1
     assert "TAA" not in (tmp_path / "codeml" / "alignment.phy").read_text()

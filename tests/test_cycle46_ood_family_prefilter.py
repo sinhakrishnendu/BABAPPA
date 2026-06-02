@@ -83,7 +83,7 @@ def test_plan_empirical_family_acquisition_writes_user_run_only_scripts(tmp_path
     )
     assert result["executed"] is False
     for script in result["scripts"]:
-        assert "USER-RUN ONLY" in (tmp_path / "plan" / script).read_text(encoding="utf-8")
+        assert "MANUAL EXECUTION SCRIPT" in (tmp_path / "plan" / script).read_text(encoding="utf-8")
 
 
 def test_plan_ood_aware_family_build_includes_max_pdistance_gate(tmp_path: Path) -> None:
@@ -95,7 +95,7 @@ def test_plan_ood_aware_family_build_includes_max_pdistance_gate(tmp_path: Path)
     script = (tmp_path / "ood" / "run_ood_aware_family_build.sh").read_text(encoding="utf-8")
     assert result["max_mean_pdistance"] == 0.35
     assert "MAX_MEAN_PDISTANCE=0.35" in script
-    assert "USER-RUN ONLY" in script
+    assert "MANUAL EXECUTION SCRIPT" in script
 
 
 def test_add_prefiltered_family_refuses_reject_too_divergent_unless_allowed(tmp_path: Path) -> None:

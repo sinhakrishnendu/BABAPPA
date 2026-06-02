@@ -64,7 +64,7 @@ The first real WRKY family was useful as a stress-test/failure-mode case, not as
 
 ## Long-Run Handoff Policy
 
-Codex does not execute heavy empirical calibration or broad scans. It generates USER-RUN scripts and lightweight validators; the user runs long jobs locally/offline and returns summaries/logs for interpretation.
+The tooling does not automatically execute heavy empirical calibration or broad scans. It generates manual execution scripts and lightweight validators; the user runs long jobs locally/offline and returns summaries/logs for interpretation.
 
 ## Claim Boundary
 

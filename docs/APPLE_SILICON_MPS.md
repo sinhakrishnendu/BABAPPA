@@ -4,7 +4,7 @@ BABAPPA supports Apple Silicon / Metal Performance Shaders as a research-alpha n
 
 ## Environment
 
-Recommended user-run exports before Python starts:
+Recommended manual execution exports before Python starts:
 
 ```bash
 export PYTORCH_ENABLE_MPS_FALLBACK=1
@@ -79,7 +79,7 @@ Then the user may run:
 bash explicit_branch_truth_10k_mps_plan/run_explicit_branch_truth_10k_mps.sh
 ```
 
-The generated scripts are marked user-run only. They run `babappa preflight-explicit-branch-truth-mps-plan` before the first simulation command, use macOS-safe conda initialization with nounset guarded around activation, use a mkdir-based lock with stale-lock instructions, run one tier at a time, run one stage at a time, use `.stage_complete_<stage>` markers, reuse validated existing outputs, build streamed/capped branch-site datasets, and avoid CUDA/NVIDIA commands.
+The generated scripts are marked manual execution only. They run `babappa preflight-explicit-branch-truth-mps-plan` before the first simulation command, use macOS-safe conda initialization with nounset guarded around activation, use a mkdir-based lock with stale-lock instructions, run one tier at a time, run one stage at a time, use `.stage_complete_<stage>` markers, reuse validated existing outputs, build streamed/capped branch-site datasets, and avoid CUDA/NVIDIA commands.
 
 Run the lightweight script validator:
 

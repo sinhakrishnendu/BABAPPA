@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo 'USER-RUN ONLY - packages retained model artifacts; does not train.'
+echo 'MANUAL EXECUTION SCRIPT - packages retained model artifacts; does not train.'
 if python - <<'PY'
 import json
 from pathlib import Path

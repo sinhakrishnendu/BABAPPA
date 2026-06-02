@@ -1,6 +1,6 @@
 # Classical Reference Workflow Plan
 
-USER-RUN ONLY - DO NOT EXECUTE IN CODEX.
+MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING.
 
 - tools: `codeml,hyphy`
 - families: `1`

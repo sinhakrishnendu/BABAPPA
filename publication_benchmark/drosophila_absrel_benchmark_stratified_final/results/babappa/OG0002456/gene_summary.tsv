@@ -1,0 +1,2 @@
+family_id	n_branches_scored	n_branch_site_rows	n_called_positive	max_gene_support	applicability_status	tier_model	diagnostic_only	result_class
+empirical	12	5292	5292	0.5758937001228333	in_domain	moderate	False	diagnostic_positive

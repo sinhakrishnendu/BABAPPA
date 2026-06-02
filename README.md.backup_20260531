@@ -264,7 +264,7 @@ babappa plan-ood-aware-family-build \
   --min-codons 100
 ```
 
-Generated acquisition scripts are marked `USER-RUN ONLY`. Review and edit source URLs/queries before running them.
+Generated acquisition scripts are marked `MANUAL EXECUTION SCRIPT`. Review and edit source URLs/queries before running them.
 
 Summarize OOD state across the workspace:
 
@@ -341,13 +341,13 @@ babappa validate-simulation-matched-null-calibration --calibration-dir real_empi
 babappa make-wrky-reference-calibration-report --evidence-pack real_empirical_pilot/evidence_packs/WRKY_candidate_02_close --babappa-panel-run real_empirical_pilot/babappa_run_wrky_close_raw_alignmentaware --reference-results real_empirical_pilot/reference_results/WRKY_candidate_02_close/reference_results.tsv --comparison-dir real_empirical_pilot/comparison/WRKY_candidate_02_close --matched-null-calibration real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null100 --outdir real_empirical_pilot/summary/WRKY_candidate_02_close_reference_calibration_report
 ```
 
-If codeml or HyPhy are missing, BABAPPA records `pending_tool_missing` rather than failing. The matched-null runner supports resumable user-run scoring, but Codex only runs tiny `--fast-null-mode` smoke tests. BABAPPA does not fabricate null percentiles; p-like percentiles are written only from completed scored null replicates.
+If codeml or HyPhy are missing, BABAPPA records `pending_tool_missing` rather than failing. The matched-null runner supports resumable manual execution scoring, but automation environment only runs tiny `--fast-null-mode` smoke tests. BABAPPA does not fabricate null percentiles; p-like percentiles are written only from completed scored null replicates.
 
 ## Long-Run Handoff Policy
 
-Codex does not execute heavy empirical calibration, broad scans, retraining, 10K/100K simulations, or long aligner/reference batches. For long-running work, BABAPPA generates reproducible scripts marked `USER-RUN ONLY`, and the user runs them locally/offline in the intended environment. The user can then return logs, summaries, and validation reports for interpretation.
+The tooling does not automatically execute heavy empirical calibration, broad scans, retraining, 10K/100K simulations, or long aligner/reference batches. For long-running work, BABAPPA generates reproducible scripts marked `MANUAL EXECUTION SCRIPT`, and the user runs them locally/offline in the intended environment. The user can then return logs, summaries, and validation reports for interpretation.
 
-For WRKY null calibration, Codex may run only a tiny `--fast-null-mode` smoke with at most 3 null replicates. The real 100-null command is handed off:
+For WRKY null calibration, Only lightweight smoke testing should run only a tiny `--fast-null-mode` smoke with at most 3 null replicates. The real 100-null command is handed off:
 
 ```bash
 bash real_empirical_pilot/calibration_runs/WRKY_candidate_02_close_null100/run_user_wrky_null100.sh
@@ -1343,7 +1343,7 @@ babappa validate-large-run-plan \
   --plan-dir large_run_plan_100k
 ```
 
-At Cycle 26, the 10K run was the next validation scale and the 100K run was the final benchmark scale. The fast external-aligner 10K validation is now complete, so final 100K planning should wait until the branch-conditioned 10K validation passes. Codex prepares command templates, expected row counts, monitoring commands, and validation checklists only; the user runs these jobs offline. Generated `large_run_commands.sh` files are executable user-run scripts marked `USER-RUN ONLY — DO NOT EXECUTE IN CODEX`; `large_run_commands_commented_reference.sh` keeps a fully commented reference copy.
+At Cycle 26, the 10K run was the next validation scale and the 100K run was the final benchmark scale. The fast external-aligner 10K validation is now complete, so final 100K planning should wait until the branch-conditioned 10K validation passes. The planner prepares command templates, expected row counts, monitoring commands, and validation checklists only; the user runs these jobs offline. Generated `large_run_commands.sh` files are executable manual execution scripts marked `MANUAL EXECUTION SCRIPT — Review before running`; `large_run_commands_commented_reference.sh` keeps a fully commented reference copy.
 
 ## Cycle 27 External Aligner Injection
 
@@ -1455,7 +1455,7 @@ babappa plan-external-extreme-recovery \
   --timeout-seconds 300
 ```
 
-Generated scripts are marked `USER-RUN ONLY` and must be launched by the user, not by Codex. Do not scale external-aligner workflows to 10K until method policy, calibration, aggregation threshold policies, and the missing extreme tier decision have been reviewed.
+Generated scripts are marked `MANUAL EXECUTION SCRIPT` and must be launched by the user, not by automation environment. Do not scale external-aligner workflows to 10K until method policy, calibration, aggregation threshold policies, and the missing extreme tier decision have been reviewed.
 
 ## Cycle 32 Branch-Site Research-Alpha Transition
 
@@ -1500,7 +1500,7 @@ The audit writes:
 - `archive_candidates.tsv`
 - `cleanup_dry_run.md`
 - `du_top_100.txt`
-- user-run scripts for quarantine, archive, deletion after review, and validation
+- manual execution scripts for quarantine, archive, deletion after review, and validation
 
 The generated quarantine script moves reproducible candidates into a dated folder
 under the home directory and does not permanently delete anything:

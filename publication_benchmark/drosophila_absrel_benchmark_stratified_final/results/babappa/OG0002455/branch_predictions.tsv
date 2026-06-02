@@ -1,0 +1,13 @@
+family_id	method	branch_id	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	user_msa	Drosophila_ananassae_Drosophila_ananassae__LOC6495063__XP_001959144.1	441	6.637065196423389e-22	1.6819288479635208e-23	0	False
+empirical	user_msa	Drosophila_biarmipes_Drosophila_biarmipes__LOC108022510__XP_016946968.1	441	7.344460120417865e-22	1.7228829332129992e-23	0	False
+empirical	user_msa	Drosophila_mauritiana_Drosophila_mauritiana__LOC117136077__XP_033152622.1	441	7.344460120417865e-22	1.720726696411793e-23	0	False
+empirical	user_msa	Drosophila_melanogaster_Drosophila_melanogaster__Act57B__NP_523800.1	441	7.344460120417865e-22	1.722307792793885e-23	0	False
+empirical	user_msa	Drosophila_pseudoobscura_Drosophila_pseudoobscura__Act57B__XP_002138517.1	441	6.637065196423389e-22	1.7096881228338296e-23	0	False
+empirical	user_msa	Drosophila_sechellia_Drosophila_sechellia__Act57B__XP_002039673.2	441	7.344460120417865e-22	1.721597645002203e-23	0	False
+empirical	user_msa	Drosophila_simulans_Drosophila_simulans__LOC6735456__XP_002082396.1	441	7.344460120417865e-22	1.720736595990073e-23	0	False
+empirical	user_msa	Drosophila_subobscura_Drosophila_subobscura__LOC117889984__XP_034650458.1	441	6.637065196423389e-22	1.7082771143435443e-23	0	False
+empirical	user_msa	Drosophila_suzukii_Drosophila_suzukii__Act57B__XP_016929004.1	441	7.344460120417865e-22	1.7226667987409703e-23	0	False
+empirical	user_msa	Drosophila_virilis_Drosophila_virilis__Act57B__XP_032291957.1	441	6.637065196423389e-22	1.648078414380912e-23	0	False
+empirical	user_msa	Drosophila_willistoni_Drosophila_willistoni__LOC6652079__XP_002074960.1	441	7.344460120417865e-22	1.5751941368289538e-23	0	False
+empirical	user_msa	Drosophila_yakuba_Drosophila_yakuba__LOC6530731__XP_002091621.1	441	7.344460120417865e-22	1.7202308170157306e-23	0	False

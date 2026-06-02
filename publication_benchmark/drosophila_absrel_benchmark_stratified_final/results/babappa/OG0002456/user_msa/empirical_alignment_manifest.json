@@ -1,0 +1,70 @@
+{
+  "cds_fasta": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/msas/OG0002456.codon.aln.fasta",
+  "created_files": {
+    "user_msa": {
+      "codon_fasta": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "qc": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/methods/user_msa/empirical.user_msa.qc.json",
+      "site_map": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/site_map/user_msa.site_map.tsv"
+    }
+  },
+  "empirical_alignment_version": "0.8.0",
+  "failures": [],
+  "foreground": "leaves",
+  "foregrounds_resolved": [
+    "Drosophila_ananassae_Drosophila_ananassae__LOC6500386__XP_001953106.1",
+    "Drosophila_biarmipes_Drosophila_biarmipes__LOC108031488__XP_016960465.1",
+    "Drosophila_mauritiana_Drosophila_mauritiana__LOC117143253__XP_033163704.1",
+    "Drosophila_melanogaster_Drosophila_melanogaster__Act87E__NP_477091.1",
+    "Drosophila_pseudoobscura_Drosophila_pseudoobscura__Act87E__XP_001359004.1",
+    "Drosophila_sechellia_Drosophila_sechellia__Act87E__XP_002031326.2",
+    "Drosophila_simulans_Drosophila_simulans__LOC6728214__XP_016034853.1",
+    "Drosophila_subobscura_Drosophila_subobscura__LOC117899529__XP_034665488.1",
+    "Drosophila_suzukii_Drosophila_suzukii__Act87E__XP_036672553.1",
+    "Drosophila_virilis_Drosophila_virilis__Act87E__XP_002056070.1",
+    "Drosophila_willistoni_Drosophila_willistoni__LOC6650576__XP_002073085.1",
+    "Drosophila_yakuba_Drosophila_yakuba__LOC6536965__XP_002097534.1"
+  ],
+  "method_policy": {
+    "methods": [
+      {
+        "attempted_families": 1,
+        "failed_families": 0,
+        "failure_fraction": "0",
+        "method": "user_msa",
+        "reason": "user_msa_is_authoritative_input",
+        "recommendation": "usable",
+        "site_map_conflict_fraction": "0",
+        "site_map_frame_error_fraction": "0",
+        "site_map_unique_fraction": "1",
+        "successful_families": 1
+      }
+    ],
+    "quarantined_methods": [],
+    "usable_methods": [
+      "user_msa"
+    ]
+  },
+  "method_policy_dir": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/method_policy",
+  "method_rows": [
+    {
+      "aligned_fasta": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "method": "user_msa",
+      "reason": "user_supplied_authoritative_codon_msa",
+      "runtime_seconds": "0",
+      "site_map": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/site_map/user_msa.site_map.tsv",
+      "status": "ok"
+    }
+  ],
+  "methods_requested": [
+    "user_msa"
+  ],
+  "methods_run": [
+    "user_msa"
+  ],
+  "realignment_performed": false,
+  "site_map_dir": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/results/babappa/OG0002456/user_msa/site_map",
+  "status": "ok",
+  "tree": "publication_benchmark/drosophila_absrel_benchmark_stratified_final/panels/strict_in_domain/trees/OG0002456.treefile",
+  "user_msa_is_authoritative": true,
+  "warnings": []
+}

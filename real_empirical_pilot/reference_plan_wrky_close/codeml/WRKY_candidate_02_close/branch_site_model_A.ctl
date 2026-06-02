@@ -1,4 +1,4 @@
-* USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+* MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 * panel_id: WRKY_candidate_02_close
 * foreground branch/taxon: Arabidopsis_thaliana
 seqfile = alignment.phy

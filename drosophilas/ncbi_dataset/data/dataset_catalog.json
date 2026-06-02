@@ -1,0 +1,134 @@
+{
+"apiVersion": "V2",
+"assemblies": [
+{
+  "files": [
+    {
+      "filePath": "data_summary.tsv",
+      "fileType": "DATA_TABLE",
+      "uncompressedLengthBytes": "4725"
+    },
+    {
+      "filePath": "assembly_data_report.jsonl",
+      "fileType": "DATA_REPORT",
+      "uncompressedLengthBytes": "80314"
+    }
+  ]
+},{
+  "accession": "GCA_000001215.4",
+  "files": [
+    {
+      "filePath": "GCA_000001215.4/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "71271247"
+    }
+  ]
+},{
+  "accession": "GCF_000001215.4",
+  "files": [
+    {
+      "filePath": "GCF_000001215.4/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "71855323"
+    }
+  ]
+},{
+  "accession": "GCF_004382145.1",
+  "files": [
+    {
+      "filePath": "GCF_004382145.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "56462809"
+    }
+  ]
+},{
+  "accession": "GCF_004382195.2",
+  "files": [
+    {
+      "filePath": "GCF_004382195.2/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "58531010"
+    }
+  ]
+},{
+  "accession": "GCF_008121235.1",
+  "files": [
+    {
+      "filePath": "GCF_008121235.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "56900169"
+    }
+  ]
+},{
+  "accession": "GCF_009870125.1",
+  "files": [
+    {
+      "filePath": "GCF_009870125.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "71261549"
+    }
+  ]
+},{
+  "accession": "GCF_016746365.2",
+  "files": [
+    {
+      "filePath": "GCF_016746365.2/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "68398668"
+    }
+  ]
+},{
+  "accession": "GCF_016746395.2",
+  "files": [
+    {
+      "filePath": "GCF_016746395.2/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "67503879"
+    }
+  ]
+},{
+  "accession": "GCF_017639315.1",
+  "files": [
+    {
+      "filePath": "GCF_017639315.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "69672190"
+    }
+  ]
+},{
+  "accession": "GCF_018902025.1",
+  "files": [
+    {
+      "filePath": "GCF_018902025.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "47567662"
+    }
+  ]
+},{
+  "accession": "GCF_025231255.1",
+  "files": [
+    {
+      "filePath": "GCF_025231255.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "67776099"
+    }
+  ]
+},{
+  "accession": "GCF_030788295.1",
+  "files": [
+    {
+      "filePath": "GCF_030788295.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "66386135"
+    }
+  ]
+},{
+  "accession": "GCF_043229965.1",
+  "files": [
+    {
+      "filePath": "GCF_043229965.1/cds_from_genomic.fna",
+      "fileType": "CDS_NUCLEOTIDE_FASTA",
+      "uncompressedLengthBytes": "70007806"
+    }
+  ]
+}]}

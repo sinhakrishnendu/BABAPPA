@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$HOME/Documents/GitHub/BABAPPA"
 
-echo "USER-RUN ONLY -- creates a compact reports/manifests archive"
+echo "MANUAL EXECUTION SCRIPT -- creates a compact reports/manifests archive"
 STAMP="$(date +%Y%m%d_%H%M%S)"
 OUT="BABAPPA_KEY_REPORTS_AND_MANIFESTS_${STAMP}.tar.gz"
 tar -czf "$OUT" \

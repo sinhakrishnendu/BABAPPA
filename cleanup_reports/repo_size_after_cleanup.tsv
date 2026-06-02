@@ -9,16 +9,16 @@
 4.0K	./run_babappa_scale_test_1000.sh
 8.0K	./aligner_status_c37d.json
 8.0K	./aligner_status_c37d_module.json
-8.0K	./codex_explicit_1k_post_controls_decision_report.md
+8.0K	./automation environment_explicit_1k_post_controls_decision_report.md
 8.0K	./explicit_branch_truth_100k_mps_final_validation_report.md
 8.0K	./explicit_branch_truth_100k_mps_final_validation_report.tsv
- 12K	./CHATGPT_HANDOFF_FAST_EXTERNAL_10K_20260511.md
+ 12K	./external reviewer_HANDOFF_FAST_EXTERNAL_10K_20260511.md
  12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_extreme
  12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_high
  12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_low
  12K	./branch_truth_status_audit_explicit_branch_truth_100k_mps_moderate
  12K	./leakage_audit_saturation_1000
- 16K	./CHATGPT_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md
+ 16K	./external reviewer_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md
  16K	./branch_truth_status_audit_explicit_branch_truth_100k_mps
  16K	./calibration_smoke_c9
  16K	./explicit_branch_truth_100k_mps_truth_status_audit

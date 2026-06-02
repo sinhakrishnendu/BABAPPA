@@ -1,0 +1,29 @@
+2026-06-02 07:39:45 : Started OrthoFinder version 3.1.5
+Command Line: /Users/krishnendu/miniconda3/envs/molevo/bin/orthofinder -f publication_benchmark/drosophila_orthofinder/orthofinder_input -S diamond -t 18 -a 18 -o publication_benchmark/drosophila_orthofinder/orthofinder_run_20260602_073945
+
+Search program: diamond
+MSA program: famsa
+Tree program: fasttree
+Scoring matrix: BLOSUM62
+Gap extend: 1
+Gap open: 11
+
+WorkingDirectory_Base: /Users/krishnendu/Documents/GitHub/BABAPPA/publication_benchmark/drosophila_orthofinder/orthofinder_run_20260602_073945/Results_Jun02/WorkingDirectory/
+
+Species used: 
+0: Drosophila_ananassae.faa
+1: Drosophila_biarmipes.faa
+2: Drosophila_mauritiana.faa
+3: Drosophila_melanogaster.faa
+4: Drosophila_pseudoobscura.faa
+5: Drosophila_sechellia.faa
+6: Drosophila_simulans.faa
+7: Drosophila_subobscura.faa
+8: Drosophila_suzukii.faa
+9: Drosophila_virilis.faa
+10: Drosophila_willistoni.faa
+11: Drosophila_yakuba.faa
+
+FN_Orthogroups: /Users/krishnendu/Documents/GitHub/BABAPPA/publication_benchmark/drosophila_orthofinder/orthofinder_run_20260602_073945/Results_Jun02/WorkingDirectory/clusters_OrthoFinder_I1.2.txt_id_pairs.txt
+WorkingDirectory_Trees: /Users/krishnendu/Documents/GitHub/BABAPPA/publication_benchmark/drosophila_orthofinder/orthofinder_run_20260602_073945/Results_Jun02/WorkingDirectory/
+2026-06-02 08:16:53 : OrthoFinder run completed

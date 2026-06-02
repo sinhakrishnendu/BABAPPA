@@ -53,8 +53,8 @@ def test_fast_external_10k_scripts_are_user_run_only(tmp_path) -> None:
     ]:
         text = (outdir / filename).read_text("utf-8")
         assert text.startswith("#!/usr/bin/env bash\nset -euo pipefail")
-        assert "USER-RUN ONLY" in text
-        assert "DO NOT EXECUTE IN CODEX" in text
+        assert "MANUAL EXECUTION SCRIPT" in text
+        assert "Review before running" in text
 
 
 def test_fast_external_10k_run_script_method_policy(tmp_path) -> None:

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "USER-RUN ONLY - GAPDH grass raw saturated diagnostic control"
+echo "MANUAL EXECUTION SCRIPT - GAPDH grass raw saturated diagnostic control"
 cd /Users/krishnendu/Documents/GitHub/BABAPPA
 
 if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then

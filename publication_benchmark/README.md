@@ -24,7 +24,7 @@ Scientific boundary:
 - `benchmark_config.env`: editable defaults.
 - `scripts/01_run_babappa_native.sh`: runs BABAPPA direct MSA/tree prediction with BABAPPA-native null calibration.
 - `scripts/02_prepare_codeml_hyphy.sh`: prepares codeml and HyPhy reference folders.
-- `scripts/03_run_codeml_hyphy_user.sh`: USER-RUN execution script for codeml/HyPhy.
+- `scripts/03_run_codeml_hyphy_user.sh`: manual execution execution script for codeml/HyPhy.
 - `scripts/04_parse_and_compare.sh`: parses reference outputs and creates BABAPPA/reference comparisons.
 - `scripts/05_make_publication_tables.sh`: writes compact manuscript tables from available outputs.
 
@@ -60,7 +60,7 @@ bash publication_benchmark/scripts/04_parse_and_compare.sh publication_benchmark
 bash publication_benchmark/scripts/05_make_publication_tables.sh publication_benchmark/panel_template.tsv publication_benchmark/results
 ```
 
-The scripts are marked USER-RUN ONLY. They are not executed by Codex.
+The scripts are marked MANUAL EXECUTION SCRIPT. They are not executed automatically.
 
 ## Manuscript Reporting
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "DANGER -- USER-RUN ONLY AFTER MANUAL REVIEW"
+echo "DANGER -- MANUAL EXECUTION SCRIPT AFTER MANUAL REVIEW"
 CONFIRM_DELETE="${CONFIRM_DELETE:-NO}"
 QUARANTINE="${1:-}"
 if [ "$CONFIRM_DELETE" != "YES" ]; then

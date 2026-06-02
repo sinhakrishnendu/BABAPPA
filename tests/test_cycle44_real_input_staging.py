@@ -165,7 +165,7 @@ def test_plan_real_pilot_tree_building_writes_user_run_only_script(tmp_path: Pat
     )
     script = (workspace / "tree_building_plan" / "build_missing_trees.sh").read_text()
     assert result["n_trees_to_build"] == 1
-    assert "USER-RUN ONLY" in script
+    assert "MANUAL EXECUTION SCRIPT" in script
     assert "iqtree2" in script
 
 

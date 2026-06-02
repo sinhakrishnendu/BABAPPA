@@ -441,7 +441,7 @@ def _write_quarantine_script(path: Path) -> None:
 set -euo pipefail
 cd "$HOME/Documents/GitHub/BABAPPA"
 
-echo "USER-RUN ONLY -- REVIEW BEFORE EXECUTION"
+echo "MANUAL EXECUTION SCRIPT -- REVIEW BEFORE EXECUTION"
 STAMP="$(date +%Y%m%d_%H%M%S)"
 QUARANTINE="${BABAPPA_QUARANTINE_DIR:-$HOME/BABAPPA_STORAGE_QUARANTINE_${STAMP}}"
 LOG="storage_cleanup_audit/quarantine_move_log.tsv"
@@ -488,7 +488,7 @@ def _write_delete_script(path: Path) -> None:
     text = """#!/usr/bin/env bash
 set -euo pipefail
 
-echo "DANGER -- USER-RUN ONLY AFTER MANUAL REVIEW"
+echo "DANGER -- MANUAL EXECUTION SCRIPT AFTER MANUAL REVIEW"
 CONFIRM_DELETE="${CONFIRM_DELETE:-NO}"
 QUARANTINE="${1:-}"
 if [ "$CONFIRM_DELETE" != "YES" ]; then
@@ -517,7 +517,7 @@ def _write_archive_script(path: Path) -> None:
 set -euo pipefail
 cd "$HOME/Documents/GitHub/BABAPPA"
 
-echo "USER-RUN ONLY -- creates a compact reports/manifests archive"
+echo "MANUAL EXECUTION SCRIPT -- creates a compact reports/manifests archive"
 STAMP="$(date +%Y%m%d_%H%M%S)"
 OUT="BABAPPA_KEY_REPORTS_AND_MANIFESTS_${STAMP}.tar.gz"
 tar -czf "$OUT" \\
@@ -548,7 +548,7 @@ def _write_validate_script(path: Path) -> None:
 set -euo pipefail
 cd "$HOME/Documents/GitHub/BABAPPA"
 
-echo "USER-RUN ONLY -- lightweight validation after quarantine"
+echo "MANUAL EXECUTION SCRIPT -- lightweight validation after quarantine"
 python -m pip install -e ".[dev]"
 python -m pytest -q
 babappa validate-deployable-model-package --package-dir deployable_model_conservative_branch_site_100k_mps

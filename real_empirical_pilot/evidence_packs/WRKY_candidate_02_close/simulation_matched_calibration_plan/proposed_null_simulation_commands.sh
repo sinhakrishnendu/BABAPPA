@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'
+echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'
 echo 'This scaffold proposes simulation-matched null calibration; it does not run automatically.'
 
 # Proposed heavy command placeholder, intentionally commented:

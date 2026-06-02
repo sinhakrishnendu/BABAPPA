@@ -2242,13 +2242,13 @@ def _render_benchmark_plan_md(payload: Dict[str, Any], rows: List[Dict[str, str]
         f"- benchmark mode: `{payload.get('benchmark_mode')}`",
         f"- BABAPPA null replicates: `{payload.get('babappa_null_replicates')}`",
         f"- classical tools: `{','.join(payload['classical_tools'])}`",
-        "- USER-RUN ONLY command templates are generated but not executed.",
+        "- MANUAL EXECUTION SCRIPT command templates are generated but not executed.",
         "",
     ])
 
 
 def _render_benchmark_babappa_commands(rows: List[Dict[str, str]], config: ExternalBenchmarkPanelPlanConfig, methods: List[str]) -> str:
-    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'", ""]
+    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'", ""]
     for row in rows:
         family_id = _benchmark_row_id(row)
         cds_fasta = _benchmark_cds(row)
@@ -2266,7 +2266,7 @@ def _render_benchmark_babappa_commands(rows: List[Dict[str, str]], config: Exter
 
 
 def _render_classical_commands(rows: List[Dict[str, str]], tool: str) -> str:
-    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'", ""]
+    lines = ["#!/usr/bin/env bash", "set -euo pipefail", "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'", ""]
     for row in rows:
         family_id = _benchmark_row_id(row)
         cds_fasta = _benchmark_cds(row)

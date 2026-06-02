@@ -33,13 +33,13 @@ def test_plan_large_run_10k(tmp_path) -> None:
     commands = (outdir / "large_run_commands.sh").read_text("utf-8")
     reference = (outdir / "large_run_commands_commented_reference.sh").read_text("utf-8")
     assert commands.startswith("#!/usr/bin/env bash\nset -euo pipefail")
-    assert "USER-RUN ONLY" in commands
+    assert "MANUAL EXECUTION SCRIPT" in commands
     assert "\nbabappa make-saturation-panel " in commands
     assert (outdir / "external_aligner_run_commands.sh").exists()
     assert "babappa build-site-map" in (
         outdir / "external_aligner_run_commands.sh"
     ).read_text("utf-8")
-    assert "USER-RUN ONLY" in reference
+    assert "MANUAL EXECUTION SCRIPT" in reference
     assert "\n# babappa make-saturation-panel " in reference
     assert validate_large_run_plan_dir(outdir)["status"] == "ok"
 

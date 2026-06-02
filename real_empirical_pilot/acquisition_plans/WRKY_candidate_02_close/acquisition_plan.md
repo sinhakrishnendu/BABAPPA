@@ -1,6 +1,6 @@
 # Empirical Family Acquisition Plan
 
-USER-RUN ONLY - DO NOT EXECUTE IN CODEX
+MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING
 
 - family: `WRKY_candidate_02_close`
 - query: `Arabidopsis_thaliana AT2G38470`

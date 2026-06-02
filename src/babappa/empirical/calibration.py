@@ -210,7 +210,7 @@ def _propose_simulation_parameters(features: Dict[str, Any]) -> Dict[str, Any]:
         "recommended_tier": _recommended_tier(features),
         "null_replicates_initial": 1000,
         "alt_replicates_initial": 250,
-        "notes": "Initial null calibration scaffold; user-run only.",
+        "notes": "Initial null calibration scaffold; manual execution only.",
     }
 
 
@@ -263,7 +263,7 @@ def _render_null_commands(payload: Dict[str, Any]) -> str:
     return "\n".join([
         "#!/usr/bin/env bash",
         "set -euo pipefail",
-        "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'",
+        "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'",
         "echo 'This scaffold proposes simulation-matched null calibration; it does not run automatically.'",
         "",
         "# Proposed heavy command placeholder, intentionally commented:",
@@ -282,7 +282,7 @@ def _render_alt_commands(payload: Dict[str, Any]) -> str:
     return "\n".join([
         "#!/usr/bin/env bash",
         "set -euo pipefail",
-        "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'",
+        "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'",
         "echo 'Optional matched alternative simulations for calibration stress testing; not run automatically.'",
         "",
         "# Proposed heavy command placeholder, intentionally commented:",
@@ -378,7 +378,7 @@ def _render_run_empirical_scoring(payload: Dict[str, Any]) -> str:
     return "\n".join([
         "#!/usr/bin/env bash",
         "set -euo pipefail",
-        "echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'",
+        "echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'",
         f"babappa validate-deployable-model-package --package-dir {payload['deployable_model_package']}",
         f"babappa validate-empirical-input --cds-fasta {payload['cds_fasta']} --tree {payload['tree']} --foreground {payload['foreground']} --outdir {input_dir}",
         f"babappa run-empirical-alignment-ensemble --cds-fasta {payload['cds_fasta']} --tree {payload['tree']} --foreground {payload['foreground']} --outdir {alignment_dir} --methods {','.join(payload['methods'])} --require-babappalign false --threads 4",

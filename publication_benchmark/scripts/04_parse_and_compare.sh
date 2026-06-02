@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "USER-RUN ONLY - DO NOT EXECUTE IN CODEX"
+echo "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING"
 
 MANIFEST="${1:-publication_benchmark/panel_template.tsv}"
 OUTROOT="${2:-publication_benchmark/results}"

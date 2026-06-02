@@ -224,7 +224,7 @@ def test_evidence_pack_feature_matched_backend_writes_expected_outputs(tmp_path:
 
 def test_user_run_null100_scripts_are_marked_user_run_only(tmp_path: Path) -> None:
     script = write_wrky_matched_null_script(str(tmp_path / "plan"), str(tmp_path / "null100"))
-    assert "USER-RUN ONLY" in script.read_text()
+    assert "MANUAL EXECUTION SCRIPT" in script.read_text()
     for name in [
         "run_user_wrky_null100.sh",
         "monitor_user_wrky_null100.sh",
@@ -233,7 +233,7 @@ def test_user_run_null100_scripts_are_marked_user_run_only(tmp_path: Path) -> No
     ]:
         path = tmp_path / "null100" / name
         assert path.exists()
-        assert "USER-RUN ONLY" in path.read_text()
+        assert "MANUAL EXECUTION SCRIPT" in path.read_text()
 
 
 def test_babappa_only_interpreter_returns_inconclusive_if_null_missing(tmp_path: Path) -> None:
@@ -286,7 +286,7 @@ def test_negative_control_planner_writes_user_run_scripts(tmp_path: Path) -> Non
     )
     assert result["executed"] is False
     for script in (tmp_path / "control").glob("*.sh"):
-        assert "USER-RUN ONLY" in script.read_text()
+        assert "MANUAL EXECUTION SCRIPT" in script.read_text()
 
 
 def test_babappa_only_audit_detects_method_concentrated_scores(tmp_path: Path) -> None:
@@ -326,4 +326,4 @@ def test_docs_contain_long_run_handoff_policy() -> None:
     readme = Path("README.md").read_text(encoding="utf-8")
     calibration = Path("docs/SIMULATION_MATCHED_EMPIRICAL_CALIBRATION.md").read_text(encoding="utf-8")
     assert "Long-Run Handoff Policy" in readme
-    assert "Codex does not execute heavy empirical calibration" in calibration
+    assert "The tooling does not automatically execute heavy empirical calibration" in calibration

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'
+echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'
 echo 'Small pilot null calibration scaffold for WRKY_candidate_02_close.'
 
 REPO_ROOT="${BABAPPA_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)}"

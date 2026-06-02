@@ -52,7 +52,7 @@
 8.0K	./branch_site_run_summary_fast_external_10k_high_streamed
 8.0K	./branch_site_run_summary_fast_external_10k_low_streamed
 8.0K	./branch_site_run_summary_fast_external_10k_moderate_streamed
-8.0K	./codex_explicit_1k_post_controls_decision_report.md
+8.0K	./automation environment_explicit_1k_post_controls_decision_report.md
 8.0K	./deployable_model_load_smoke
 8.0K	./deployable_model_load_smoke_molevo
 8.0K	./explicit_branch_truth_100k_mps_final_validation_report.md
@@ -63,7 +63,7 @@
 8.0K	./site_oracle_fast_external_10k_high
 8.0K	./site_oracle_fast_external_10k_low
 8.0K	./site_oracle_fast_external_10k_moderate
- 12K	./CHATGPT_HANDOFF_FAST_EXTERNAL_10K_20260511.md
+ 12K	./external reviewer_HANDOFF_FAST_EXTERNAL_10K_20260511.md
  12K	./aggregation_controls_external_aligner_validation_extreme
  12K	./aggregation_controls_external_aligner_validation_high
  12K	./aggregation_controls_external_aligner_validation_low
@@ -147,7 +147,7 @@
  12K	./site_leakage_fast_external_10k_moderate
  12K	./site_leakage_saturation_1000
  12K	./site_leakage_saturation_10000
- 16K	./CHATGPT_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md
+ 16K	./external reviewer_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md
  16K	./ablation_compare_v2_v3_1000
  16K	./babappa_scale_test_1000.log
  16K	./branch_aggregation_controls_explicit_branch_truth_100k_mps_extreme_streamed

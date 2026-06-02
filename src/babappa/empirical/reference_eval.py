@@ -17,7 +17,7 @@ from babappa import __version__
 from babappa.datasets.index import read_tsv, write_tsv
 from babappa.training.neural_env import resolve_torch_device, safe_import_torch
 
-USER_RUN_ONLY = "USER-RUN ONLY - DO NOT EXECUTE IN CODEX"
+USER_RUN_ONLY = "MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING"
 CLAIM_BOUNDARY = (
     "Diagnostic empirical evidence only. Not manuscript-ready and not a final positive-selection discovery claim "
     "until simulation-matched calibration and codeml/HyPhy-style reference comparison are interpreted."
@@ -354,7 +354,7 @@ def write_wrky_matched_null_script(plan_dir: str, output_root: str) -> Path:
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         f"echo '{USER_RUN_ONLY}'",
-        "# This launches the real user-run matched-null command. Do not execute it in Codex.",
+        "# This launches the real manual execution matched-null command. Do not execute it in an automated environment.",
         *dry_run_comment,
         *run_command,
         "",
@@ -2073,13 +2073,13 @@ def _render_codeml_readme(config: CodemlReferencePrepConfig, safety: Optional[Di
         f"Stop codons replaced with `NNN` in this derived codeml copy: `{n_replaced}`.",
         "See `codeml_alignment_safety.json` for exact replacement positions.",
         "",
-        "Scripts are USER-RUN ONLY.",
+        "Scripts are MANUAL EXECUTION SCRIPT.",
         "",
     ])
 
 
 def _render_hyphy_readme(config: HyphyReferencePrepConfig) -> str:
-    return f"# HyPhy reference for {Path(config.outdir).name}\n\nForeground branch is marked as `{config.foreground}{{Foreground}}` in `tree_foreground.nwk`.\nScripts are USER-RUN ONLY.\n"
+    return f"# HyPhy reference for {Path(config.outdir).name}\n\nForeground branch is marked as `{config.foreground}{{Foreground}}` in `tree_foreground.nwk`.\nScripts are MANUAL EXECUTION SCRIPT.\n"
 
 
 def _render_tool_check_md(payload: Dict[str, Any]) -> str:
@@ -2241,7 +2241,7 @@ def _render_control_plan_md(payload: Dict[str, Any]) -> str:
         f"- max mean p-distance: `{payload['max_mean_pdistance']}`",
         f"- executed: `{payload['executed']}`",
         "",
-        "All scripts are USER-RUN ONLY and must not be executed by Codex.",
+        "All scripts are MANUAL EXECUTION SCRIPT and must be reviewed before running.",
         "",
     ]
     lines.extend(f"- `{name}`" for name in payload["scripts"])
@@ -2270,7 +2270,7 @@ def _render_interpretation_md(payload: Dict[str, Any]) -> str:
         "",
         payload["what_calibration_adds"],
         "",
-        "## Next User-Run Commands",
+        "## Next manual execution Commands",
         "",
         *[f"- `{command}`" for command in payload["next_user_run_commands"]],
         "",

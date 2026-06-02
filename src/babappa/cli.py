@@ -5867,7 +5867,7 @@ def plan_branch_conditioned_10k_command(
     max_test_items: int = typer.Option(10000, "--max-test-items"),
     n_control_permutations: int = typer.Option(20, "--n-control-permutations"),
 ) -> None:
-    """Write a user-run branch-conditioned 10K validation plan."""
+    """Write a manual execution branch-conditioned 10K validation plan."""
     try:
         summary = plan_branch_conditioned_10k(
             BranchConditioned10kPlanConfig(
@@ -6169,7 +6169,7 @@ def plan_explicit_branch_truth_1k_command(
     ),
     conda_env: str = typer.Option("molevo", "--conda-env"),
 ) -> None:
-    """Write a user-run explicit branch-truth 1K validation plan."""
+    """Write a manual execution explicit branch-truth 1K validation plan."""
     try:
         summary = plan_explicit_branch_truth_1k(
             ExplicitBranchTruth1kPlanConfig(
@@ -6207,7 +6207,7 @@ def plan_explicit_branch_truth_10k_command(
     ),
     conda_env: str = typer.Option("molevo", "--conda-env"),
 ) -> None:
-    """Write a conservative user-run explicit branch-truth 10K validation plan."""
+    """Write a conservative manual execution explicit branch-truth 10K validation plan."""
     try:
         summary = plan_explicit_branch_truth_10k(
             ExplicitBranchTruth10kPlanConfig(
@@ -6264,7 +6264,7 @@ def plan_explicit_branch_truth_10k_mac_command(
         help="Generate a plan that allows BABAPPAlign stages to proceed without the local BABAPPAScore model preflight.",
     ),
 ) -> None:
-    """Write a user-run Apple Silicon/MPS explicit branch-truth 10K plan."""
+    """Write a manual execution Apple Silicon/MPS explicit branch-truth 10K plan."""
     try:
         summary = plan_explicit_branch_truth_10k_mac(
             ExplicitBranchTruth10kMacPlanConfig(
@@ -6317,7 +6317,7 @@ def plan_explicit_branch_truth_100k_mac_command(
         help="Generate a plan that allows BABAPPAlign stages to proceed without the local BABAPPAScore model preflight.",
     ),
 ) -> None:
-    """Write a gated user-run Apple Silicon/MPS explicit branch-truth 100K plan."""
+    """Write a gated manual execution Apple Silicon/MPS explicit branch-truth 100K plan."""
     try:
         summary = plan_explicit_branch_truth_100k_mac(
             ExplicitBranchTruth100kMacPlanConfig(
@@ -6630,7 +6630,7 @@ def summarize_simulation_matched_calibration_plan_command(
     plan_dir: Path = typer.Option(..., "--plan-dir"),
     outdir: Path = typer.Option(..., "--outdir"),
 ) -> None:
-    """Summarize a USER-RUN simulation-matched calibration plan."""
+    """Summarize a manual execution simulation-matched calibration plan."""
     try:
         summary = summarize_simulation_matched_calibration_plan(
             SimulationMatchedCalibrationSummaryConfig(
@@ -7259,7 +7259,7 @@ def plan_real_pilot_tree_building_command(
     outdir: Path = typer.Option("real_empirical_pilot/tree_building_plan", "--outdir"),
     method: str = typer.Option("iqtree", "--method"),
 ) -> None:
-    """Plan USER-RUN tree building for real pilot families missing trees."""
+    """Plan manual execution tree building for real pilot families missing trees."""
     try:
         summary = plan_real_pilot_tree_building(
             RealPilotTreeBuildingPlanConfig(
@@ -7680,7 +7680,7 @@ def check_reference_tools_command(
 def install_reference_tools_plan_command(
     outdir: Path = typer.Option(..., "--outdir"),
 ) -> None:
-    """Generate USER-RUN conda/brew helper scripts for codeml/PAML and HyPhy."""
+    """Generate manual execution conda/brew helper scripts for codeml/PAML and HyPhy."""
     try:
         summary = install_reference_tools_plan(
             ReferenceToolsInstallPlanConfig(outdir=str(outdir))
@@ -7702,7 +7702,7 @@ def prepare_codeml_reference_command(
     foreground: str = typer.Option(..., "--foreground"),
     outdir: Path = typer.Option(..., "--outdir"),
 ) -> None:
-    """Prepare USER-RUN codeml branch-site reference templates."""
+    """Prepare manual execution codeml branch-site reference templates."""
     try:
         summary = prepare_codeml_reference(
             CodemlReferencePrepConfig(
@@ -7729,7 +7729,7 @@ def prepare_hyphy_reference_command(
     foreground: str = typer.Option(..., "--foreground"),
     outdir: Path = typer.Option(..., "--outdir"),
 ) -> None:
-    """Prepare USER-RUN HyPhy aBSREL/MEME reference templates."""
+    """Prepare manual execution HyPhy aBSREL/MEME reference templates."""
     try:
         summary = prepare_hyphy_reference(
             HyphyReferencePrepConfig(
@@ -7929,7 +7929,7 @@ def write_wrky_matched_null_script_command(
     plan_dir: Path = typer.Option(..., "--plan-dir"),
     output_root: Path = typer.Option(..., "--output-root"),
 ) -> None:
-    """Write the USER-RUN small matched-null calibration scaffold script."""
+    """Write the manual execution small matched-null calibration scaffold script."""
     try:
         path = write_wrky_matched_null_script(str(plan_dir), str(output_root))
     except OSError as exc:
@@ -8073,7 +8073,7 @@ def plan_close_taxa_control_family_command(
     min_taxa: int = typer.Option(6, "--min-taxa"),
     min_codons: int = typer.Option(100, "--min-codons"),
 ) -> None:
-    """Plan a USER-RUN close-taxa conserved control family workflow."""
+    """Plan a manual execution close-taxa conserved control family workflow."""
     try:
         summary = plan_close_taxa_control_family(
             CloseTaxaControlFamilyPlanConfig(
@@ -8337,15 +8337,15 @@ def plan_external_aligner_validation_command(
     conda_sh: str = typer.Option(
         "/home/rajamosai/miniconda3/etc/profile.d/conda.sh",
         "--conda-sh",
-        help="Conda profile script sourced by the generated user-run shell script.",
+        help="Conda profile script sourced by the generated manual execution shell script.",
     ),
     conda_env: str = typer.Option(
         "molevo",
         "--conda-env",
-        help="Conda environment activated by the generated user-run shell script.",
+        help="Conda environment activated by the generated manual execution shell script.",
     ),
 ) -> None:
-    """Write user-run commands for clean mapped external-aligner validation."""
+    """Write manual execution commands for clean mapped external-aligner validation."""
     try:
         summary = plan_external_aligner_validation(
             ExternalAlignerValidationPlanConfig(
@@ -8390,7 +8390,7 @@ def plan_complete_external_tier_reports_command(
     ),
     conda_env: str = typer.Option("molevo", "--conda-env"),
 ) -> None:
-    """Write user-run commands to complete calibration/policies for existing external tiers."""
+    """Write manual execution commands to complete calibration/policies for existing external tiers."""
     try:
         summary = plan_complete_external_tier_reports(
             ExternalCompletedTierReportPlanConfig(
@@ -8427,7 +8427,7 @@ def plan_external_extreme_recovery_command(
     ),
     conda_env: str = typer.Option("molevo", "--conda-env"),
 ) -> None:
-    """Write a user-run fast recovery plan for the missing external extreme tier."""
+    """Write a manual execution fast recovery plan for the missing external extreme tier."""
     try:
         summary = plan_external_extreme_recovery(
             ExternalExtremeRecoveryPlanConfig(
@@ -8470,7 +8470,7 @@ def plan_fast_external_10k_command(
     timeout_seconds: int = typer.Option(300, "--timeout-seconds"),
     max_method_failure_fraction: float = typer.Option(0.01, "--max-method-failure-fraction"),
 ) -> None:
-    """Write a user-run 10K fast external-aligner validation plan."""
+    """Write a manual execution 10K fast external-aligner validation plan."""
     try:
         summary = plan_fast_external_10k(
             FastExternal10kPlanConfig(

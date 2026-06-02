@@ -1,0 +1,25 @@
+Organism Scientific Name	Organism Common Name	Organism Qualifier	Taxonomy id	Assembly Name	Assembly Accession	Source	Annotation	Level	Contig N50	Size	Submission Date	Gene Count	BioProject	BioSample
+Drosophila melanogaster	fruit fly		7227	Release 6 plus ISO1 MT	GCA_000001215.4	GenBank	FlyBase Release 6.54	Chromosome	21485538	143706478	2014-08-01	17872	PRJNA13812	SAMN02803731
+Drosophila mauritiana		sex: male, strain: mau12	7226	ASM438214v1	GCA_004382145.1	GenBank		Chromosome	22120385	152298302	2019-04-16		PRJNA383250	SAMN06827991
+Drosophila sechellia		sex: male, strain: sech25	7238	ASM438219v2	GCA_004382195.2	GenBank		Chromosome	19907079	153084571	2019-04-16		PRJNA383250	SAMN06827992
+Drosophila subobscura		isolate: 14011-0131.10, sex: female	7241	UCBerk_Dsub_1.0	GCA_008121235.1	GenBank		Chromosome	11370518	126232139	2019-08-28		PRJNA545704	SAMN11963385
+Drosophila pseudoobscura		sex: female, strain: MV-25-SWS-2005	7237	UCI_Dpse_MV25	GCA_009870125.2	GenBank		Chromosome	30706867	163266851	2020-03-03		PRJNA596268	SAMN13616452
+Drosophila yakuba		sex: female, strain: Tai18E2	7245	Prin_Dyak_Tai18E2_2.1	GCA_016746365.2	GenBank		Chromosome	18744361	147883098	2021-07-30		PRJNA647028	SAMN15573791
+Drosophila simulans		sex: female, strain: w501	7240	Prin_Dsim_3.1	GCA_016746395.2	GenBank		Chromosome	22319025	131663590	2021-10-05		PRJNA377886	SAMN06473875
+Drosophila ananassae		sex: pooled male and female, strain: 14024-0371.13	7217	ASM1763931v2	GCA_017639315.2	GenBank		Chromosome	26427416	213817545	2021-07-16		PRJNA602597	SAMN13901672
+Drosophila willistoni		isolate: 14030-0811.24, sex: pooled male and female	7260	UCI_dwil_1.1	GCA_018902025.2	GenBank		Chromosome	9079863	246985538	2021-06-16		PRJNA670571	SAMN16513131
+Drosophila biarmipes		sex: female, strain: raj3	125945	RU_DBia_V1.1	GCA_025231255.1	GenBank		Chromosome	26917925	193597863	2022-09-16		PRJNA858076	SAMN29718609
+Drosophila virilis		sex: male, strain: 15010-1051.87	7244	Dvir_AGI_RSII-ME	GCA_030788295.1	GenBank		Chromosome	29144718	189440335	2023-08-21		PRJNA982537	SAMN35709873
+Drosophila suzukii		isolate: IsoJpt, sex: male	28584	CBGP_Dsuzu_IsoJpt1.0	GCA_043229965.1	GenBank		Chromosome	6316160	282295391	2024-10-17		PRJNA1032894	SAMN41502703
+Drosophila melanogaster	fruit fly		7227	Release 6 plus ISO1 MT	GCF_000001215.4	RefSeq	FlyBase Release 6.54	Chromosome	21485538	143706478	2014-08-01	17872	PRJNA13812	SAMN02803731
+Drosophila mauritiana		sex: male, strain: mau12	7226	ASM438214v1	GCF_004382145.1	RefSeq	NCBI Drosophila mauritiana Annotation Release 100	Chromosome	22120385	152298302	2019-04-16	16006	PRJNA383250	SAMN06827991
+Drosophila sechellia		sex: male, strain: sech25	7238	ASM438219v2	GCF_004382195.2	RefSeq	GCF_004382195.2-RS_2026_05	Chromosome	19907079	153084571	2019-04-16	16475	PRJNA383250	SAMN06827992
+Drosophila subobscura		isolate: 14011-0131.10, sex: female	7241	UCBerk_Dsub_1.0	GCF_008121235.1	RefSeq	NCBI Drosophila subobscura Annotation Release 100	Chromosome	11370518	126232139	2019-08-28	14381	PRJNA545704	SAMN11963385
+Drosophila pseudoobscura		sex: female, strain: MV-25-SWS-2005	7237	UCI_Dpse_MV25	GCF_009870125.1	RefSeq	GCF_009870125.1-RS_2025_01	Chromosome	30706867	163266851	2020-03-03	16880	PRJNA596268	SAMN13616452
+Drosophila yakuba		sex: female, strain: Tai18E2	7245	Prin_Dyak_Tai18E2_2.1	GCF_016746365.2	RefSeq	NCBI Drosophila yakuba Annotation Release 102	Chromosome	18744361	147883098	2021-07-30	16150	PRJNA647028	SAMN15573791
+Drosophila simulans		sex: female, strain: w501	7240	Prin_Dsim_3.1	GCF_016746395.2	RefSeq	NCBI Drosophila simulans Annotation Release 103	Chromosome	22319025	131663590	2021-10-05	15845	PRJNA377886	SAMN06473875
+Drosophila ananassae		sex: pooled male and female, strain: 14024-0371.13	7217	ASM1763931v2	GCF_017639315.1	RefSeq	NCBI Drosophila ananassae Annotation Release 102	Chromosome	26427416	213817545	2021-07-16	16982	PRJNA602597	SAMN13901672
+Drosophila willistoni		isolate: 14030-0811.24, sex: pooled male and female	7260	UCI_dwil_1.1	GCF_018902025.1	RefSeq	NCBI Drosophila willistoni Annotation Release 102	Chromosome	9079863	246985538	2021-06-16	16774	PRJNA670571	SAMN16513131
+Drosophila biarmipes		sex: female, strain: raj3	125945	RU_DBia_V1.1	GCF_025231255.1	RefSeq	NCBI Drosophila biarmipes Annotation Release 103	Chromosome	26917925	193597863	2022-09-16	17058	PRJNA858076	SAMN29718609
+Drosophila virilis		sex: male, strain: 15010-1051.87	7244	Dvir_AGI_RSII-ME	GCF_030788295.1	RefSeq	GCF_030788295.1-RS_2024_12	Chromosome	29144718	189440335	2023-08-21	15650	PRJNA982537	SAMN35709873
+Drosophila suzukii			28584	CBGP_Dsuzu_IsoJpt1.0	GCF_043229965.1	RefSeq	GCF_043229965.1-RS_2025_01	Chromosome	6316160	282295391	2024-10-17	18239	PRJNA1032894	SAMN41502703

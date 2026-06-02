@@ -1,6 +1,6 @@
 """Planning artifacts for large BABAPPA site-level validation runs.
 
-This module intentionally writes user-run command scripts only. It must never
+This module intentionally writes manual execution command scripts only. It must never
 execute large benchmark commands.
 """
 
@@ -145,7 +145,7 @@ def _expected_outputs(config: LargeRunPlanConfig, names: Dict[str, str]) -> dict
         ),
         "recommended_runtime_warning": (
             "Large-run simulation, tensorization, site dataset construction, and neural training "
-            "must be run by the user outside Codex."
+            "must be run by the user outside automated execution."
         ),
         "planner_executed_commands": [],
     }
@@ -190,7 +190,7 @@ def _render_executable_script(commands: List[str]) -> str:
             "#!/usr/bin/env bash",
             "set -euo pipefail",
             "",
-            "# USER-RUN ONLY — DO NOT EXECUTE IN CODEX",
+            "# MANUAL EXECUTION SCRIPT — Review before running",
             "# This script launches a large BABAPPA validation run for offline user execution.",
             "",
             *commands,
@@ -202,7 +202,7 @@ def _render_executable_script(commands: List[str]) -> str:
 def _render_commented_reference(commands: List[str]) -> str:
     return "\n".join(
         [
-            "# USER-RUN ONLY — DO NOT EXECUTE IN CODEX",
+            "# MANUAL EXECUTION SCRIPT — Review before running",
             "# Fully commented reference copy of large_run_commands.sh.",
             "#",
             *[f"# {command}" for command in commands],
@@ -215,7 +215,7 @@ def _render_monitor_commands(names: Dict[str, str]) -> str:
     dirs = " ".join(names.values())
     return "\n".join(
         [
-            "# USER-RUN ONLY — DO NOT EXECUTE IN CODEX",
+            "# MANUAL EXECUTION SCRIPT — Review before running",
             "# Monitoring command templates for manually launched large runs.",
             "# ps -eo pid,etime,pcpu,pmem,args | grep '[p]ython'",
             "# Use platform-specific accelerator monitoring outside this portable template.",
@@ -247,7 +247,7 @@ def _render_external_aligner_commands(config: LargeRunPlanConfig, names: Dict[st
             "#!/usr/bin/env bash",
             "set -euo pipefail",
             "",
-            "# USER-RUN ONLY — DO NOT EXECUTE IN CODEX",
+            "# MANUAL EXECUTION SCRIPT — Review before running",
             "# Optional external-aligner validation path. Start at 1K before considering larger scales.",
             "",
             "conda activate molevo",
@@ -272,7 +272,7 @@ def _render_markdown(config: LargeRunPlanConfig, expected: dict) -> str:
         "",
         "## Purpose",
         "",
-        "Prepare user-run commands for staged site-level validation without executing heavy work in Codex.",
+        "Prepare manual execution commands for staged site-level validation without executing heavy work in an automated environment.",
         "",
         "## Scientific rationale",
         "",
@@ -312,9 +312,9 @@ def _render_markdown(config: LargeRunPlanConfig, expected: dict) -> str:
             "- Continue after each validation command reports ok.",
             "- Continue from 10K to larger scale only after aggregation controls beat null/decoy controls.",
             "",
-            "## Why Codex must not execute the job",
+            "## Why automation environment must not execute the job",
             "",
-            "10K, 50K, and 100K validation runs create large datasets and long neural training jobs. Codex only prepares reproducible commands and monitoring templates.",
+            "10K, 50K, and 100K validation runs create large datasets and long neural training jobs. The planner only prepares reproducible commands and monitoring templates.",
             "",
             "## After-run summary commands",
             "",

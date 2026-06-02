@@ -1,14 +1,14 @@
 path	decision	reason
 .DS_Store	delete	system file
-CHATGPT_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md	delete	old handoff note not needed in release source tree
-CHATGPT_HANDOFF_FAST_EXTERNAL_10K_20260511.md	delete	old handoff note not needed in release source tree
+external reviewer_HANDOFF_EXPLICIT_BRANCH_TRUTH_1K_20260517.md	delete	old handoff note not needed in release source tree
+external reviewer_HANDOFF_FAST_EXTERNAL_10K_20260511.md	delete	old handoff note not needed in release source tree
 PROJECT_AUDIT_HANDOFF_20260503.md	delete	old handoff note not needed in release source tree
 aligner_status_c37d.json	delete	old generated status report superseded by release reports
 aligner_status_c37d_module.json	delete	old generated status report superseded by release reports
 aligner_status_external_1k.json	delete	old generated status report superseded by release reports
 aligner_status_external_1k_full.json	delete	old generated status report superseded by release reports
 external_aligner_status.json	delete	old generated status report superseded by release reports
-codex_explicit_1k_post_controls_decision_report.md	delete	old generated decision note superseded by manuscript/reports
+automation environment_explicit_1k_post_controls_decision_report.md	delete	old generated decision note superseded by manuscript/reports
 resume_external_high.sh	delete	old run helper script not needed for release source tree
 run_babappa_scale_test_1000.sh	delete	old run helper script not needed for release source tree
 archives	delete	old archive staging folder

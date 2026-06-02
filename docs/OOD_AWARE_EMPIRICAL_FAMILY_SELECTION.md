@@ -27,7 +27,7 @@ The close Brassicaceae redesign produced `WRKY_candidate_02_close`, which passed
 
 ## Long-Run Handoff Policy
 
-Codex does not execute heavy empirical calibration, broad scans, or long reference batches. OOD-aware acquisition and control workflows are written as USER-RUN scripts; the user runs them locally/offline and brings back summaries for interpretation.
+The tooling does not automatically execute heavy empirical calibration, broad scans, or long reference batches. OOD-aware acquisition and control workflows are written as manual execution scripts; the user runs them locally/offline and brings back summaries for interpretation.
 
 ## Commands
 
@@ -38,7 +38,7 @@ babappa plan-ood-aware-family-build --family-id WRKY_candidate_02_close --query-
 babappa summarize-empirical-ood --workspace real_empirical_pilot --outdir real_empirical_pilot/ood_summary
 ```
 
-The acquisition plans are USER-RUN ONLY. They are meant to help build a closer candidate family, then prefilter it before adding it to the empirical pilot manifest.
+The acquisition plans are MANUAL EXECUTION SCRIPT. They are meant to help build a closer candidate family, then prefilter it before adding it to the empirical pilot manifest.
 
 ## Decision Classes
 

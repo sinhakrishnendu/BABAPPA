@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo 'USER-RUN ONLY - DO NOT EXECUTE IN CODEX'
+echo 'MANUAL EXECUTION SCRIPT - REVIEW BEFORE RUNNING'
 
 # Align proteins/CDS and infer an ML tree.
 # mafft --auto candidate.protein.fasta > candidate.protein.aln.fasta

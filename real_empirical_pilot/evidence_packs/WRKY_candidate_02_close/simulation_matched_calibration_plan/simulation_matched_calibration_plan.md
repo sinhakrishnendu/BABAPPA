@@ -23,7 +23,7 @@ This is a planning scaffold only. It does not authorize final empirical branch-s
 - recommended_tier: `extreme`
 - null_replicates_initial: `1000`
 - alt_replicates_initial: `250`
-- notes: `Initial null calibration scaffold; user-run only.`
+- notes: `Initial null calibration scaffold; manual execution only.`
 
 ## Estimated resources
 

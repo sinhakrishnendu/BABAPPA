@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "USER-RUN ONLY - COL5_candidate_01 alignment-sensitive diagnostic run"
+echo "MANUAL EXECUTION SCRIPT - COL5_candidate_01 alignment-sensitive diagnostic run"
 cd /Users/krishnendu/Documents/GitHub/BABAPPA
 
 if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
