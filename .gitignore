@@ -146,6 +146,10 @@ known_truth_babappa_absrel_comparison*/
 known_truth_benchmark_plan*/
 known_truth_benchmark_*_intake/
 known_truth_benchmark_*_decision/
+benchmark_runs/
+benchmarks/known_truth_absrel/*_runs/
+benchmarks/known_truth_absrel/results/
+benchmarks/known_truth_absrel/*results*/
 method_claim_readiness/
 manuscript_tables/
 publication_benchmark/results/

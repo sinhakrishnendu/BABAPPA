@@ -1,0 +1,9 @@
+profile: smoke
+n_families: 12
+seed: 42
+n_taxa: 6
+n_codons: 72
+outdir: benchmark_runs/known_truth_absrel_smoke
+model_package: deployable_model_conservative_branch_site_100k_mps
+device: auto
+babappa_null_replicates: 0

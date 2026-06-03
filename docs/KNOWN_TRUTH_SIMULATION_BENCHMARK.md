@@ -1,96 +1,59 @@
 # Known-Truth Simulation Benchmark
 
-BABAPPA-BENCH-SIM-v1 is the primary validation layer for BABAPPA. It benchmarks the software against families where the truth is known by construction: null families, positive branch-site families, OOD families, alignment-difficulty families, and saturation-tier stress cases.
+The recommended known-truth benchmark is the script-based BABAPPA/aBSREL workflow in:
+
+```text
+benchmarks/known_truth_absrel/
+```
+
+The benchmark compares BABAPPA and HyPhy aBSREL against explicit simulator labels. The simulator labels are the truth. aBSREL is an external comparator, not a truth source.
 
 ## Why Known Truth Is Necessary
 
-HyPhy and codeml are important external likelihood-reference methods, but their empirical calls are not ground truth. A method paper needs a benchmark where the selected branches, selected sites, null families, and OOD conditions are known. BABAPPA-BENCH-SIM-v1 provides that benchmark.
+Empirical data do not provide complete labels for selected branches, selected sites, null families, or OOD conditions. A known-truth simulation benchmark makes AUROC, AUPRC, power, false-call behavior, empirical FDR, and OOD abstention measurable.
 
-## Benchmark Regimes
+## Public Commands
 
-The design includes:
+Smoke profile:
 
-- null low/moderate/high/extreme divergence;
-- null alignment-difficult, short-gene, few-taxa, and long-branch cases;
-- weak, moderate, and strong branch-site positive regimes;
-- sparse, clustered, multi-branch, short-foreground, and long-foreground positives;
-- OOD stress regimes including extreme saturation, high gap burden, compositional bias, paralogy-like mixtures, tree-mismatch-like inputs, too-short genes, and too-few taxa.
+```bash
+bash benchmarks/known_truth_absrel/run_smoke.sh
+bash benchmarks/known_truth_absrel/compare_smoke.sh
+```
+
+Pilot profile:
+
+```bash
+bash benchmarks/known_truth_absrel/run_pilot.sh
+bash benchmarks/known_truth_absrel/run_absrel_pilot.sh
+bash benchmarks/known_truth_absrel/compare_pilot.sh
+```
+
+Paper profile:
+
+```bash
+bash benchmarks/known_truth_absrel/run_paper.sh
+```
+
+Generated outputs are written under `benchmark_runs/`.
 
 ## Truth Schema
 
-Each family stores:
+Each run writes:
 
-- `family_truth.json`;
-- `branch_site_truth.tsv`;
-- `selected_sites.tsv`;
-- `selected_branches.tsv`;
-- `regime_metadata.json`;
-- simulated CDS FASTA;
-- simulated tree.
+- `truth/family_truth.tsv`;
+- `truth/branch_site_truth.tsv`;
+- `truth/selected_sites.tsv`;
+- `truth/selected_branches.tsv`;
+- `manifest.tsv`;
+- per-family simulated codon FASTA and tree files.
 
-Dataset-level truth is stored in `benchmark_truth_manifest.tsv` and `benchmark_truth_manifest.json`.
-
-Truth files are for benchmark evaluation only. They must never be used as empirical inference inputs or scoring features.
+Truth files are benchmark labels only. They must never be used as empirical inference inputs or scoring features.
 
 ## Metrics
 
-The evaluator reports:
-
-- gene-level AUROC, AUPRC, precision, recall, specificity, F1, MCC, FPR, FNR, empirical FDR;
-- branch-site AUROC/AUPRC and called-row precision/recall when row-level scores are available;
-- OOD abstention rate and OOD false-call rate;
-- stratified metrics by saturation tier, applicability, gene length, taxon count, foreground branch length, effect size, selected-site fraction, and alignment difficulty;
-- BH q-values, FDR, and power under the simulated truth labels.
-
-## Smoke, Pilot, Paper, And Extended Profiles
-
-Create the design:
-
-```bash
-babappa design-known-truth-benchmark \
-  --outdir known_truth_benchmark_design_v1 \
-  --benchmark-name BABAPPA-BENCH-SIM-v1 \
-  --seed 42
-```
-
-Create a smoke plan:
-
-```bash
-babappa plan-known-truth-benchmark \
-  --profile smoke \
-  --design-dir known_truth_benchmark_design_v1 \
-  --outdir known_truth_benchmark_plan_smoke \
-  --methods identity,mafft,babappalign,muscle \
-  --device auto \
-  --threads 2 \
-  --max-workers 1
-```
-
-Create user-run plans:
-
-```bash
-babappa plan-known-truth-benchmark --profile pilot --design-dir known_truth_benchmark_design_v1 --outdir known_truth_benchmark_plan_pilot
-babappa plan-known-truth-benchmark --profile paper --design-dir known_truth_benchmark_design_v1 --outdir known_truth_benchmark_plan_paper
-babappa plan-known-truth-benchmark --profile extended --design-dir known_truth_benchmark_design_v1 --outdir known_truth_benchmark_plan_extended
-```
-
-Pilot, paper, and extended profiles are long-run jobs. They should be executed offline by the user, not inside short interactive coding sessions.
-
-## Reference Comparison
-
-Reference methods should be compared against the same simulation truth:
-
-```bash
-babappa plan-known-truth-reference-comparison \
-  --benchmark-dir known_truth_benchmark_paper \
-  --outdir known_truth_benchmark_paper/reference_comparison_plan \
-  --tools codeml,absrel,meme \
-  --max-families 100
-```
-
-codeml, aBSREL, and MEME are external comparators, not truth labels.
+The comparison reports AUROC, AUPRC, precision, recall/power, specificity, F1, MCC, FPR, FNR, empirical FDR, failure rate, and OOD false-call rate when enough evaluable families are available.
 
 ## Manuscript Interpretation
 
-Known-truth performance supports claims about simulation-validated behavior, OOD abstention, calibration, FDR, and power. It does not support unsupported empirical discovery claims. Empirical claims still require dataset-specific QC, OOD status, native calibration, controls, and biological interpretation.
-
+Known-truth performance supports simulation-validation claims about BABAPPA's conservative, OOD-gated behavior. It does not support unsupported empirical discovery claims. Empirical claims still require dataset-specific QC, OOD status, native calibration, controls, and biological interpretation.

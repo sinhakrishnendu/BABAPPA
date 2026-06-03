@@ -734,97 +734,46 @@ babappa compare-empirical-reference-results \
   --outdir real_empirical_pilot/comparison/WRKY_candidate_02_close
 ```
 
-### 8. Known-Truth Simulation Benchmark
+### 8. Known-Truth BABAPPA/aBSREL Benchmark
 
-The primary scientific validation layer is the known-truth simulation benchmark. It evaluates BABAPPA against explicit simulated labels rather than treating empirical codeml/HyPhy outputs as truth.
+The primary scientific benchmark is now a simple script-based workflow under:
 
-Create the benchmark design:
-
-```bash
-babappa design-known-truth-benchmark \
-  --outdir known_truth_benchmark_design_v1 \
-  --benchmark-name BABAPPA-BENCH-SIM-v1 \
-  --seed 42
+```text
+benchmarks/known_truth_absrel/
 ```
 
-Create a tiny smoke plan:
+It evaluates BABAPPA and HyPhy aBSREL against explicit simulator truth. The simulator labels are the ground truth; aBSREL is an external comparator measured against the same labels. This benchmark does not present BABAPPA as an aBSREL replacement.
+
+Run the tiny smoke benchmark:
 
 ```bash
-babappa plan-known-truth-benchmark \
-  --profile smoke \
-  --design-dir known_truth_benchmark_design_v1 \
-  --outdir known_truth_benchmark_plan_smoke \
-  --methods identity,mafft,babappalign,muscle \
-  --device auto \
-  --threads 2 \
-  --max-workers 1
+bash benchmarks/known_truth_absrel/run_smoke.sh
+bash benchmarks/known_truth_absrel/compare_smoke.sh
 ```
 
-Run the smoke only if you want to validate the framework quickly:
+Run the 300-family pilot benchmark offline:
 
 ```bash
-bash known_truth_benchmark_plan_smoke/run_known_truth_benchmark.sh
-bash known_truth_benchmark_plan_smoke/validate_known_truth_benchmark.sh
-bash known_truth_benchmark_plan_smoke/summarize_known_truth_benchmark.sh
+bash benchmarks/known_truth_absrel/run_pilot.sh
+bash benchmarks/known_truth_absrel/run_absrel_pilot.sh
+bash benchmarks/known_truth_absrel/compare_pilot.sh
 ```
 
-Generate larger user-run plans:
+Run the larger paper profile only after the pilot output is interpretable:
 
 ```bash
-babappa plan-known-truth-benchmark \
-  --profile pilot \
-  --design-dir known_truth_benchmark_design_v1 \
-  --outdir known_truth_benchmark_plan_pilot \
-  --methods identity,mafft,babappalign,muscle \
-  --device auto \
-  --threads 8 \
-  --max-workers 4
-
-babappa plan-known-truth-benchmark \
-  --profile paper \
-  --design-dir known_truth_benchmark_design_v1 \
-  --outdir known_truth_benchmark_plan_paper \
-  --methods identity,mafft,babappalign,muscle \
-  --device auto \
-  --threads 8 \
-  --max-workers 4
+bash benchmarks/known_truth_absrel/run_paper.sh
 ```
 
-The known-truth benchmark reports AUROC, AUPRC, FDR, power, calibration, OOD abstention, and false-call suppression against simulation truth. Truth files are benchmark labels only and must never be used as empirical inference inputs.
+Generated benchmark runs are written under:
 
-Select and plan the aBSREL comparator subset against the same truth:
-
-```bash
-babappa select-known-truth-absrel-subset \
-  --benchmark-dir known_truth_benchmark_smoke \
-  --outdir known_truth_absrel_subset_smoke \
-  --max-families 12 \
-  --stratify-by regime,truth_class,ood_status,saturation_tier
-
-babappa plan-known-truth-absrel-comparison \
-  --subset known_truth_absrel_subset_smoke/absrel_subset.tsv \
-  --outdir known_truth_absrel_comparison_plan_smoke \
-  --alignment-source mafft_codon \
-  --user-run-only true
+```text
+benchmark_runs/
 ```
 
-The aBSREL layer is a comparator against simulated truth. It is not ground truth, and BABAPPA is not presented as a likelihood-method replacement.
+The benchmark reports AUROC, AUPRC, precision, recall/power, specificity, F1, MCC, FPR, FNR, empirical FDR, failure rate, and OOD false-call rate where enough evaluable families are present. Truth files are benchmark labels only and must never be used as empirical inference inputs.
 
-For long profiles, generate the suite plan first:
-
-```bash
-babappa plan-known-truth-benchmark-suite \
-  --profile pilot \
-  --outdir known_truth_benchmark_plan_pilot \
-  --deployable-model-package deployable_model_conservative_branch_site_100k_mps \
-  --include-absrel true \
-  --absrel-max-families 300 \
-  --device auto \
-  --conda-env molevo
-
-babappa validate-known-truth-benchmark-plan \
-  --plan-dir known_truth_benchmark_plan_pilot
-```
+Older known-truth benchmark subcommands remain in the package for internal compatibility, but the recommended public workflow is the script path above.
 
 ### 9. Publication Benchmark Pipeline
 

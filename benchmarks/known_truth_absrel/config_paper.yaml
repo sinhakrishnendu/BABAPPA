@@ -1,0 +1,9 @@
+profile: paper
+n_families: 5000
+seed: 42
+n_taxa: 10
+n_codons: 240
+outdir: benchmark_runs/known_truth_absrel_paper
+model_package: deployable_model_conservative_branch_site_100k_mps
+device: auto
+babappa_null_replicates: 100
