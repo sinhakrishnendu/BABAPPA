@@ -12,6 +12,10 @@ from babappa.benchmarks.external_aligner_validation_plan import (
 )
 from babappa.benchmarks.large_run_plan import LargeRunPlanConfig, plan_large_run
 from babappa.benchmarks.large_run_plan_audit import validate_large_run_plan_dir
+from babappa.benchmarks.publication_revision import (
+    PublicationRevisionPlanConfig,
+    plan_publication_revision_benchmarks,
+)
 from babappa.benchmarks.known_truth import (
     KnownTruthAlignmentConfig,
     KnownTruthAbsrelParseConfig,
@@ -87,6 +91,7 @@ __all__ = [
     "KnownTruthScoringConfig",
     "KnownTruthSimulationConfig",
     "KnownTruthValidationConfig",
+    "PublicationRevisionPlanConfig",
     "ExternalAlignerValidationPlanConfig",
     "ExternalCompletedTierReportPlanConfig",
     "ExternalExtremeRecoveryPlanConfig",
@@ -107,6 +112,7 @@ __all__ = [
     "plan_external_extreme_recovery",
     "plan_fast_external_10k",
     "plan_large_run",
+    "plan_publication_revision_benchmarks",
     "parse_known_truth_absrel_results",
     "plan_known_truth_absrel_comparison",
     "plan_known_truth_benchmark",

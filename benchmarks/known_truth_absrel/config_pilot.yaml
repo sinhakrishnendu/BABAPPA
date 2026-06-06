@@ -7,3 +7,7 @@ outdir: benchmark_runs/known_truth_absrel_pilot
 model_package: deployable_model_conservative_branch_site_100k_mps
 device: auto
 babappa_null_replicates: 100
+jobs:
+  babappa: 12
+  absrel: 12
+  prepare: 12

@@ -263,6 +263,28 @@ def test_applicability_returns_rule_based_status(tmp_path: Path, monkeypatch: py
     assert result["reasons"]
 
 
+def test_applicability_marks_model_feature_envelope_overflow_ood(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    package, input_dir, _alignment, features, _audit = _feature_pipeline(tmp_path, monkeypatch)
+    import babappa.empirical.bridge as bridge
+
+    feature_columns = json.loads((package / "feature_schema.json").read_text())["expected_feature_columns"]
+    mean = np.zeros(len(feature_columns), dtype=np.float32)
+    std = np.ones(len(feature_columns), dtype=np.float32)
+    mean[feature_columns.index("n_codons")] = 300.0
+    monkeypatch.setattr(bridge, "safe_import_torch", lambda: (object(), None))
+    monkeypatch.setattr(bridge, "_torch_load", lambda _torch, _path: {"feature_mean": mean, "feature_std": std})
+
+    result = run_empirical_applicability(
+        EmpiricalApplicabilityConfig(str(input_dir), str(features), str(package), str(tmp_path / "applicability"))
+    )
+    payload = json.loads((tmp_path / "applicability" / "empirical_applicability.json").read_text())
+
+    assert result["status"] == "out_of_domain"
+    assert payload["feature_distribution_range_check"] == "fail"
+    assert payload["diagnostic_only_if_scored"] is True
+    assert any(reason.startswith("model_feature_out_of_envelope:n_codons") for reason in result["reasons"])
+
+
 def test_scoring_refuses_when_torch_unavailable(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     package, input_dir, _alignment, features, _audit = _feature_pipeline(tmp_path, monkeypatch)
     run_empirical_applicability(

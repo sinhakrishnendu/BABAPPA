@@ -277,6 +277,43 @@ BABAPPA does not realign input for this command. The user-supplied MSA is the al
 
 The `--null-replicates` option is the standalone BABAPPA evidence layer. It runs a BABAPPA-native branch-shuffle feature null for the same empirical MSA/tree feature table and reports p-like values such as `p_babappa_called_rows` and `p_babappa_max_gene_support`. Use `--null-replicates 0` only for quick checking; use `100` for a pilot; use `1000` or more when you want a BABAPPA-native result that can be reported in a paper as BABAPPA evidence.
 
+BABAPPA also audits the deployable-model feature envelope before scoring. A biologically reasonable MSA can still be outside the current model's effective input envelope, for example if the aligned gene is much longer or has many more taxa than the simulation-trained checkpoint saw. In that case BABAPPA marks the run `out_of_domain` or `borderline` and treats any scores as diagnostic-only. If an `in_domain` or `borderline` run produces an all-zero probability surface, BABAPPA now fails the scoring audit rather than reporting an ordinary negative result.
+
+### Preparing A Variable-Length Redeployment
+
+For a future deployable model that handles broader user MSA lengths more naturally, BABAPPA includes a storage-safe 100K retraining planner using `conservative_branch_site_normalized_v2`. This policy removes raw `n_taxa`, raw `n_codons`, and raw zero-based site-index features from the model input while retaining relative/log-normalized length and site-position features.
+
+Generate the plan:
+
+```bash
+babappa plan-variable-length-100k-retraining \
+  --outdir variable_length_retraining_plan \
+  --workspace branch_site_v2_100k_workspace \
+  --package-outdir deployable_model_conservative_branch_site_v2_100k_mps \
+  --n-families-per-tier 25000 \
+  --device mps \
+  --threads 18 \
+  --batch-size 64 \
+  --min-free-gb 250
+```
+
+Run it locally only when you are ready for a long retraining job. To actually free disk after each validated chunk:
+
+```bash
+BABAPPA_RETRAIN_CLEANUP_MODE=delete \
+BABAPPA_RETRAIN_DELETE_INTERMEDIATES=YES \
+bash variable_length_retraining_plan/run_variable_length_100k_retraining.sh
+```
+
+Monitor and validate:
+
+```bash
+bash variable_length_retraining_plan/monitor_variable_length_100k_retraining.sh
+bash variable_length_retraining_plan/validate_variable_length_100k_retraining.sh
+```
+
+See `docs/VARIABLE_LENGTH_RETRAINING.md` for the full cleanup policy and package handoff.
+
 Main outputs:
 
 - `branch_site_predictions.tsv`: site-by-branch scores and calls
@@ -765,6 +802,16 @@ Run the larger paper profile only after the pilot output is interpretable:
 bash benchmarks/known_truth_absrel/run_paper.sh
 ```
 
+If a threshold is selected after looking at the paper profile, freeze it and test it on the independent validation profile before treating it as a final operating point:
+
+```bash
+bash benchmarks/known_truth_absrel/run_validation.sh
+bash benchmarks/known_truth_absrel/run_absrel_validation.sh
+bash benchmarks/known_truth_absrel/compare_validation.sh
+```
+
+The validation profile uses a new seed and applies `benchmarks/known_truth_absrel/threshold_policy_validation_candidate.yaml` unchanged. Do not retune thresholds on the validation run.
+
 Generated benchmark runs are written under:
 
 ```text
@@ -775,7 +822,31 @@ The benchmark reports AUROC, AUPRC, precision, recall/power, specificity, F1, MC
 
 Older known-truth benchmark subcommands remain in the package for internal compatibility, but the recommended public workflow is the script path above.
 
-### 9. Publication Benchmark Pipeline
+### 9. Publication Revision Benchmark Plan
+
+The current known-truth validation is strong, but a manuscript revision should add empirical transfer evidence and sensitivity checks. BABAPPA can generate the required planning materials without running the long analyses:
+
+```bash
+babappa plan-publication-revision-benchmarks \
+  --outdir publication_revision_benchmarks \
+  --retained-validation-families 10000 \
+  --null-replicates 1000 \
+  --threads 8 \
+  --device auto
+```
+
+This writes:
+
+- known positive-control panel template;
+- empirical transfer panel template;
+- sensitivity-analysis grid;
+- fully retained validation plan;
+- reviewer-response matrix;
+- reviewable long-run scripts for the user to run after filling real data.
+
+Use this layer to address four manuscript concerns: weak empirical positive-control demonstration, simulator-to-real transfer, hyperparameter sensitivity, and the conditional 100K pass caused by pruned raw intermediates. See `docs/PUBLICATION_REVISION_BENCHMARKS.md`.
+
+### 10. Publication Benchmark Pipeline
 
 The repository also includes a separate manuscript-only benchmarking harness:
 
@@ -933,6 +1004,8 @@ Common terms:
 - `reference_only`: reference tool positive but BABAPPA not supportive; inspect alignment, OOD, and model limitations.
 - `calibration_pending`: BABAPPA-native null calibration has not completed; do not report calibrated BABAPPA support.
 - `feature_matched_calibration_complete`: feature-level matched null scoring has completed. Report the backend explicitly; it is BABAPPA-native evidence, not a codeml/HyPhy likelihood-ratio p-value.
+- `model_feature_out_of_envelope`: one or more empirical features are far outside the deployable model's standardized training envelope. This is an OOD/model-compatibility warning, not evidence against selection.
+- `scores_all_zero_for_in_domain_input`: the scoring audit rejected an all-zero probability surface for an otherwise in-domain or borderline input. Treat this as a software/model compatibility failure, not as a biological negative.
 
 Responsible reporting language:
 
@@ -1048,6 +1121,14 @@ Use `--device cpu` if MPS/CUDA fails or if a tensor operation is unsupported.
 ### Very high p-distance or OOD input
 
 Use closer taxa. For plant WRKY pilots, start with close Brassicaceae panels rather than broad monocot/dicot/legume mixtures.
+
+### Model feature-envelope OOD
+
+If `empirical_applicability.json` reports `model_feature_out_of_envelope`, the input passed basic CDS/tree QC but does not fit the deployable model's standardized feature range. Common causes are long alignments, many taxa, or feature values outside the simulation-trained checkpoint. Do not interpret the result as positive or negative selection. Use the report's `feature_envelope_check.worst_features` section to identify the driver, then either use a model trained for that input scale or treat the dataset as outside the current BABAPPA empirical envelope.
+
+### All-zero scores
+
+An all-zero scoring surface in an `in_domain` or `borderline` run now fails the empirical scoring audit. This usually means model/input feature incompatibility, underflow from extreme standardized features, or a broken scoring path. It should not be reported as a confident negative result.
 
 ### codeml/HyPhy disagreement
 

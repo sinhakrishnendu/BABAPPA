@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+WORKSPACE="${BABAPPA_RETRAIN_WORKSPACE:-branch_site_v2_100k_workspace}"
+echo "=== validate tier low retained artifacts ==="
+babappa validate-branch-site-neural --model-dir "$WORKSPACE/branch_site_neural_low"
+babappa validate-branch-site-calibration --calibration-dir "$WORKSPACE/branch_site_calibration_low"
+babappa validate-branch-aggregation --aggregation-dir "$WORKSPACE/branch_aggregation_low"
+babappa validate-branch-aggregation-controls --controls-dir "$WORKSPACE/branch_aggregation_controls_low"
+babappa validate-branch-site-threshold-policy --policy-dir "$WORKSPACE/branch_site_threshold_policy_low"
+babappa validate-branch-aggregation-threshold-policy --policy-dir "$WORKSPACE/branch_aggregation_threshold_policy_low"
+
+echo "=== validate tier moderate retained artifacts ==="
+babappa validate-branch-site-neural --model-dir "$WORKSPACE/branch_site_neural_moderate"
+babappa validate-branch-site-calibration --calibration-dir "$WORKSPACE/branch_site_calibration_moderate"
+babappa validate-branch-aggregation --aggregation-dir "$WORKSPACE/branch_aggregation_moderate"
+babappa validate-branch-aggregation-controls --controls-dir "$WORKSPACE/branch_aggregation_controls_moderate"
+babappa validate-branch-site-threshold-policy --policy-dir "$WORKSPACE/branch_site_threshold_policy_moderate"
+babappa validate-branch-aggregation-threshold-policy --policy-dir "$WORKSPACE/branch_aggregation_threshold_policy_moderate"
+
+echo "=== validate tier high retained artifacts ==="
+babappa validate-branch-site-neural --model-dir "$WORKSPACE/branch_site_neural_high"
+babappa validate-branch-site-calibration --calibration-dir "$WORKSPACE/branch_site_calibration_high"
+babappa validate-branch-aggregation --aggregation-dir "$WORKSPACE/branch_aggregation_high"
+babappa validate-branch-aggregation-controls --controls-dir "$WORKSPACE/branch_aggregation_controls_high"
+babappa validate-branch-site-threshold-policy --policy-dir "$WORKSPACE/branch_site_threshold_policy_high"
+babappa validate-branch-aggregation-threshold-policy --policy-dir "$WORKSPACE/branch_aggregation_threshold_policy_high"
+
+echo "=== validate tier extreme retained artifacts ==="
+babappa validate-branch-site-neural --model-dir "$WORKSPACE/branch_site_neural_extreme"
+babappa validate-branch-site-calibration --calibration-dir "$WORKSPACE/branch_site_calibration_extreme"
+babappa validate-branch-aggregation --aggregation-dir "$WORKSPACE/branch_aggregation_extreme"
+babappa validate-branch-aggregation-controls --controls-dir "$WORKSPACE/branch_aggregation_controls_extreme"
+babappa validate-branch-site-threshold-policy --policy-dir "$WORKSPACE/branch_site_threshold_policy_extreme"
+babappa validate-branch-aggregation-threshold-policy --policy-dir "$WORKSPACE/branch_aggregation_threshold_policy_extreme"
+

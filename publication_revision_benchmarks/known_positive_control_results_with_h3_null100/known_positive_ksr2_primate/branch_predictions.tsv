@@ -1,0 +1,10 @@
+family_id	method	branch_id	n_branch_site_rows	max_prob_positive	mean_prob_positive	n_called_positive	diagnostic_only
+empirical	user_msa	MAR	949	0.0	0.0	0	False
+empirical	user_msa	BUS	949	0.0	0.0	0	False
+empirical	user_msa	PON	949	0.0	0.0	0	False
+empirical	user_msa	MAC	949	0.0	0.0	0	False
+empirical	user_msa	BAB	949	0.0	0.0	0	False
+empirical	user_msa	GIB	949	0.0	0.0	0	False
+empirical	user_msa	HUM	949	0.0	0.0	0	False
+empirical	user_msa	PAN	949	0.0	0.0	0	False
+empirical	user_msa	GOR	949	0.0	0.0	0	False

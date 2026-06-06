@@ -1,0 +1,4 @@
+panel_id	family_type	source	msa_path	tree_path	foreground	expected_behavior	comparison	notes
+transfer_known_positive_01	known_positive	literature_curated	TODO	TODO	TODO	recover branch/site support with BABAPPA-native calibration	codeml_hyphy_literature	Primary simulator-to-real transfer probe.
+transfer_known_negative_01	known_negative	housekeeping_or_conserved_control	TODO	TODO	leaves	no calibrated BABAPPA support	codeml_hyphy_optional	Empirical false-positive control.
+transfer_ood_stress_01	ood_stress	high_divergence_or_alignment_difficult	TODO	TODO	leaves	abstain_or_diagnostic_only	applicability_gate	Tests whether OOD behavior transfers to empirical data.

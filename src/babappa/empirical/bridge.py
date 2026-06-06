@@ -25,12 +25,16 @@ from babappa.align.ensemble import write_fasta
 from babappa.align.site_map import build_site_map_for_alignment
 from babappa.datasets.index import read_tsv, write_tsv
 from babappa.simulate.audit import read_fasta
+from babappa.tensors.build import build_codon_vocab, codon_to_id
 from babappa.training.neural_env import resolve_torch_device, safe_import_torch
 
 TIERS = ["low", "moderate", "high", "extreme"]
 METHODS = ["identity", "mafft", "babappalign", "muscle"]
 STOP_CODONS = {"TAA", "TAG", "TGA"}
 START_CODONS = {"ATG"}
+FEATURE_ENVELOPE_BORDERLINE_Z = 25.0
+FEATURE_ENVELOPE_OOD_Z = 100.0
+_CODON_VOCAB = build_codon_vocab()
 FEATURE_OUTPUT_FIELDS = [
     "family_id",
     "method",
@@ -565,9 +569,20 @@ def run_empirical_applicability(config: EmpiricalApplicabilityConfig) -> Dict[st
     if feature_check.get("feature_schema_match") != "pass":
         level = "out_of_domain"
         reasons.append("feature_schema_mismatch")
+    recommended_tier = _recommended_tier(p_distance)
+    feature_envelope = _feature_envelope_check(
+        package_dir=package_dir,
+        empirical_feature_dir=Path(config.empirical_feature_dir),
+        tier=recommended_tier,
+    )
+    if feature_envelope.get("status") == "fail":
+        level = "out_of_domain"
+        reasons.extend(feature_envelope.get("reasons") or [])
+    elif feature_envelope.get("status") == "borderline":
+        level = _max_level(level, "borderline")
+        reasons.extend(feature_envelope.get("reasons") or [])
     if not reasons:
         reasons.append("all_rule_based_checks_passed")
-    recommended_tier = _recommended_tier(p_distance)
     payload = {
         "empirical_applicability_version": __version__,
         "status": level,
@@ -587,11 +602,23 @@ def run_empirical_applicability(config: EmpiricalApplicabilityConfig) -> Dict[st
         },
         "feature_rows": feature_check.get("n_rows"),
         "training_envelope_available": bool(training_envelope),
-        "feature_distribution_range_check": "not_available_in_package_v1",
+        "feature_distribution_range_check": feature_envelope.get("status"),
+        "feature_envelope_check": feature_envelope,
         "diagnostic_only_if_scored": level == "out_of_domain",
     }
     _write_json(outdir / "empirical_applicability.json", payload)
-    write_tsv(outdir / "empirical_applicability.tsv", [_flat_applicability_row(payload)], ["status", "recommended_tier", "reasons", "feature_rows"])
+    write_tsv(
+        outdir / "empirical_applicability.tsv",
+        [_flat_applicability_row(payload)],
+        [
+            "status",
+            "recommended_tier",
+            "reasons",
+            "feature_rows",
+            "feature_distribution_range_check",
+            "max_abs_standardized_feature",
+        ],
+    )
     (outdir / "empirical_applicability.md").write_text(_render_applicability_md(payload), encoding="utf-8")
     return {
         "status": level,
@@ -636,23 +663,28 @@ def score_empirical_branch_sites(config: EmpiricalBranchSiteScoringConfig) -> Di
     write_tsv(outdir / "empirical_branch_site_scores.tsv", score_rows, list(score_rows[0]))
     write_tsv(outdir / "empirical_branch_scores.tsv", branch_rows, list(branch_rows[0]) if branch_rows else ["family_id"])
     write_tsv(outdir / "empirical_gene_support.tsv", gene_rows, list(gene_rows[0]) if gene_rows else ["family_id"])
+    score_audit = _audit_empirical_score_output(score_rows, applicability, outdir)
     payload = {
         "empirical_scoring_version": __version__,
-        "status": "ok",
+        "status": "ok" if score_audit["status"] == "pass" else "fail",
         "device": str(scorer["device"]),
         "tier_model": scorer["tier"],
         "n_rows": len(score_rows),
         "diagnostic_only": diagnostic_only,
         "applicability_status": applicability.get("applicability_status"),
         "calibration": scorer["calibration"],
+        "scoring_audit": score_audit,
         "outputs": {
             "branch_site_scores": str(outdir / "empirical_branch_site_scores.tsv"),
             "branch_scores": str(outdir / "empirical_branch_scores.tsv"),
             "gene_support": str(outdir / "empirical_gene_support.tsv"),
+            "scoring_audit": str(outdir / "empirical_scoring_audit.json"),
         },
     }
     _write_json(outdir / "empirical_scoring_manifest.json", payload)
     (outdir / "empirical_scoring_report.md").write_text(_render_scoring_report(payload), encoding="utf-8")
+    if score_audit["status"] != "pass":
+        raise RuntimeError("empirical scoring audit failed: " + ";".join(score_audit["reasons"]))
     return {
         "status": "ok",
         "outdir": str(outdir),
@@ -1046,13 +1078,18 @@ def _feature_row_from_site(
     background = [value for taxon, value in ids.items() if taxon != foreground]
     background_mean = float(np.mean(background)) if background else 0.0
     n_codons = int(validation.get("n_codons") or (len(next(iter(records.values()))) // 3 if records else 0))
+    site_relative = 0.0 if n_codons <= 1 else original_site / max(1, n_codons - 1)
     row = {
         "site_index_zero": original_site,
         "aligned_site_index_zero": aligned_site,
         "original_site_index_zero": original_site,
-        "site_relative_position": 0.0 if n_codons <= 1 else original_site / max(1, n_codons - 1),
+        "site_relative_position": site_relative,
+        "site_centered_position": site_relative - 0.5,
+        "site_terminal_distance": min(site_relative, 1.0 - site_relative),
         "n_taxa": len(records),
         "n_codons": n_codons,
+        "log_n_taxa": math.log1p(len(records)),
+        "log_n_codons": math.log1p(n_codons),
         "codon_id_mean": float(np.mean(values)),
         "codon_id_std": float(np.std(values)),
         "codon_id_min": float(np.min(values)),
@@ -1160,15 +1197,9 @@ def _site_codon(sequence: str, site: int) -> str:
 
 def _codon_id(codon: str) -> int:
     codon = codon.upper().replace("U", "T")
-    if "-" in codon or len(codon) != 3:
+    if len(codon) != 3:
         return 0
-    alphabet = "ACGT"
-    value = 1
-    for char in codon:
-        if char not in alphabet:
-            return 0
-        value = value * 4 + alphabet.index(char)
-    return value
+    return codon_to_id(codon, _CODON_VOCAB)
 
 
 def _ambiguous_fraction(records: Dict[str, str]) -> float:
@@ -1289,11 +1320,14 @@ def _flat_validation_row(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _flat_applicability_row(payload: Dict[str, Any]) -> Dict[str, Any]:
+    envelope = payload.get("feature_envelope_check") or {}
     return {
         "status": payload.get("status"),
         "recommended_tier": payload.get("recommended_tier"),
         "reasons": ";".join(payload.get("reasons") or []),
         "feature_rows": payload.get("feature_rows"),
+        "feature_distribution_range_check": payload.get("feature_distribution_range_check"),
+        "max_abs_standardized_feature": envelope.get("max_abs_standardized_feature"),
     }
 
 
@@ -1355,6 +1389,213 @@ def _read_optional_json(path: Path) -> Dict[str, Any]:
 
 def _write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _feature_envelope_check(package_dir: Path, empirical_feature_dir: Path, tier: str) -> Dict[str, Any]:
+    """Check whether empirical features fit the deployable model's standardized input scale.
+
+    This is intentionally conservative. The 100K deployable model carries its
+    training feature mean/std in the checkpoint. If empirical rows land far
+    outside that standardized envelope, the run should be routed to OOD or
+    diagnostic-only interpretation instead of being reported as an ordinary
+    in-domain negative.
+    """
+
+    features_path = empirical_feature_dir / "empirical_branch_site_features.tsv"
+    if not features_path.exists():
+        return {"status": "not_checked", "reasons": ["feature_table_missing"], "worst_features": []}
+    try:
+        manifest = _read_json(package_dir / "model_manifest.json")
+        feature_schema = _read_json(package_dir / "feature_schema.json")
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return {"status": "not_checked", "reasons": [f"package_metadata_unavailable:{exc}"], "worst_features": []}
+    feature_columns = [str(column) for column in feature_schema.get("expected_feature_columns", [])]
+    if not feature_columns:
+        return {"status": "not_checked", "reasons": ["feature_schema_missing_expected_columns"], "worst_features": []}
+    selected_tier = tier if tier in TIERS else "low"
+    try:
+        checkpoint_rel = manifest["tier_models"][selected_tier]["checkpoint"]
+    except (KeyError, TypeError):
+        return {"status": "not_checked", "reasons": [f"checkpoint_metadata_missing_for_tier:{selected_tier}"], "worst_features": []}
+    torch, error = safe_import_torch()
+    if torch is None:
+        return {"status": "not_checked", "reasons": [f"torch_unavailable_for_feature_envelope:{error}"], "worst_features": []}
+    try:
+        checkpoint = _torch_load(torch, package_dir / str(checkpoint_rel))
+    except Exception as exc:  # noqa: BLE001 - checkpoint readability is an optional applicability check.
+        return {"status": "not_checked", "reasons": [f"checkpoint_stats_unavailable:{exc}"], "worst_features": []}
+    mean = np.asarray(checkpoint.get("feature_mean", []), dtype=np.float32)
+    std = np.asarray(checkpoint.get("feature_std", []), dtype=np.float32)
+    if len(mean) != len(feature_columns) or len(std) != len(feature_columns):
+        return {
+            "status": "not_checked",
+            "reasons": [
+                f"checkpoint_feature_stats_shape_mismatch:{len(mean)}:{len(std)}:{len(feature_columns)}"
+            ],
+            "worst_features": [],
+        }
+    std = np.where(std == 0, 1.0, std)
+    rows = read_tsv(features_path)
+    if not rows:
+        return {"status": "fail", "reasons": ["feature_table_empty"], "worst_features": []}
+    sample_rows = rows[: min(len(rows), 50000)]
+    X = np.asarray(
+        [[_as_float(row.get(column), 0.0) or 0.0 for column in feature_columns] for row in sample_rows],
+        dtype=np.float32,
+    )
+    Z = (X - mean) / std
+    if not np.isfinite(Z).all():
+        return {"status": "fail", "reasons": ["nonfinite_standardized_features"], "worst_features": []}
+    max_abs = np.max(np.abs(Z), axis=0)
+    order = np.argsort(max_abs)[::-1][:8]
+    worst_features = []
+    for index in order:
+        worst_features.append(
+            {
+                "feature": feature_columns[int(index)],
+                "max_abs_z": float(max_abs[int(index)]),
+                "raw_min": float(np.min(X[:, int(index)])),
+                "raw_max": float(np.max(X[:, int(index)])),
+                "training_mean": float(mean[int(index)]),
+                "training_std": float(std[int(index)]),
+            }
+        )
+    max_z = float(np.max(max_abs))
+    reasons: List[str] = []
+    status = "pass"
+    if max_z > FEATURE_ENVELOPE_OOD_Z:
+        status = "fail"
+        reasons.append(
+            f"model_feature_out_of_envelope:{worst_features[0]['feature']}:z={worst_features[0]['max_abs_z']:.6g}"
+        )
+    elif max_z > FEATURE_ENVELOPE_BORDERLINE_Z:
+        status = "borderline"
+        reasons.append(
+            f"model_feature_borderline_envelope:{worst_features[0]['feature']}:z={worst_features[0]['max_abs_z']:.6g}"
+        )
+    else:
+        reasons.append("model_feature_envelope_passed")
+    return {
+        "status": status,
+        "tier": selected_tier,
+        "n_rows": len(rows),
+        "n_rows_checked": len(sample_rows),
+        "max_abs_standardized_feature": max_z,
+        "borderline_threshold_z": FEATURE_ENVELOPE_BORDERLINE_Z,
+        "ood_threshold_z": FEATURE_ENVELOPE_OOD_Z,
+        "worst_features": worst_features,
+        "reasons": reasons,
+    }
+
+
+def _audit_empirical_score_output(
+    score_rows: List[Dict[str, Any]],
+    applicability: Dict[str, Any],
+    outdir: Path,
+) -> Dict[str, Any]:
+    probs = np.asarray([_as_float(row.get("prob_positive"), math.nan) for row in score_rows], dtype=np.float64)
+    reasons: List[str] = []
+    warnings: List[str] = []
+    status = "pass"
+    finite = probs[np.isfinite(probs)]
+    if len(score_rows) == 0:
+        status = "fail"
+        reasons.append("no_score_rows")
+    elif finite.size != probs.size:
+        status = "fail"
+        reasons.append("nonfinite_probabilities")
+    elif np.any((finite < 0.0) | (finite > 1.0)):
+        status = "fail"
+        reasons.append("probabilities_out_of_range")
+    applicability_status = str(applicability.get("applicability_status") or applicability.get("status") or "")
+    max_prob = float(np.max(finite)) if finite.size else None
+    min_prob = float(np.min(finite)) if finite.size else None
+    nonzero = int(np.sum(finite > 0.0)) if finite.size else 0
+    unique_count = int(len(set(float(value) for value in finite))) if finite.size else 0
+    if finite.size and max_prob == 0.0:
+        message = "scores_all_zero"
+        if applicability_status in {"in_domain", "borderline"}:
+            status = "fail"
+            reasons.append(f"{message}_for_{applicability_status}_input")
+        else:
+            warnings.append(f"{message}_diagnostic_only")
+    elif finite.size and unique_count == 1 and applicability_status in {"in_domain", "borderline"}:
+        warnings.append("scores_constant_across_rows")
+    payload = {
+        "status": status,
+        "reasons": reasons,
+        "warnings": warnings,
+        "applicability_status": applicability_status,
+        "n_rows": len(score_rows),
+        "finite_probability_rows": int(finite.size),
+        "nonzero_probability_rows": nonzero,
+        "unique_probability_count": unique_count,
+        "min_probability": min_prob,
+        "max_probability": max_prob,
+        "mean_probability": float(np.mean(finite)) if finite.size else None,
+        "audit_version": __version__,
+    }
+    _write_json(outdir / "empirical_scoring_audit.json", payload)
+    write_tsv(
+        outdir / "empirical_scoring_audit.tsv",
+        [
+            {
+                "status": payload["status"],
+                "reasons": ";".join(reasons),
+                "warnings": ";".join(warnings),
+                "applicability_status": applicability_status,
+                "n_rows": payload["n_rows"],
+                "nonzero_probability_rows": nonzero,
+                "min_probability": min_prob,
+                "max_probability": max_prob,
+            }
+        ],
+        [
+            "status",
+            "reasons",
+            "warnings",
+            "applicability_status",
+            "n_rows",
+            "nonzero_probability_rows",
+            "min_probability",
+            "max_probability",
+        ],
+    )
+    (outdir / "empirical_scoring_audit.md").write_text(_render_empirical_scoring_audit_md(payload), encoding="utf-8")
+    return payload
+
+
+def _render_empirical_scoring_audit_md(payload: Dict[str, Any]) -> str:
+    lines = [
+        "# Empirical Scoring Audit",
+        "",
+        f"- status: `{payload.get('status')}`",
+        f"- applicability: `{payload.get('applicability_status')}`",
+        f"- rows: `{payload.get('n_rows')}`",
+        f"- nonzero probability rows: `{payload.get('nonzero_probability_rows')}`",
+        f"- min probability: `{payload.get('min_probability')}`",
+        f"- max probability: `{payload.get('max_probability')}`",
+        "",
+    ]
+    if payload.get("reasons"):
+        lines.extend(["## Failures", ""])
+        lines.extend(f"- {reason}" for reason in payload["reasons"])
+        lines.append("")
+    if payload.get("warnings"):
+        lines.extend(["## Warnings", ""])
+        lines.extend(f"- {warning}" for warning in payload["warnings"])
+        lines.append("")
+    if payload.get("status") == "fail":
+        lines.extend([
+            "## Interpretation",
+            "",
+            "BABAPPA did not accept this scoring surface as a valid empirical result. "
+            "All-zero or malformed probabilities in an in-domain/borderline dataset "
+            "usually indicate model/input feature-envelope incompatibility rather than "
+            "biological absence of selection.",
+            "",
+        ])
+    return "\n".join(lines)
 
 
 def _resolve_deployable_package_path(package: str | Path) -> Path:
@@ -1432,6 +1673,21 @@ def _render_feature_audit_md(payload: Dict[str, Any]) -> str:
 def _render_applicability_md(payload: Dict[str, Any]) -> str:
     lines = ["# Empirical applicability/OOD", "", f"- status: `{payload['status']}`", f"- recommended tier: `{payload['recommended_tier']}`", "", "## Reasons", ""]
     lines.extend(f"- {reason}" for reason in payload["reasons"])
+    envelope = payload.get("feature_envelope_check") or {}
+    if envelope:
+        lines.extend([
+            "",
+            "## Deployable Model Feature Envelope",
+            "",
+            f"- status: `{envelope.get('status')}`",
+            f"- max absolute standardized feature: `{envelope.get('max_abs_standardized_feature')}`",
+        ])
+        for item in envelope.get("worst_features") or []:
+            lines.append(
+                "- "
+                f"{item.get('feature')}: max |z| `{item.get('max_abs_z')}`, "
+                f"raw range `{item.get('raw_min')}` to `{item.get('raw_max')}`"
+            )
     lines.append("")
     return "\n".join(lines)
 
@@ -1441,7 +1697,8 @@ def _render_scoring_failure_md(payload: Dict[str, Any]) -> str:
 
 
 def _render_scoring_report(payload: Dict[str, Any]) -> str:
-    return "\n".join([
+    audit = payload.get("scoring_audit") or {}
+    lines = [
         "# Empirical branch-site scoring",
         "",
         f"- status: `{payload['status']}`",
@@ -1450,7 +1707,22 @@ def _render_scoring_report(payload: Dict[str, Any]) -> str:
         f"- rows: `{payload['n_rows']}`",
         f"- diagnostic only: `{payload['diagnostic_only']}`",
         "",
-    ])
+    ]
+    if audit:
+        lines.extend([
+            "## Scoring Audit",
+            "",
+            f"- status: `{audit.get('status')}`",
+            f"- min probability: `{audit.get('min_probability')}`",
+            f"- max probability: `{audit.get('max_probability')}`",
+            f"- nonzero probability rows: `{audit.get('nonzero_probability_rows')}`",
+        ])
+        reasons = audit.get("reasons") or []
+        if reasons:
+            lines.extend(["", "### Reasons", ""])
+            lines.extend(f"- {reason}" for reason in reasons)
+        lines.append("")
+    return "\n".join(lines)
 
 
 def _render_empirical_report_md(payload: Dict[str, Any]) -> str:

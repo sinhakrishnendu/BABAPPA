@@ -12,6 +12,14 @@ from babappa.branch.context_ablation import (
     FOREGROUND_IDENTITY_COLUMNS,
 )
 
+RAW_LENGTH_SITE_COLUMNS = {
+    "site_index_zero",
+    "aligned_site_index_zero",
+    "original_site_index_zero",
+    "n_taxa",
+    "n_codons",
+}
+
 
 @dataclass(frozen=True)
 class BranchFeaturePolicy:
@@ -78,6 +86,23 @@ POLICIES: Dict[str, BranchFeaturePolicy] = {
         included_columns=["all_available_features_except_foreground_identity"],
         warning=(
             "Uses no_foreground_identity at minimum. Treat full_context as optional upper-bound only."
+        ),
+    ),
+    "conservative_branch_site_normalized_v2": BranchFeaturePolicy(
+        name="conservative_branch_site_normalized_v2",
+        label="normalized conservative branch-site default",
+        recommended_role=(
+            "recommended for variable-length retraining/redeployment; keeps relative/log length "
+            "features while excluding raw length and raw zero-based site indices"
+        ),
+        production_default=False,
+        excluded_columns=sorted(set(FOREGROUND_IDENTITY_COLUMNS) | RAW_LENGTH_SITE_COLUMNS),
+        included_columns=[
+            "all_available_features_except_foreground_identity_raw_length_and_raw_site_indices"
+        ],
+        warning=(
+            "Use for retrained variable-length packages. Existing conservative_branch_site packages "
+            "remain valid but may reject out-of-envelope empirical MSAs."
         ),
     ),
 }

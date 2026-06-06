@@ -10,6 +10,7 @@ from babappa.cli import app
 from babappa.datasets.index import read_tsv, write_tsv
 from babappa.empirical.bridge import (
     DirectBranchSitePredictionConfig,
+    _audit_empirical_score_output,
     _babappa_native_evidence_class,
     _babappa_native_result_class,
     _branch_shuffle_null_features,
@@ -333,6 +334,33 @@ def test_direct_prediction_outputs_include_degapped_branch_site_number(tmp_path:
     assert by_branch["taxon1"]["branch_degapped_codon_site"] == ""
     assert by_branch["taxon1"]["branch_codon"] == "---"
     assert by_branch["taxon2"]["branch_degapped_codon_site"] == "2"
+
+
+def test_direct_scoring_audit_fails_all_zero_in_domain_scores(tmp_path: Path) -> None:
+    outdir = tmp_path / "scores"
+    outdir.mkdir()
+    rows = [
+        {"prob_positive": "0.0", "called_positive": "0", "branch_id": "taxon1"},
+        {"prob_positive": "0.0", "called_positive": "0", "branch_id": "taxon2"},
+    ]
+
+    audit = _audit_empirical_score_output(rows, {"applicability_status": "in_domain"}, outdir)
+
+    assert audit["status"] == "fail"
+    assert "scores_all_zero_for_in_domain_input" in audit["reasons"]
+    assert (outdir / "empirical_scoring_audit.json").exists()
+    assert "biological absence of selection" in (outdir / "empirical_scoring_audit.md").read_text()
+
+
+def test_direct_scoring_audit_warns_all_zero_out_of_domain_scores(tmp_path: Path) -> None:
+    outdir = tmp_path / "scores"
+    outdir.mkdir()
+    rows = [{"prob_positive": "0.0", "called_positive": "0", "branch_id": "taxon1"}]
+
+    audit = _audit_empirical_score_output(rows, {"applicability_status": "out_of_domain"}, outdir)
+
+    assert audit["status"] == "pass"
+    assert "scores_all_zero_diagnostic_only" in audit["warnings"]
 
 
 def test_babappa_native_null_helpers_compute_standalone_evidence(tmp_path: Path) -> None:

@@ -1,0 +1,56 @@
+policy_version: 2
+policy_source: posthoc paper threshold sweep
+source_profile: paper
+source_run_dir: benchmark_runs/known_truth_absrel_paper
+source_threshold_file: benchmark_runs/known_truth_absrel_paper/posthoc_threshold_audit
+frozen_for_independent_validation: true
+selection_date: 2026-06-04
+claim_boundary: validation hypothesis only until independent validation run completes
+policies:
+  primary_score_ranking:
+    policy_name: primary_score_ranking
+    policy_type: score_ranking
+    primary_report: AUROC and AUPRC
+    binary_calls: false
+    threshold: NA
+    threshold_source: none
+    notes: Always report score-ranking performance without binary positive-calling claim.
+  posthoc_best_mcc_candidate:
+    policy_name: posthoc_best_MCC_from_paper
+    policy_type: binary_threshold
+    primary_report: precision, recall, FDR, specificity, MCC, OOD false-call rate
+    binary_calls: true
+    threshold: 1.31794959637e-15
+    source_policy: best_MCC_posthoc_paper
+    threshold_source: posthoc paper threshold sweep
+    claim_boundary: validation hypothesis only; apply unchanged to independent validation benchmark
+    notes: Candidate operating point selected after inspecting the paper run; not final until it succeeds unchanged on the independent validation profile.
+  posthoc_fdr_020_candidate:
+    policy_name: posthoc_FDR_0.20_from_paper
+    policy_type: binary_threshold
+    primary_report: recall at approximately 20 percent FDR with OOD gate preserved
+    binary_calls: true
+    threshold: 6.67112455467e-16
+    source_policy: FDR_0.20_posthoc_paper
+    threshold_source: posthoc paper threshold sweep
+    claim_boundary: validation hypothesis only; apply unchanged to independent validation benchmark
+    notes: Candidate higher-recall operating point from paper-run threshold sweep.
+  posthoc_fdr_010_low_recall_candidate:
+    policy_name: posthoc_FDR_0.10_low_recall_from_paper
+    policy_type: binary_threshold
+    primary_report: high precision at low recall with OOD gate preserved
+    binary_calls: true
+    threshold: 4.17948058384e-07
+    source_policy: FDR_0.10_posthoc_paper
+    threshold_source: posthoc paper threshold sweep
+    claim_boundary: validation hypothesis only; apply unchanged to independent validation benchmark
+    notes: Candidate conservative operating point from paper-run threshold sweep; expected recall is low.
+  default_ultraconservative_policy:
+    policy_name: package_default_ultraconservative
+    policy_type: current_default
+    primary_report: baseline default calls
+    binary_calls: true
+    threshold: package_default
+    threshold_source: deployable package default
+    claim_boundary: baseline only, not primary positive-calling policy
+    notes: Current default threshold is ultra-conservative and reported as a baseline only.

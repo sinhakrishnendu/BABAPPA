@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+pass	MAR	9	949	0.0	0.008664090855871678	0.02901444637974282	low		

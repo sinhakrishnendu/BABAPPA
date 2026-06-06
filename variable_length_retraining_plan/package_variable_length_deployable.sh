@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Package retained normalized-v2 artifacts after validation.
+babappa package-deployable-model --run-name variable_length_normalized_v2_100k_mps --model-dirs branch_site_v2_100k_workspace/branch_site_neural_low,branch_site_v2_100k_workspace/branch_site_neural_moderate,branch_site_v2_100k_workspace/branch_site_neural_high,branch_site_v2_100k_workspace/branch_site_neural_extreme --calibration-dirs branch_site_v2_100k_workspace/branch_site_calibration_low,branch_site_v2_100k_workspace/branch_site_calibration_moderate,branch_site_v2_100k_workspace/branch_site_calibration_high,branch_site_v2_100k_workspace/branch_site_calibration_extreme --truth-audit-dir branch_site_v2_100k_workspace/truth_audit --validation-report branch_site_v2_100k_workspace/variable_length_100k_validation_report.json --feature-policy conservative_branch_site_normalized_v2 --truth-mode explicit --methods identity,mafft,babappalign,muscle --outdir deployable_model_conservative_branch_site_v2_100k_mps
+babappa validate-deployable-model-package --package-dir deployable_model_conservative_branch_site_v2_100k_mps

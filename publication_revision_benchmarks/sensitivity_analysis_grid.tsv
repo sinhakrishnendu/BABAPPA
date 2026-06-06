@@ -1,0 +1,6 @@
+axis	baseline	values	primary_metrics	purpose
+score_threshold	frozen_best_mcc	high_precision;fdr_0.20_candidate;default_abstention	precision,recall,FDR,MCC,OOD_FPR	show threshold-dependent operating points
+tier_boundary	training_envelope_pdistance	minus_10_percent;baseline;plus_10_percent	tier_stability,AUROC,AUPRC,OOD_FPR	justify p-distance tier selection robustness
+temperature	packaged_calibration	0.75x;1.0x;1.25x	calibration_error,FDR,power	test calibration sensitivity
+architecture_width	two_hidden_layers_width_64	32;64;128	AUROC,AUPRC,FDR,OOD_FPR	justify neural capacity choice
+training_seed	packaged_model_seed	3_to_5_independent_seeds	mean_sd_AUROC,mean_sd_FDR,threshold_stability	quantify stochastic training robustness

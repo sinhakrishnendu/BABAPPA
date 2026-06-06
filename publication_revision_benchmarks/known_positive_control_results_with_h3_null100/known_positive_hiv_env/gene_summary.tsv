@@ -1,0 +1,2 @@
+family_id	n_branches_scored	n_branch_site_rows	n_called_positive	max_gene_support	applicability_status	tier_model	diagnostic_only	result_class	babappa_native_null_replicates	babappa_native_evidence_class	babappa_native_result_class	p_babappa_max_gene_support	p_babappa_called_rows	p_babappa_max_branch_support	p_babappa_max_site_score
+empirical	26	22802	0	0.0	in_domain	low	False	diagnostic_negative	100	not_significant_under_babappa_native_null	babappa_native_negative	1.0	1.0	1.0	1.0

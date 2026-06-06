@@ -1,0 +1,50 @@
+{
+  "feature_policy": "conservative_branch_site_normalized_v2",
+  "n_families_total": 100000,
+  "package_outdir": "deployable_model_conservative_branch_site_v2_100k_mps",
+  "retained_per_tier": {
+    "extreme": [
+      "branch_site_v2_100k_workspace/branch_site_neural_extreme",
+      "branch_site_v2_100k_workspace/branch_site_calibration_extreme",
+      "branch_site_v2_100k_workspace/branch_aggregation_extreme",
+      "branch_site_v2_100k_workspace/branch_aggregation_controls_extreme",
+      "branch_site_v2_100k_workspace/branch_site_threshold_policy_extreme",
+      "branch_site_v2_100k_workspace/branch_aggregation_threshold_policy_extreme",
+      "branch_site_v2_100k_workspace/branch_site_run_summary_extreme"
+    ],
+    "high": [
+      "branch_site_v2_100k_workspace/branch_site_neural_high",
+      "branch_site_v2_100k_workspace/branch_site_calibration_high",
+      "branch_site_v2_100k_workspace/branch_aggregation_high",
+      "branch_site_v2_100k_workspace/branch_aggregation_controls_high",
+      "branch_site_v2_100k_workspace/branch_site_threshold_policy_high",
+      "branch_site_v2_100k_workspace/branch_aggregation_threshold_policy_high",
+      "branch_site_v2_100k_workspace/branch_site_run_summary_high"
+    ],
+    "low": [
+      "branch_site_v2_100k_workspace/branch_site_neural_low",
+      "branch_site_v2_100k_workspace/branch_site_calibration_low",
+      "branch_site_v2_100k_workspace/branch_aggregation_low",
+      "branch_site_v2_100k_workspace/branch_aggregation_controls_low",
+      "branch_site_v2_100k_workspace/branch_site_threshold_policy_low",
+      "branch_site_v2_100k_workspace/branch_aggregation_threshold_policy_low",
+      "branch_site_v2_100k_workspace/branch_site_run_summary_low"
+    ],
+    "moderate": [
+      "branch_site_v2_100k_workspace/branch_site_neural_moderate",
+      "branch_site_v2_100k_workspace/branch_site_calibration_moderate",
+      "branch_site_v2_100k_workspace/branch_aggregation_moderate",
+      "branch_site_v2_100k_workspace/branch_aggregation_controls_moderate",
+      "branch_site_v2_100k_workspace/branch_site_threshold_policy_moderate",
+      "branch_site_v2_100k_workspace/branch_aggregation_threshold_policy_moderate",
+      "branch_site_v2_100k_workspace/branch_site_run_summary_moderate"
+    ]
+  },
+  "tiers": [
+    "low",
+    "moderate",
+    "high",
+    "extreme"
+  ],
+  "workspace": "branch_site_v2_100k_workspace"
+}

@@ -5,11 +5,12 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import math
 import random
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -45,8 +46,12 @@ BRANCH_FEATURE_FIELDNAMES = [
     "foreground_branch_present",
     "branch_label_source",
     "site_relative_position",
+    "site_centered_position",
+    "site_terminal_distance",
     "n_taxa",
     "n_codons",
+    "log_n_taxa",
+    "log_n_codons",
     "codon_id_mean",
     "codon_id_std",
     "codon_id_min",
@@ -161,11 +166,124 @@ class BranchSiteDatasetConfig:
         Path(self.outdir).mkdir(parents=True, exist_ok=True)
 
 
+@dataclass(frozen=True)
+class BranchSiteDatasetMergeConfig:
+    """Configuration for merging branch-site feature datasets."""
+
+    dataset_dirs: Sequence[str] | str
+    outdir: str
+
+    def __post_init__(self) -> None:
+        dirs = _parse_dataset_dirs(self.dataset_dirs)
+        if not dirs:
+            raise ValueError("dataset_dirs must contain at least one branch-site dataset directory")
+        for directory in dirs:
+            path = Path(directory)
+            for filename in ("branch_site_features.tsv", "branch_site_splits.tsv"):
+                if not (path / filename).exists():
+                    raise ValueError(f"dataset_dir is missing {filename}: {path}")
+        object.__setattr__(self, "dataset_dirs", dirs)
+        Path(self.outdir).mkdir(parents=True, exist_ok=True)
+
+
 def build_branch_site_dataset(config: BranchSiteDatasetConfig) -> dict:
     """Build branch-conditioned site feature and split tables."""
     if config.streaming:
         return _build_branch_site_dataset_streaming(config)
     return _build_branch_site_dataset_in_memory(config)
+
+
+def merge_branch_site_datasets(config: BranchSiteDatasetMergeConfig) -> dict:
+    """Merge multiple branch-site feature datasets into one trainable directory."""
+
+    outdir = Path(config.outdir)
+    features_path = outdir / "branch_site_features.tsv"
+    splits_path = outdir / "branch_site_splits.tsv"
+    index_path = outdir / "branch_site_dataset_index.json"
+    markdown_path = outdir / "branch_site_dataset.md"
+    seen_ids = set()
+    rows_written = 0
+    positives_written = 0
+    split_counts: Counter[str] = Counter()
+    method_counts: Counter[str] = Counter()
+    tier_counts: Counter[str] = Counter()
+    source_counts: Counter[str] = Counter()
+    warnings: List[str] = []
+
+    with features_path.open("w", encoding="utf-8", newline="") as feature_handle, splits_path.open(
+        "w", encoding="utf-8", newline=""
+    ) as split_handle:
+        feature_writer = csv.DictWriter(feature_handle, fieldnames=BRANCH_FEATURE_FIELDNAMES, delimiter="\t", lineterminator="\n")
+        split_writer = csv.DictWriter(split_handle, fieldnames=BRANCH_SPLIT_FIELDNAMES, delimiter="\t", lineterminator="\n")
+        feature_writer.writeheader()
+        split_writer.writeheader()
+        for dataset_dir in config.dataset_dirs:
+            path = Path(dataset_dir)
+            feature_rows = read_tsv(path / "branch_site_features.tsv")
+            split_rows = read_tsv(path / "branch_site_splits.tsv")
+            split_by_id = {row.get("branch_site_id", ""): row for row in split_rows}
+            for row in feature_rows:
+                branch_site_id = row.get("branch_site_id", "")
+                if not branch_site_id:
+                    warnings.append(f"missing_branch_site_id:{path}")
+                    continue
+                if branch_site_id in seen_ids:
+                    warnings.append(f"duplicate_branch_site_id_skipped:{branch_site_id}")
+                    continue
+                seen_ids.add(branch_site_id)
+                feature_writer.writerow(_project_row(row, BRANCH_FEATURE_FIELDNAMES))
+                split_row = split_by_id.get(branch_site_id)
+                if split_row is None:
+                    warnings.append(f"missing_split_row:{branch_site_id}")
+                    split_row = {key: row.get(key, "") for key in BRANCH_SPLIT_FIELDNAMES}
+                split_writer.writerow(_project_row(split_row, BRANCH_SPLIT_FIELDNAMES))
+                rows_written += 1
+                positives_written += 1 if str(row.get("y_branch_site")) == "1" else 0
+                split_counts[row.get("split", "")] += 1
+                method_counts[row.get("method", "")] += 1
+                tier_counts[row.get("saturation_tier", "")] += 1
+                source_counts[str(path)] += 1
+
+    payload = {
+        "branch_site_dataset_version": BRANCH_SITE_DATASET_VERSION,
+        "merge_kind": "branch_site_feature_table_merge",
+        "source_dataset_dirs": [str(path) for path in config.dataset_dirs],
+        "dataset_dir": "",
+        "n_branch_site_rows": rows_written,
+        "n_positive_branch_sites": positives_written,
+        "n_negative_branch_sites": rows_written - positives_written,
+        "positive_fraction": None if rows_written == 0 else positives_written / rows_written,
+        "split_counts": dict(sorted(split_counts.items())),
+        "saturation_tier_counts": dict(sorted(tier_counts.items())),
+        "method_counts": dict(sorted(method_counts.items())),
+        "source_counts": dict(sorted(source_counts.items())),
+        "feature_columns": _branch_site_feature_columns_from_fieldnames(),
+        "forbidden_as_features": sorted(FORBIDDEN_FEATURE_COLUMNS),
+        "sensitive_context_columns": [
+            column for column in SENSITIVE_CONTEXT_COLUMNS if column in _branch_site_feature_columns_from_fieldnames()
+        ],
+        "files": {
+            "features": str(features_path),
+            "splits": str(splits_path),
+            "index": str(index_path),
+            "markdown": str(markdown_path),
+        },
+        "warnings": sorted(set(warnings)),
+        "note": "Merged feature table for storage-safe variable-length retraining. Raw tensors are not required after features are written.",
+    }
+    _write_json(index_path, payload)
+    markdown_path.write_text(_render_markdown(payload), encoding="utf-8")
+    return {
+        "status": "ok",
+        "outdir": str(outdir),
+        "features": str(features_path),
+        "splits": str(splits_path),
+        "index": str(index_path),
+        "n_branch_site_rows": rows_written,
+        "n_positive_branch_sites": positives_written,
+        "n_negative_branch_sites": rows_written - positives_written,
+        "warnings": payload["warnings"],
+    }
 
 
 def _build_branch_site_dataset_in_memory(config: BranchSiteDatasetConfig) -> dict:
@@ -535,6 +653,16 @@ def _iter_label_rows(labels_path: Path, max_input_rows: Optional[int] = None):
             yield row
 
 
+def _parse_dataset_dirs(value: Sequence[str] | str) -> List[str]:
+    if isinstance(value, str):
+        parts = value.replace("\n", ",").split(",")
+    else:
+        parts = []
+        for item in value:
+            parts.extend(str(item).replace("\n", ",").split(","))
+    return [part.strip() for part in parts if part.strip()]
+
+
 def _scan_branch_label_counts(labels_path: Path, config: BranchSiteDatasetConfig) -> dict:
     all_counts = _empty_scan_counts()
     mappable_counts = _empty_scan_counts()
@@ -876,13 +1004,18 @@ def _extract_branch_features(
         codon_mean = float(codon_ids.mean()) if codon_ids.size else 0.0
         codon_std = float(codon_ids.std()) if codon_ids.size else 0.0
         gap_mean = float(gaps.mean()) if gaps.size else 0.0
+        site_relative = 0.0 if n_codons <= 1 else site_index / (n_codons - 1)
         cached_site = {
             "codon_ids": codon_ids,
             "gaps": gaps,
             "base_features": {
-                "site_relative_position": 0.0 if n_codons <= 1 else site_index / (n_codons - 1),
+                "site_relative_position": site_relative,
+                "site_centered_position": site_relative - 0.5,
+                "site_terminal_distance": min(site_relative, 1.0 - site_relative),
                 "n_taxa": n_taxa,
                 "n_codons": n_codons,
+                "log_n_taxa": math.log1p(n_taxa),
+                "log_n_codons": math.log1p(n_codons),
                 "codon_id_mean": codon_mean,
                 "codon_id_std": codon_std,
                 "codon_id_min": codon_min,

@@ -46,11 +46,21 @@ from babappa.branch.feature_policy import (
     get_branch_feature_policy,
     list_branch_feature_policies,
 )
-from babappa.branch.dataset import BranchSiteDatasetConfig, build_branch_site_dataset, validate_branch_site_dataset_dir
+from babappa.branch.dataset import (
+    BranchSiteDatasetConfig,
+    BranchSiteDatasetMergeConfig,
+    build_branch_site_dataset,
+    merge_branch_site_datasets,
+    validate_branch_site_dataset_dir,
+)
 from babappa.branch.leakage import audit_branch_site_leakage, validate_branch_site_leakage_dir
 from babappa.branch.neural_train import BranchSiteNeuralTrainConfig, train_branch_site_neural_model, validate_branch_site_neural_dir
 from babappa.branch.oracle_labels import BranchSiteOracleLabelConfig, extract_branch_site_labels, validate_branch_site_label_dir
 from babappa.branch.plan import BranchConditioned10kPlanConfig, plan_branch_conditioned_10k
+from babappa.branch.retrain_plan import (
+    VariableLength100KRetrainingPlanConfig,
+    plan_variable_length_100k_retraining,
+)
 from babappa.branch.mps_preflight import (
     MPSPlanPreflightConfig,
     MPSPlanScriptValidationConfig,
@@ -88,6 +98,7 @@ __all__ = [
     "BranchSiteBaselineConfig",
     "BranchSiteCalibrationConfig",
     "BranchSiteDatasetConfig",
+    "BranchSiteDatasetMergeConfig",
     "BranchSiteNeuralTrainConfig",
     "BranchSiteOracleLabelConfig",
     "BranchSiteRunSummaryConfig",
@@ -103,6 +114,7 @@ __all__ = [
     "MPSPlanPreflightConfig",
     "MPSPlanScriptValidationConfig",
     "ValidationScaleComparisonConfig",
+    "VariableLength100KRetrainingPlanConfig",
     "aggregate_branch_sites",
     "audit_branch_site_leakage",
     "audit_branch_truth_status",
@@ -120,6 +132,7 @@ __all__ = [
     "list_branch_feature_policies",
     "plan_branch_conditioned_10k",
     "plan_branch_context_ablation",
+    "plan_variable_length_100k_retraining",
     "plan_explicit_branch_truth_10k",
     "plan_explicit_branch_truth_10k_mac",
     "plan_explicit_branch_truth_100k_mac",
@@ -130,6 +143,7 @@ __all__ = [
     "preflight_explicit_branch_truth_mps_plan",
     "run_branch_aggregation_controls",
     "run_branch_context_ablation",
+    "merge_branch_site_datasets",
     "summarize_branch_conditioned_tiers",
     "summarize_branch_context_ablation",
     "summarize_branch_site_run",

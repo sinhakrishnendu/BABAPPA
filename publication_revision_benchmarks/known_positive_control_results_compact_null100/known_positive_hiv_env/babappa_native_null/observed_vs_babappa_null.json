@@ -1,0 +1,18 @@
+{
+  "evidence_class": "not_significant_under_babappa_native_null",
+  "observed": {
+    "called_branch_site_rows": 0,
+    "max_branch_support": 0.0,
+    "max_gene_support": 0.0,
+    "max_site_score": 0.0,
+    "q95_site_score": 0.0,
+    "q99_site_score": 0.0
+  },
+  "p_values": {
+    "p_babappa_called_rows": 1.0,
+    "p_babappa_max_branch_support": 1.0,
+    "p_babappa_max_gene_support": 1.0,
+    "p_babappa_max_site_score": 1.0
+  },
+  "status": "ok"
+}

@@ -17,6 +17,14 @@ from babappa.training.neural_env import resolve_torch_device, safe_import_torch
 
 TIERS = ["low", "moderate", "high", "extreme"]
 METHODS = ["identity", "mafft", "babappalign", "muscle"]
+ALLOWED_DEPLOYABLE_FEATURE_POLICIES = {
+    "conservative_branch_site",
+    "conservative_branch_site_normalized_v2",
+}
+ALLOWED_DEPLOYABLE_METHOD_SETS = {
+    "conservative_branch_site": {tuple(METHODS)},
+    "conservative_branch_site_normalized_v2": {tuple(METHODS)},
+}
 FORBIDDEN_EMPIRICAL_INPUT_COLUMNS = [
     "branch_site_truth.tsv",
     "selected_sites",
@@ -212,16 +220,20 @@ def validate_deployable_model_package(config: DeployableModelPackageValidationCo
     card_text = (package_dir / "model_card.md").read_text(encoding="utf-8") if (package_dir / "model_card.md").exists() else ""
 
     if manifest:
-        if manifest.get("feature_policy") != "conservative_branch_site":
-            failures.append("feature_policy_not_conservative_branch_site")
+        if manifest.get("feature_policy") not in ALLOWED_DEPLOYABLE_FEATURE_POLICIES:
+            failures.append("feature_policy_not_allowed_conservative_branch_site_family")
         if manifest.get("truth_mode") != "explicit":
             failures.append("truth_mode_not_explicit")
         if manifest.get("empirical_claim_status") != "not_final_empirical_inference":
             failures.append("empirical_claim_status_not_blocked")
-        methods = set(manifest.get("methods_supported") or [])
-        if methods != set(METHODS):
-            failures.append("unexpected_methods:" + ",".join(sorted(methods)))
-        if {"prank", "tcoffee", "t-coffee"} & {method.lower() for method in methods}:
+        method_list = [str(method) for method in manifest.get("methods_supported") or []]
+        methods = set(method_list)
+        allowed_sets = ALLOWED_DEPLOYABLE_METHOD_SETS.get(
+            str(manifest.get("feature_policy")), {tuple(METHODS)}
+        )
+        if tuple(method_list) not in allowed_sets:
+            failures.append("unexpected_methods:" + ",".join(method_list))
+        if {"prank", "tcoffee", "t-coffee"} & {method.lower() for method in method_list}:
             failures.append("diagnostic_aligner_in_production_defaults")
         known_warnings = set(manifest.get("known_warnings") or [])
         for warning in ["context_only_shortcut_high", "foreground_context_columns_present"]:
@@ -347,12 +359,13 @@ def _package_blockers(
     methods: List[str],
 ) -> List[str]:
     blockers: List[str] = []
-    if config.feature_policy != "conservative_branch_site":
-        blockers.append("feature_policy_must_be_conservative_branch_site")
+    if config.feature_policy not in ALLOWED_DEPLOYABLE_FEATURE_POLICIES:
+        blockers.append("feature_policy_must_be_conservative_branch_site_family")
     if config.truth_mode != "explicit":
         blockers.append("truth_mode_must_be_explicit")
-    if methods != METHODS:
-        blockers.append("methods_must_be_identity_mafft_babappalign_muscle")
+    allowed_method_sets = ALLOWED_DEPLOYABLE_METHOD_SETS.get(config.feature_policy, {tuple(METHODS)})
+    if tuple(methods) not in allowed_method_sets:
+        blockers.append("methods_not_allowed_for_feature_policy:" + ",".join(methods))
     truth_tsv = Path(config.truth_audit_dir) / "branch_truth_status_audit.tsv"
     if not truth_tsv.exists():
         blockers.append(f"missing_truth_audit:{truth_tsv}")
@@ -387,7 +400,7 @@ def _package_blockers(
                 feature_columns = columns
             elif columns != feature_columns:
                 blockers.append(f"feature_columns_differ:{tier}")
-            if meta.get("feature_policy") != "conservative_branch_site":
+            if meta.get("feature_policy") != config.feature_policy:
                 blockers.append(f"model_feature_policy_mismatch:{tier}:{meta.get('feature_policy')}")
     return blockers
 
@@ -404,7 +417,7 @@ def _build_manifest(
 ) -> Dict[str, Any]:
     report_identity = validation_report.get("run_identity", {})
     return {
-        "package_name": "babappa_conservative_branch_site_100k_mps",
+        "package_name": f"babappa_{config.feature_policy}_100k_mps",
         "package_version": __version__,
         "babappa_version": __version__,
         "source_run": config.run_name,

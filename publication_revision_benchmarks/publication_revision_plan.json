@@ -1,0 +1,9 @@
+{
+  "claim_boundary": "planned artifacts do not constitute completed empirical validation until filled with real results",
+  "device": "auto",
+  "heavy_execution": "not_performed_by_planner",
+  "null_replicates": 1000,
+  "planner_version": "0.8.17",
+  "retained_validation_families": 10000,
+  "threads": 8
+}

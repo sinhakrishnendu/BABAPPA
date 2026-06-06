@@ -1,0 +1,46 @@
+policy_version: 1
+policy_source: pilot threshold sweep
+source_profile: pilot
+source_run_dir: benchmark_runs/known_truth_absrel_pilot
+source_threshold_file: benchmark_runs/known_truth_absrel_pilot/threshold_policy_recommendation.json
+frozen_for_paper: true
+selection_date: 2026-06-03
+claim_boundary: calibrated simulation benchmark only
+policies:
+  primary_score_ranking:
+    policy_name: primary_score_ranking
+    policy_type: score_ranking
+    primary_report: AUROC and AUPRC
+    binary_calls: false
+    threshold: NA
+    threshold_source: none
+    notes: Always report score-ranking performance without binary positive-calling claim.
+  primary_calibrated_caller:
+    policy_name: balanced_MCC_policy_from_pilot
+    policy_type: binary_threshold
+    primary_report: precision, recall, FDR, specificity, MCC, OOD false-call rate
+    binary_calls: true
+    threshold: 7.25302066731e-31
+    source_policy: balanced_MCC_policy
+    threshold_source: pilot threshold sweep
+    claim_boundary: calibrated simulation benchmark only
+    notes: Primary calibrated caller for paper benchmark; apply unchanged.
+  conservative_fdr_policy:
+    policy_name: FDR_0.05_policy_from_pilot
+    policy_type: binary_threshold
+    primary_report: precision and OOD safety
+    binary_calls: true
+    threshold: 2.84844072913e-23
+    source_policy: FDR_0.05_policy
+    threshold_source: pilot threshold sweep
+    claim_boundary: calibrated simulation benchmark only
+    notes: Conservative high-precision policy; recall is expected to be low.
+  default_ultraconservative_policy:
+    policy_name: package_default_ultraconservative
+    policy_type: current_default
+    primary_report: baseline default calls
+    binary_calls: true
+    threshold: package_default
+    threshold_source: deployable package default
+    claim_boundary: baseline only, not primary positive-calling policy
+    notes: Current default threshold is ultra-conservative and reported as a baseline only.

@@ -1,0 +1,13 @@
+{
+  "codon_divisible": true,
+  "extra_tree_tips": [],
+  "missing_from_tree": [],
+  "msa": "publication_revision_benchmarks/positive_control_data/msas/known_positive_hiv_env.codon.aln.fasta",
+  "n_sequences": 26,
+  "sequence_lengths": [
+    2631
+  ],
+  "source_file": "publication_revision_benchmarks/positive_control_data/raw/tutorial_data/tutorial_data/hiv1_transmission.fna",
+  "tree": "publication_revision_benchmarks/positive_control_data/trees/known_positive_hiv_env.treefile",
+  "tree_tip_matches_fasta": true
+}

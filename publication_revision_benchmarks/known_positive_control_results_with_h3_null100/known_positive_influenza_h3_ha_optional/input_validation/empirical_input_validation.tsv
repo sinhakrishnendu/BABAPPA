@@ -1,0 +1,2 @@
+status	foreground	n_taxa	n_codons	ambiguous_base_fraction	gap_fraction	mean_pairwise_p_distance	saturation_proxy	failures	warnings
+pass	KF789585	163	566	0.0	0.0	0.0396797868778605	low		

@@ -62,9 +62,19 @@ def _simulate_family(family_id: str, regime: str, truth_class: str, applicabilit
         if "alignment_difficult" in regime:
             drift_rate = 0.10
         if applicability == "out_of_domain":
-            drift_rate = 0.25
+            drift_rate = 0.75
+        if "extreme" in regime:
+            drift_rate = max(drift_rate, 0.90)
+        gap_rate = 0.0
+        if "high_gap" in regime:
+            gap_rate = 0.35
+            drift_rate = max(drift_rate, 0.25)
         for site in range(n_codons):
-            if rng.random() < drift_rate * (taxon_index + 1) / max(n_taxa, 1):
+            if gap_rate and rng.random() < gap_rate:
+                seq[site] = "---"
+                continue
+            effective_drift = drift_rate if applicability == "out_of_domain" else drift_rate * (taxon_index + 1) / max(n_taxa, 1)
+            if rng.random() < effective_drift:
                 seq[site] = _mutate_codon(seq[site], rng, high=applicability == "out_of_domain")
         if taxon == foreground:
             for site in selected_sites:

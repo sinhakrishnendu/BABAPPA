@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "babappa"
-version = "0.8.9"
+version = "0.8.20"
 description = "Simulation-trained branch-site selection support from user-supplied codon MSAs and trees"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -60,6 +60,11 @@ babappa = [
     "model_packages/deployable_model_conservative_branch_site_100k_mps/*.sha256",
     "model_packages/deployable_model_conservative_branch_site_100k_mps/tier_models/*/*",
     "model_packages/deployable_model_conservative_branch_site_100k_mps/tier_calibrations/*/*",
+    "model_packages/deployable_model_conservative_branch_site_v2_100k_mps/*.json",
+    "model_packages/deployable_model_conservative_branch_site_v2_100k_mps/*.md",
+    "model_packages/deployable_model_conservative_branch_site_v2_100k_mps/*.sha256",
+    "model_packages/deployable_model_conservative_branch_site_v2_100k_mps/tier_models/*/*",
+    "model_packages/deployable_model_conservative_branch_site_v2_100k_mps/tier_calibrations/*/*",
 ]
 
 [tool.setuptools.packages.find]

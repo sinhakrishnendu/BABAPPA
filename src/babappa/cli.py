@@ -50,6 +50,7 @@ from babappa.benchmarks import (
     KnownTruthSimulationConfig,
     KnownTruthValidationConfig,
     LargeRunPlanConfig,
+    PublicationRevisionPlanConfig,
     SaturationPanelConfig,
     StabilityBenchmarkConfig,
     build_saturation_panel,
@@ -71,6 +72,7 @@ from babappa.benchmarks import (
     plan_known_truth_benchmark,
     plan_known_truth_benchmark_suite,
     plan_known_truth_reference_comparison,
+    plan_publication_revision_benchmarks,
     run_known_truth_alignments,
     run_known_truth_benchmark,
     run_stability_benchmark,
@@ -97,6 +99,7 @@ from babappa.branch import (
     BranchSiteBaselineConfig,
     BranchSiteCalibrationConfig,
     BranchSiteDatasetConfig,
+    BranchSiteDatasetMergeConfig,
     BranchSiteNeuralTrainConfig,
     BranchSiteOracleLabelConfig,
     BranchSiteRunSummaryConfig,
@@ -112,6 +115,7 @@ from babappa.branch import (
     MPSPlanPreflightConfig,
     MPSPlanScriptValidationConfig,
     ValidationScaleComparisonConfig,
+    VariableLength100KRetrainingPlanConfig,
     aggregate_branch_sites,
     audit_branch_site_leakage,
     audit_branch_truth_status,
@@ -124,6 +128,7 @@ from babappa.branch import (
     extract_branch_site_labels,
     interpret_branch_context_ablation,
     list_branch_feature_policies,
+    merge_branch_site_datasets,
     plan_branch_conditioned_10k,
     plan_branch_context_ablation,
     plan_explicit_branch_truth_10k,
@@ -131,6 +136,7 @@ from babappa.branch import (
     plan_explicit_branch_truth_100k_mac,
     plan_explicit_branch_truth_1k,
     plan_explicit_branch_truth_prototype,
+    plan_variable_length_100k_retraining,
     plan_deployable_model_package,
     plan_rerun_branch_aggregation_controls,
     preflight_explicit_branch_truth_mps_plan,
@@ -555,6 +561,7 @@ AVAILABLE_COMMANDS = [
     "validate-branch-site-labels",
     "build-branch-site-dataset",
     "validate-branch-site-dataset",
+    "merge-branch-site-datasets",
     "audit-branch-site-leakage",
     "validate-branch-site-leakage",
     "train-branch-site-baseline",
@@ -589,6 +596,7 @@ AVAILABLE_COMMANDS = [
     "plan-explicit-branch-truth-10k",
     "plan-explicit-branch-truth-10k-mac",
     "plan-explicit-branch-truth-100k-mac",
+    "plan-variable-length-100k-retraining",
     "validate-mps-plan-script",
     "preflight-explicit-branch-truth-mps-plan",
     "compare-validation-scales",
@@ -640,6 +648,7 @@ AVAILABLE_COMMANDS = [
     "parse-hyphy-reference",
     "build-reference-results-table",
     "validate-method-claim-readiness",
+    "plan-publication-revision-benchmarks",
     "run-simulation-matched-null-calibration",
     "validate-simulation-matched-null-calibration",
     "write-reference-results-template",
@@ -5430,6 +5439,27 @@ def validate_branch_site_dataset(
         raise typer.Exit(code=1)
 
 
+@app.command("merge-branch-site-datasets")
+def merge_branch_site_datasets_command(
+    dataset_dirs: str = typer.Option(..., "--dataset-dirs", help="Comma-separated branch-site dataset directories."),
+    outdir: Path = typer.Option(..., "--outdir"),
+) -> None:
+    """Merge branch-site feature datasets into one trainable directory."""
+    try:
+        summary = merge_branch_site_datasets(
+            BranchSiteDatasetMergeConfig(dataset_dirs=dataset_dirs, outdir=str(outdir))
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not merge branch-site datasets: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Branch-Site Dataset Merge",
+        summary,
+        ["outdir", "n_branch_site_rows", "n_positive_branch_sites", "warnings"],
+    )
+    _print_warnings(summary["warnings"])
+
+
 @app.command("audit-branch-site-leakage")
 def audit_branch_site_leakage_command(
     branch_site_dataset_dir: Path = typer.Option(..., "--branch-site-dataset-dir"),
@@ -6388,6 +6418,72 @@ def plan_explicit_branch_truth_100k_mac_command(
         "BABAPPA Explicit Branch-Truth 100K MPS Plan",
         summary,
         ["outdir", "run", "monitor", "validate", "summarize", "expected_outputs", "device", "batch_size", "blocked_until_10k_passes", "does_not_run_jobs"],
+    )
+
+
+@app.command("plan-variable-length-100k-retraining")
+def plan_variable_length_100k_retraining_command(
+    outdir: Path = typer.Option("variable_length_retraining_plan", "--outdir"),
+    workspace: str = typer.Option("branch_site_v2_100k_workspace", "--workspace"),
+    package_outdir: str = typer.Option(
+        "deployable_model_conservative_branch_site_v2_100k_mps",
+        "--package-outdir",
+    ),
+    n_families_per_tier: int = typer.Option(25000, "--n-families-per-tier", min=5),
+    tiers: str = typer.Option("low,moderate,high,extreme", "--tiers"),
+    methods: str = typer.Option("identity,mafft,babappalign,muscle", "--methods"),
+    feature_policy: str = typer.Option("conservative_branch_site_normalized_v2", "--feature-policy"),
+    device: str = typer.Option("mps", "--device"),
+    threads: int = typer.Option(18, "--threads", min=1),
+    batch_size: int = typer.Option(64, "--batch-size", min=1),
+    min_free_gb: int = typer.Option(250, "--min-free-gb", min=1),
+    negative_downsample_ratio: float = typer.Option(5.0, "--negative-downsample-ratio"),
+    max_output_rows_per_chunk: int = typer.Option(700000, "--max-output-rows-per-chunk", min=1),
+    max_train_items: int = typer.Option(300000, "--max-train-items", min=1),
+    max_eval_items: int = typer.Option(75000, "--max-eval-items", min=1),
+    n_control_permutations: int = typer.Option(100, "--n-control-permutations", min=1),
+    seed: int = typer.Option(42, "--seed"),
+) -> None:
+    """Plan storage-safe 100K retraining with normalized variable-length features."""
+    try:
+        summary = plan_variable_length_100k_retraining(
+            VariableLength100KRetrainingPlanConfig(
+                outdir=str(outdir),
+                workspace=workspace,
+                package_outdir=package_outdir,
+                n_families_per_tier=n_families_per_tier,
+                tiers=tiers,
+                methods=methods,
+                feature_policy=feature_policy,
+                device=device,
+                threads=threads,
+                batch_size=batch_size,
+                min_free_gb=min_free_gb,
+                negative_downsample_ratio=negative_downsample_ratio,
+                max_output_rows_per_chunk=max_output_rows_per_chunk,
+                max_train_items=max_train_items,
+                max_eval_items=max_eval_items,
+                n_control_permutations=n_control_permutations,
+                seed=seed,
+            )
+        )
+    except (OSError, ValueError) as exc:
+        console.print(f"Error: could not plan variable-length 100K retraining: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Variable-Length 100K Retraining Plan",
+        summary,
+        [
+            "outdir",
+            "run",
+            "monitor",
+            "validate",
+            "package",
+            "feature_policy",
+            "workspace",
+            "package_outdir",
+            "does_not_run_jobs",
+        ],
     )
 
 
@@ -7927,6 +8023,43 @@ def validate_method_claim_readiness_command(
             "needs_negative_controls",
             "needs_matched_null_calibration",
             "outdir",
+        ],
+    )
+
+
+@app.command("plan-publication-revision-benchmarks")
+def plan_publication_revision_benchmarks_command(
+    outdir: Path = typer.Option("publication_revision_benchmarks", "--outdir"),
+    retained_validation_families: int = typer.Option(10000, "--retained-validation-families", min=12),
+    null_replicates: int = typer.Option(1000, "--null-replicates", min=0),
+    threads: int = typer.Option(8, "--threads", min=1),
+    device: str = typer.Option("auto", "--device"),
+) -> None:
+    """Plan positive-control, transfer, sensitivity, and retained-validation revisions."""
+    try:
+        summary = plan_publication_revision_benchmarks(
+            PublicationRevisionPlanConfig(
+                outdir=str(outdir),
+                retained_validation_families=retained_validation_families,
+                null_replicates=null_replicates,
+                threads=threads,
+                device=device,
+            )
+        )
+    except OSError as exc:
+        console.print(f"Error: could not plan publication revision benchmarks: {exc}", style="red")
+        raise typer.Exit(code=1) from exc
+    _print_summary_table(
+        "BABAPPA Publication Revision Benchmark Plan",
+        summary,
+        [
+            "status",
+            "outdir",
+            "known_positive_template",
+            "transfer_template",
+            "sensitivity_grid",
+            "retained_validation_families",
+            "scripts",
         ],
     )
 

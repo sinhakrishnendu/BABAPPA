@@ -1,0 +1,45 @@
+{
+  "ambiguous_base_fraction": 0.0,
+  "cds_fasta": "publication_revision_benchmarks/positive_control_data/msas/known_positive_ksr2_primate.codon.aln.fasta",
+  "empirical_input_validation_version": "0.8.18",
+  "empirical_validation_status": "pass",
+  "failures": [],
+  "fasta_ids": [
+    "BAB",
+    "BUS",
+    "GIB",
+    "GOR",
+    "HUM",
+    "MAC",
+    "MAR",
+    "PAN",
+    "PON"
+  ],
+  "foreground": "MAR",
+  "foreground_taxon": "MAR",
+  "gap_fraction": 0.008664090855871678,
+  "generated_at": "2026-06-04T16:14:59.723468+00:00",
+  "mean_pairwise_p_distance": 0.02901444637974282,
+  "n_codons": 949,
+  "n_taxa": 9,
+  "required_start_codons": [
+    "ATG"
+  ],
+  "saturation_proxy": "low",
+  "status": "pass",
+  "terminal_stop_codons_allowed": true,
+  "tree": "publication_revision_benchmarks/positive_control_data/trees/known_positive_ksr2_primate.treefile",
+  "tree_shape_summary": "n_tips=9;n_internal_commas=8",
+  "tree_tips": [
+    "BAB",
+    "BUS",
+    "GIB",
+    "GOR",
+    "HUM",
+    "MAC",
+    "MAR",
+    "PAN",
+    "PON"
+  ],
+  "warnings": []
+}

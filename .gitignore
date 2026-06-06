@@ -99,6 +99,8 @@ branch_site_run_summary_explicit_branch_truth_*/
 # Protected compact release artifacts and reports
 !deployable_model_conservative_branch_site_100k_mps/
 !deployable_model_conservative_branch_site_100k_mps/**
+!deployable_model_conservative_branch_site_v2_100k_mps/
+!deployable_model_conservative_branch_site_v2_100k_mps/**
 !explicit_branch_truth_100k_mps_final_validation_report.md
 !explicit_branch_truth_100k_mps_final_validation_report.json
 !explicit_branch_truth_100k_mps_final_validation_report.tsv
@@ -138,6 +140,12 @@ real_empirical_pilot/acquisition_plans/*/hits/
 # Direct prediction and publication benchmark generated outputs
 babappa_prediction*/
 direct_predict_*/
+branch_site_v2_100k_workspace/
+branch_site_v2_100k_workspace*/
+branch_site_v2_100k_workspace_quarantine*/
+*_retrain_quarantine*/
+*_retraining_workspace/
+*_retraining_workspace*/
 known_truth_benchmark*/
 known_truth_absrel_subset*/
 known_truth_absrel_comparison*/
@@ -179,6 +187,8 @@ publication_benchmark/*benchmark*/**/*.log
 publication_benchmark/*benchmark*/**/*.err
 publication_benchmark/*benchmark*/**/*.tmp
 publication_benchmark/*benchmark*/**/*.partial
+publication_revision_benchmarks/positive_control_data/raw/
+publication_revision_benchmarks/positive_control_data/dryrun/
 
 # User-supplied/raw benchmark source datasets
 drosophilas/

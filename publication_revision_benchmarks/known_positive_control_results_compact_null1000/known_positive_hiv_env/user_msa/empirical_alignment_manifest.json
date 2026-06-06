@@ -1,0 +1,84 @@
+{
+  "cds_fasta": "publication_revision_benchmarks/positive_control_data/msas/known_positive_hiv_env.codon.aln.fasta",
+  "created_files": {
+    "user_msa": {
+      "codon_fasta": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "qc": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/methods/user_msa/empirical.user_msa.qc.json",
+      "site_map": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/site_map/user_msa.site_map.tsv"
+    }
+  },
+  "empirical_alignment_version": "0.8.18",
+  "failures": [],
+  "foreground": "all",
+  "foregrounds_resolved": [
+    "0557_21",
+    "0557_24",
+    "0557_6",
+    "0557_11",
+    "0557_12",
+    "0557_13",
+    "0557_25",
+    "0557_26",
+    "0557_2",
+    "0557_4",
+    "0557_5",
+    "0557_7",
+    "0557_9",
+    "0564_11",
+    "0564_13",
+    "0564_15",
+    "0564_17",
+    "0564_1",
+    "0564_21",
+    "0564_22",
+    "0564_3",
+    "0564_4",
+    "0564_5",
+    "0564_6",
+    "0564_7",
+    "0564_9"
+  ],
+  "method_policy": {
+    "methods": [
+      {
+        "attempted_families": 1,
+        "failed_families": 0,
+        "failure_fraction": "0",
+        "method": "user_msa",
+        "reason": "user_msa_is_authoritative_input",
+        "recommendation": "usable",
+        "site_map_conflict_fraction": "0",
+        "site_map_frame_error_fraction": "0",
+        "site_map_unique_fraction": "1",
+        "successful_families": 1
+      }
+    ],
+    "quarantined_methods": [],
+    "usable_methods": [
+      "user_msa"
+    ]
+  },
+  "method_policy_dir": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/method_policy",
+  "method_rows": [
+    {
+      "aligned_fasta": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/methods/user_msa/empirical.user_msa.codon.fasta",
+      "method": "user_msa",
+      "reason": "user_supplied_authoritative_codon_msa",
+      "runtime_seconds": "0",
+      "site_map": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/site_map/user_msa.site_map.tsv",
+      "status": "ok"
+    }
+  ],
+  "methods_requested": [
+    "user_msa"
+  ],
+  "methods_run": [
+    "user_msa"
+  ],
+  "realignment_performed": false,
+  "site_map_dir": "publication_revision_benchmarks/known_positive_control_results_compact_null1000/known_positive_hiv_env/user_msa/site_map",
+  "status": "ok",
+  "tree": "publication_revision_benchmarks/positive_control_data/trees/known_positive_hiv_env.treefile",
+  "user_msa_is_authoritative": true,
+  "warnings": []
+}

@@ -1,0 +1,32 @@
+{
+  "archive_expected": true,
+  "benchmark_name": "BABAPPA-RETAINED-VALIDATION-v1",
+  "exclude_from_git": [
+    "raw aligner scratch",
+    "large logs",
+    "temporary tensor caches"
+  ],
+  "n_families": 10000,
+  "plan_version": "0.8.17",
+  "primary_metrics": [
+    "AUROC",
+    "AUPRC",
+    "FDR",
+    "MCC",
+    "OOD false-call rate",
+    "non-OOD positive recall"
+  ],
+  "purpose": "address the conditional-pass reproducibility concern with a smaller fully retained known-truth validation profile",
+  "retain": [
+    "simulation_manifest",
+    "family_truth_files",
+    "input_cds",
+    "tree_files",
+    "feature_tables",
+    "scores",
+    "applicability_reports",
+    "threshold_policy_outputs",
+    "evaluation_tables",
+    "checksums"
+  ]
+}

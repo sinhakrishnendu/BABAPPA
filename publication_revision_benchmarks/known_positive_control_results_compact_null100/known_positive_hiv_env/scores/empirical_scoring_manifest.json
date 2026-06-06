@@ -1,0 +1,19 @@
+{
+  "applicability_status": "in_domain",
+  "calibration": {
+    "selected_threshold": 0.01,
+    "target_fdr": 0.1,
+    "temperature": 1.0
+  },
+  "device": "mps",
+  "diagnostic_only": false,
+  "empirical_scoring_version": "0.8.18",
+  "n_rows": 22802,
+  "outputs": {
+    "branch_scores": "publication_revision_benchmarks/known_positive_control_results_compact_null100/known_positive_hiv_env/scores/empirical_branch_scores.tsv",
+    "branch_site_scores": "publication_revision_benchmarks/known_positive_control_results_compact_null100/known_positive_hiv_env/scores/empirical_branch_site_scores.tsv",
+    "gene_support": "publication_revision_benchmarks/known_positive_control_results_compact_null100/known_positive_hiv_env/scores/empirical_gene_support.tsv"
+  },
+  "status": "ok",
+  "tier_model": "low"
+}

@@ -1,0 +1,42 @@
+{
+  "expected_feature_columns": [
+    "site_index_zero",
+    "aligned_site_index_zero",
+    "original_site_index_zero",
+    "site_relative_position",
+    "n_taxa",
+    "n_codons",
+    "codon_id_mean",
+    "codon_id_std",
+    "codon_id_min",
+    "codon_id_max",
+    "codon_id_range",
+    "codon_id_unique_count",
+    "gap_fraction",
+    "non_gap_fraction",
+    "taxon_codon_variability",
+    "foreground_codon_id",
+    "foreground_gap",
+    "branch_codon_id",
+    "branch_gap",
+    "background_mean_codon_id",
+    "foreground_background_codon_delta",
+    "branch_background_codon_delta"
+  ],
+  "feature_schema_match": "pass",
+  "forbidden_columns": [],
+  "foregrounds_scored": [
+    "MAR",
+    "BUS",
+    "PON",
+    "MAC",
+    "BAB",
+    "GIB",
+    "HUM",
+    "PAN",
+    "GOR"
+  ],
+  "missing_features": [],
+  "n_rows": 8541,
+  "status": "pass"
+}

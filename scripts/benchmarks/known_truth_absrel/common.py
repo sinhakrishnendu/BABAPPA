@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import json
 import math
-import os
 import random
+import csv
+import os
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Sequence
+from typing import Any, Dict, List, Sequence
 
 
 TSV_NA = "NA"
@@ -20,14 +21,27 @@ def repo_root() -> Path:
 
 def read_config(path: Path) -> Dict[str, str]:
     data: Dict[str, str] = {}
+    section: str | None = None
     for raw in path.read_text(encoding="utf-8").splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        is_indented = raw[:1].isspace()
         line = raw.strip()
         if not line or line.startswith("#"):
             continue
         if ":" not in line:
             raise ValueError(f"config line is not key: value: {raw}")
         key, value = line.split(":", 1)
-        data[key.strip()] = value.strip().strip("'\"")
+        key = key.strip()
+        value = value.strip().strip("'\"")
+        if value == "" and not is_indented:
+            section = key
+            continue
+        if is_indented and section:
+            key = f"{section}.{key}"
+        elif not is_indented:
+            section = None
+        data[key] = value
     return data
 
 
@@ -44,6 +58,15 @@ def config_bool(config: Dict[str, str], key: str, default: bool = False) -> bool
     if value is None:
         return default
     return value.lower() in {"1", "true", "yes", "y"}
+
+
+def config_jobs(config: Dict[str, str], key: str, default: int) -> int:
+    override = os.environ.get("BABAPPA_BENCH_JOBS")
+    value = override or config.get(f"jobs.{key}") or config.get(key)
+    if value is None:
+        return default
+    jobs = int(value)
+    return max(1, jobs)
 
 
 def resolve_outdir(config: Dict[str, str], override: str | None = None) -> Path:
@@ -64,25 +87,17 @@ def write_json(path: Path, payload: Dict[str, Any]) -> None:
 def read_tsv(path: Path) -> List[Dict[str, str]]:
     if not path.exists():
         return []
-    lines = path.read_text(encoding="utf-8").splitlines()
-    if not lines:
-        return []
-    header = lines[0].split("\t")
-    rows = []
-    for line in lines[1:]:
-        if not line.strip():
-            continue
-        values = line.split("\t")
-        rows.append({key: values[i] if i < len(values) else "" for i, key in enumerate(header)})
-    return rows
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return [dict(row) for row in csv.DictReader(handle, delimiter="\t") if any((value or "").strip() for value in row.values())]
 
 
 def write_tsv(path: Path, rows: Sequence[Dict[str, Any]], fieldnames: Sequence[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    lines = ["\t".join(fieldnames)]
-    for row in rows:
-        lines.append("\t".join(str(row.get(field, "")) for field in fieldnames))
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(fieldnames), delimiter="\t", extrasaction="ignore", lineterminator="\n")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row.get(field, "") for field in fieldnames})
 
 
 def read_fasta(path: Path) -> Dict[str, str]:
@@ -114,10 +129,14 @@ def write_fasta(path: Path, records: Dict[str, str]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def run_command(argv: Sequence[str], cwd: Path) -> subprocess.CompletedProcess[str]:
+def run_command(argv: Sequence[str], cwd: Path, env: Dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+    merged_env = os.environ.copy()
+    if env:
+        merged_env.update(env)
     return subprocess.run(
         list(argv),
         cwd=str(cwd),
+        env=merged_env,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

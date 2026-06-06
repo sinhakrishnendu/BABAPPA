@@ -1,0 +1,14 @@
+{
+  "codon_divisible": false,
+  "extra_tree_tips": [],
+  "missing_from_tree": [],
+  "msa": "publication_revision_benchmarks/positive_control_data/msas/known_positive_abalone_lysin.codon.aln.fasta",
+  "n_sequences": 25,
+  "sequence_lengths": [
+    402,
+    403
+  ],
+  "source_file": "publication_revision_benchmarks/positive_control_data/raw/tutorial_data/tutorial_data/lysin.fna",
+  "tree": "publication_revision_benchmarks/positive_control_data/trees/known_positive_abalone_lysin.treefile",
+  "tree_tip_matches_fasta": true
+}

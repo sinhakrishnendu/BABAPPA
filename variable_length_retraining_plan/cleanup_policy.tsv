@@ -1,0 +1,6 @@
+path_class	default_action	reason
+simulated_families	cleanup_after_branch_dataset_validates	raw simulator output is reproducible from regime manifest and seed
+alignments_site_maps_tensors_indexes	cleanup_after_branch_dataset_validates	large intermediates are reproducible and not needed after feature extraction
+per_chunk_branch_site_datasets	cleanup_after_tier_training_validates	merged tier dataset and trained model supersede per-chunk feature tables
+merged_tier_branch_site_dataset	cleanup_after_tier_summary_validates	retained model/calibration/summary are sufficient for packaging
+model_calibration_threshold_summary	keep	required for deployable package and validation
